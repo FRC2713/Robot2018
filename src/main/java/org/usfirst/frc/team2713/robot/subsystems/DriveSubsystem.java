@@ -1,17 +1,18 @@
 package org.usfirst.frc.team2713.robot.subsystems;
 
-import com.ctre.CANTalon;
-import edu.wpi.first.wpilibj.RobotDrive;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import org.usfirst.frc.team2713.robot.RobotMap;
 import org.usfirst.frc.team2713.robot.commands.OIDrive;
 
 public class DriveSubsystem extends Subsystem {
-  public RobotDrive roboDrive;
-  private CANTalon frontLeft = new CANTalon(RobotMap.frontLeftTalonPort);
-  private CANTalon frontRight = new CANTalon(RobotMap.frontRightTalonPort);
-  private CANTalon backLeft = new CANTalon(RobotMap.backLeftTalonPort);
-  private CANTalon backRight = new CANTalon(RobotMap.backRightTalonPort);
+  public DifferentialDrive roboDrive;
+  private WPI_TalonSRX frontLeft = new WPI_TalonSRX(RobotMap.frontLeftTalonPort);
+  private WPI_TalonSRX frontRight = new WPI_TalonSRX(RobotMap.frontRightTalonPort);
+  private WPI_TalonSRX backLeft = new WPI_TalonSRX(RobotMap.backLeftTalonPort);
+  private WPI_TalonSRX backRight = new WPI_TalonSRX(RobotMap.backRightTalonPort);
   
   public DriveSubsystem() {
   
@@ -23,8 +24,16 @@ public class DriveSubsystem extends Subsystem {
   }
   
   public void startTeleop() {
-    roboDrive = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
+    setTalonFollowers();
+    roboDrive = new DifferentialDrive(frontLeft, frontRight);
     new OIDrive(this).start();
+  }
+  
+  private void setTalonFollowers() {
+    backLeft.set(ControlMode.Follower, frontLeft.getBaseID());
+    backRight.set(ControlMode.Follower, frontRight.getBaseID());
+    
+    // Depending on motor alignment, use setInverted(true) here for each following talon
   }
   
   /**
@@ -41,8 +50,13 @@ public class DriveSubsystem extends Subsystem {
     ) * Math.signum(speed); // Restore original sign sign of speed
   }
   
+  /**
+   * Gets an adjusted speed, with the goal to have more precise movements at slower speeds
+   * @param speed Input speed, between -1 and 1
+   * @return Adjusted speed
+   */
   public double getCurvedSpeed(double speed) {
-    // See https://www.wolframalpha.com/input/?i=(abs(x)%2F100)%5E2+*+100+where+x%3D45
-    return Math.pow(Math.abs(speed) / 100, 2) * 100;
+    if (speed > 1 || speed < -1) throw new NumberFormatException("Number must be between -1 and 1");
+    return Math.copySign(Math.pow(speed, 2), speed);
   }
 }
