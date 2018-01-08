@@ -4,11 +4,9 @@ package org.usfirst.frc.team2713.robot;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import lombok.Getter;
+import org.usfirst.frc.team2713.robot.commands.AutonomousCommand;
 import org.usfirst.frc.team2713.robot.subsystems.DriveSubsystem;
 
 public class Robot extends IterativeRobot {
@@ -17,8 +15,7 @@ public class Robot extends IterativeRobot {
   
   private static DriveSubsystem driveSubsystem;
  
-	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+	AutonomousCommand autonomousCommand = new AutonomousCommand();
  
 	@Override
 	public void robotInit() {
@@ -51,7 +48,7 @@ public class Robot extends IterativeRobot {
    * A place to get and set values from SmartDash
    */
   private void initDash() {
-    // Insert SmartDash code here
+    RobotMap.autonomousMode.addDefault("Default", 0);
   }
   
 	@Override
@@ -88,6 +85,6 @@ public class Robot extends IterativeRobot {
  
 	@Override
 	public void testPeriodic() {
-		LiveWindow.run();
+	
 	}
 }

@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2713.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -22,6 +24,7 @@ public class RobotMap {
 	// Sensors
   
   // SmartDash Settings
+  public static SendableChooser<Integer> autonomousMode = new SendableChooser<>();
   
   // Measurements (metric / meters, unless specified)
   public static double WHEEL_DIAMETER = .5; // TODO Diameter of PART_NUMBER
