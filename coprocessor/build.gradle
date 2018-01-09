@@ -1,0 +1,32 @@
+apply plugin: 'jaci.gradle.EmbeddedTools'
+
+def MAIN_CLASS = 'org.iraiders.robot2018.coprocesor.Main'
+
+deploy {
+  targets {
+    target("rpi") {
+      addresses << 'raspberrypi'
+      user = 'pi'
+      password = 'raspberry'
+      directory = '/home/pi/mycode'
+      //failOnMissing = false
+    }
+  }
+  artifacts {
+    javaArtifact('coprocessorCode') {
+      targets << "rpi"
+      jar = 'jar'
+    }
+  }
+}
+
+dependencies {
+
+}
+
+jar {
+  from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+  manifest {
+    attributes 'Main-Class': MAIN_CLASS
+  }
+}

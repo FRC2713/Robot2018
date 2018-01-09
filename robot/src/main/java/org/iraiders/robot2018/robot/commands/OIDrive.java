@@ -1,7 +1,7 @@
-package org.usfirst.frc.team2713.robot.commands;
+package org.iraiders.robot2018.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team2713.robot.subsystems.DriveSubsystem;
+import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 
 public class OIDrive extends Command {
   DriveSubsystem drive;

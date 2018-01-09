@@ -24,7 +24,7 @@ local.properties
 *.war
 *.ear
 
-!libs/*/*.jar
+!robot/libs/*/*.jar
 
 hs_err_pid*
 

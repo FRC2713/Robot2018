@@ -1,8 +1,8 @@
-package org.usfirst.frc.team2713.robot.commands;
+package org.iraiders.robot2018.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import openrio.powerup.MatchData;
-import org.usfirst.frc.team2713.robot.RobotMap;
+import org.iraiders.robot2018.robot.RobotMap;
 
 public class AutonomousCommand extends CommandGroup {
   public AutonomousCommand() {

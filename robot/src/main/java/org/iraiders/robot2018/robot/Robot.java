@@ -1,13 +1,13 @@
 
-package org.usfirst.frc.team2713.robot;
+package org.iraiders.robot2018.robot;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import lombok.Getter;
-import org.usfirst.frc.team2713.robot.commands.AutonomousCommand;
-import org.usfirst.frc.team2713.robot.subsystems.DriveSubsystem;
+import org.iraiders.robot2018.robot.commands.AutonomousCommand;
+import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 
 public class Robot extends IterativeRobot {
   @Getter private static Robot robotInstance;

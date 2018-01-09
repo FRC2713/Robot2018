@@ -1,11 +1,21 @@
 plugins {
-	id "java"
-	id "idea"
-	id "jaci.openrio.gradle.GradleRIO" version "2018.01.07"
+  id "jaci.openrio.gradle.GradleRIO" version "2018.01.07" apply false
+  id "jaci.gradle.EmbeddedTools" version "2017.12.23" apply false
 }
 
-def TEAM = 2713
-def ROBOT_CLASS = "org.usfirst.frc.team2713.robot.Robot"
+allprojects {
+  apply plugin: 'idea'
+}
+
+subprojects {
+  apply plugin: 'java'
+
+  sourceCompatibility = 1.8
+
+  repositories {
+    mavenCentral()
+  }
+}
 
 idea {
   module {
@@ -14,9 +24,6 @@ idea {
   }
 
   project {
-    jdkName = '1.8'
-    languageLevel = '1.8'
-
     ipr.withXml { xmlFile ->
       // enable 'Annotation Processors'
       xmlFile.asNode().component.find{ it.@name == 'CompilerConfiguration' }['annotationProcessing'][0].replaceNode {
@@ -28,41 +35,6 @@ idea {
   }
 }
 
-deploy {
-  targets {
-    target("roborio", jaci.openrio.gradle.frc.RoboRIO) {
-      team = TEAM
-    }
-  }
-  artifacts {
-    artifact('frcJava', jaci.openrio.gradle.frc.FRCJavaArtifact) {
-      targets << "roborio"
-    }
-  }
-}
-
-repositories {
-	mavenCentral()
-}
-
-dependencies {
-	compile wpilib()
-  compile ctre() // Talon SRX
-  compile navx()
-  compile openrio.powerup.matchData()
-
-  compile fileTree(dir: 'libs/Pathfinder', include: '*.jar') // https://tinyurl.com/JaciPathfinderFRC
-
-  compileOnly 'org.projectlombok:lombok:1.16.18'
-
-	testCompile 'junit:junit:4.12'
-}
-
-jar {
-  from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-  manifest jaci.openrio.gradle.GradleRIOPlugin.javaManifest(ROBOT_CLASS)
-}
-
 task wrapper(type: Wrapper) {
-	gradleVersion = '4.4'
+  gradleVersion = '4.4'
 }
