@@ -23,10 +23,6 @@ dependencies {
   compile openrio.powerup.matchData()
 
   compile fileTree(dir: 'libs/Pathfinder', include: '*.jar') // https://tinyurl.com/JaciPathfinderFRC
-
-  compileOnly 'org.projectlombok:lombok:1.16.18'
-
-  testCompile 'junit:junit:4.12'
 }
 
 
