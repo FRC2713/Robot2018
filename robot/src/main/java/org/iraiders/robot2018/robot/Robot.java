@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import lombok.Getter;
 import org.iraiders.robot2018.robot.commands.AutonomousCommand;
+import org.iraiders.robot2018.robot.subsystems.ClimbSubsystem;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 
 public class Robot extends IterativeRobot {
@@ -14,8 +15,9 @@ public class Robot extends IterativeRobot {
   @Getter private static OI oi;
   
   private static DriveSubsystem driveSubsystem;
+  private static ClimbSubsystem climbSubsystem;
  
-	AutonomousCommand autonomousCommand = new AutonomousCommand();
+	private AutonomousCommand autonomousCommand = new AutonomousCommand();
  
 	@Override
 	public void robotInit() {
@@ -33,6 +35,7 @@ public class Robot extends IterativeRobot {
 	 */
 	private void initSubsystems() {
     driveSubsystem = new DriveSubsystem();
+    climbSubsystem = new ClimbSubsystem();
   }
   
   /**
@@ -76,6 +79,7 @@ public class Robot extends IterativeRobot {
 		if (autonomousCommand != null) autonomousCommand.cancel();
 		
 		driveSubsystem.startTeleop();
+		climbSubsystem.startTeleop();
 	}
  
 	@Override

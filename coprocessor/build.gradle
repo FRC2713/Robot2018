@@ -3,6 +3,7 @@ apply plugin: 'jaci.gradle.EmbeddedTools'
 def MAIN_CLASS = 'org.iraiders.robot2018.coprocesor.Main'
 
 deploy {
+  // See https://github.com/JacisNonsense/EmbeddedTools#spec
   targets {
     target("rpi") {
       addresses << 'raspberrypi'

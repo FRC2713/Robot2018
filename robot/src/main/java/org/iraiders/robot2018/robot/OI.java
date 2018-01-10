@@ -3,10 +3,11 @@ package org.iraiders.robot2018.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import lombok.Getter;
 
 public class OI {
-  private XboxController xBoxController;
-  private XboxController fightController;
+  @Getter private static XboxController xBoxController;
+  @Getter private static Joystick arcadeController;
   
 	public OI() {
 	  initControllers();
@@ -16,19 +17,20 @@ public class OI {
    * Scans all (7) controller ports and assigns them via known names
    */
   private void initControllers() {
+    // TODO Use generics
     for (int i = 0; i < 6; i++) {
       Joystick test = new Joystick(i);
       if (test.getName().equals(RobotMap.XBOX_NAME)) {
         xBoxController = new XboxController(i);
-      } else if (test.getName().equals(RobotMap.FIGHT_NAME)) {
-        fightController = new XboxController(i);
+      } else if (test.getName().equals(RobotMap.ARCADE_NAME)) {
+        arcadeController = new Joystick(i);
       }
     }
     if (xBoxController == null) {
       xBoxController = new XboxController(RobotMap.BACKUP_XBOX_PORT);
     }
-    if (fightController == null) {
-      fightController = new XboxController(RobotMap.BACKUP_ATTACK_PORT);
+    if (arcadeController == null) {
+      arcadeController = new Joystick(RobotMap.BACKUP_ARCADE_PORT);
     }
   }
   
