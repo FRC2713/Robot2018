@@ -1,20 +1,20 @@
 plugins {
-  id "jaci.openrio.gradle.GradleRIO" version "2018.01.07" apply false
+  id "jaci.openrio.gradle.GradleRIO" version "2018.01.11" apply false
   id "jaci.gradle.EmbeddedTools" version "2017.12.23" apply false
 }
 
 allprojects {
   apply plugin: 'idea'
+
+  repositories {
+    mavenCentral()
+  }
 }
 
 subprojects {
   apply plugin: 'java'
 
   sourceCompatibility = 1.8
-
-  repositories {
-    mavenCentral()
-  }
 
   dependencies {
     compileOnly 'org.projectlombok:lombok:1.16.18'
@@ -23,6 +23,7 @@ subprojects {
   }
 }
 
+/*
 idea {
   module {
     downloadJavadoc = true
@@ -40,6 +41,7 @@ idea {
     }
   }
 }
+*/
 
 task wrapper(type: Wrapper) {
   gradleVersion = '4.4'
