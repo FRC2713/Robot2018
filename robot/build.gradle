@@ -16,10 +16,6 @@ deploy {
   }
 }
 
-telemetry {
-  reportTelemetry = false
-}
-
 dependencies {
   compile wpilib()
   compile ctre() // Talon SRX

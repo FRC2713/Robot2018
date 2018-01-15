@@ -1,5 +1,5 @@
 plugins {
-  id "jaci.openrio.gradle.GradleRIO" version "2018.01.11" apply false
+  id "jaci.openrio.gradle.GradleRIO" version "2018.01.15" apply false
   id "jaci.gradle.EmbeddedTools" version "2017.12.23" apply false
 }
 
@@ -23,7 +23,6 @@ subprojects {
   }
 }
 
-/*
 idea {
   module {
     downloadJavadoc = true
@@ -41,7 +40,6 @@ idea {
     }
   }
 }
-*/
 
 task wrapper(type: Wrapper) {
   gradleVersion = '4.4'
