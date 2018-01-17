@@ -17,7 +17,7 @@ public class Robot extends IterativeRobot {
   private static DriveSubsystem driveSubsystem;
   private static ClimbSubsystem climbSubsystem;
  
-	private AutonomousCommand autonomousCommand = new AutonomousCommand();
+	private AutonomousCommand autonomousCommand;
  
 	@Override
 	public void robotInit() {
@@ -36,6 +36,8 @@ public class Robot extends IterativeRobot {
 	private void initSubsystems() {
     driveSubsystem = new DriveSubsystem();
     climbSubsystem = new ClimbSubsystem();
+    
+    autonomousCommand = new AutonomousCommand(driveSubsystem);
   }
   
   /**
