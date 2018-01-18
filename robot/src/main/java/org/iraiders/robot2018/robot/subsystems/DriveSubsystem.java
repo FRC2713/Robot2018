@@ -1,25 +1,23 @@
 package org.iraiders.robot2018.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import lombok.Getter;
 import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.commands.OIDrive;
 
 public class DriveSubsystem extends Subsystem {
   public DifferentialDrive roboDrive;
   
-  private WPI_TalonSRX frontLeftTalon = new WPI_TalonSRX(RobotMap.frontLeftTalonPort);
-  private WPI_TalonSRX frontRightTalon = new WPI_TalonSRX(RobotMap.frontRightTalonPort);
+  @Getter private WPI_TalonSRX frontLeftTalon = new WPI_TalonSRX(RobotMap.frontLeftTalonPort);
+  @Getter private WPI_TalonSRX frontRightTalon = new WPI_TalonSRX(RobotMap.frontRightTalonPort);
   private WPI_TalonSRX backLeftTalon = new WPI_TalonSRX(RobotMap.backLeftTalonPort);
   private WPI_TalonSRX backRightTalon = new WPI_TalonSRX(RobotMap.backRightTalonPort);
   
-  private SpeedControllerGroup left = new SpeedControllerGroup(frontLeftTalon, backLeftTalon);
-  private SpeedControllerGroup right = new SpeedControllerGroup(frontRightTalon, backRightTalon);
-  
   public DriveSubsystem() {
-  
+    setTalonFollowers();
   }
   
   @Override
@@ -27,27 +25,32 @@ public class DriveSubsystem extends Subsystem {
   
   }
   
+  
+  
   public void startTeleop() {
-    //setTalonFollowers();
-    roboDrive = new DifferentialDrive(left, right);
+    roboDrive = new DifferentialDrive(frontLeftTalon, frontRightTalon);
     new OIDrive(this).start();
+    /*
+    JoystickButton upFast = new JoystickButton(OI.getXBoxController(), 4);
+    AutonomousCommand a = new AutonomousCommand(this);
+    upFast.whenPressed(a);
+    */
   }
-  /*
+  
   private void setTalonFollowers() {
-    backLeft.set(ControlMode.Follower, RobotMap.frontLeftTalonPort);
-    backRight.set(ControlMode.Follower, RobotMap.frontRightTalonPort);
+    backLeftTalon.set(ControlMode.Follower, RobotMap.frontLeftTalonPort);
+    backRightTalon.set(ControlMode.Follower, RobotMap.frontRightTalonPort);
     
     // Depending on motor alignment, use setInverted(true) here for each following talon
   }
-  */
   
   public void setDriveSpeed(double value) {
     setDriveSpeed(value, value);
   }
   
   public void setDriveSpeed(double leftSpeed, double rightSpeed) {
-    left.set(leftSpeed);
-    right.set(rightSpeed);
+    frontLeftTalon.set(leftSpeed);
+    frontRightTalon.set(rightSpeed);
   }
   
   /**
