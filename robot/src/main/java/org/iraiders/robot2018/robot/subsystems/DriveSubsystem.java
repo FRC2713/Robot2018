@@ -2,10 +2,13 @@ package org.iraiders.robot2018.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import lombok.Getter;
+import org.iraiders.robot2018.robot.OI;
 import org.iraiders.robot2018.robot.RobotMap;
+import org.iraiders.robot2018.robot.commands.AutonomousCommand;
 import org.iraiders.robot2018.robot.commands.OIDrive;
 
 public class DriveSubsystem extends Subsystem {
@@ -30,11 +33,9 @@ public class DriveSubsystem extends Subsystem {
   public void startTeleop() {
     roboDrive = new DifferentialDrive(frontLeftTalon, frontRightTalon);
     new OIDrive(this).start();
-    /*
     JoystickButton upFast = new JoystickButton(OI.getXBoxController(), 4);
     AutonomousCommand a = new AutonomousCommand(this);
     upFast.whenPressed(a);
-    */
   }
   
   private void setTalonFollowers() {

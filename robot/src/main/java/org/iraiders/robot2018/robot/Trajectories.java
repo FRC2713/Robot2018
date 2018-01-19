@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Trajectories {
   // Waypoint positions *always* in feet
-  private static final Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_LOW, 0.05, 1.7, 2.0, 60.0);
+  private static final Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST, 0.05, 1.7, 2.0, 60.0);
   
   public static TankModifier rightStartToSwitchSameSide() {
     Waypoint[] points = new Waypoint[] {
@@ -35,17 +35,22 @@ public class Trajectories {
       tp.zeroPos = (i==0); // Clear the encoder values before we start to use things
       tp.isLastPoint = (i == t.segments.length-1);
       tp.profileSlotSelect0 = 0; // TODO ???
+      tp.profileSlotSelect1 = 0; // This probably doesn't do anything
       tp.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_50ms; // TODO get this from Pathfinder (dt variable?)
-      tp.position = segment.position;
-      tp.velocity = segment.velocity;
+      tp.position = segment.position * 1000;
+      tp.velocity = segment.velocity * 1000;
       tp.headingDeg = segment.heading;
+      
+      tps.add(tp);
     }
     return tps;
   }
   
   public static void loadPointsToTalon(WPI_TalonSRX talon, List<TrajectoryPoint> tps) {
     talon.clearMotionProfileTrajectories();
+    talon.configMotionProfileTrajectoryPeriod(5, 50);
     for (TrajectoryPoint tp : tps) {
+      talon.processMotionProfileBuffer();
       System.out.println("Loading " + tps + " to " + talon.getBaseID());
       talon.pushMotionProfileTrajectory(tp);
     }

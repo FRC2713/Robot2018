@@ -12,6 +12,7 @@ deploy {
   artifacts {
     artifact('frcJava', jaci.openrio.gradle.frc.FRCJavaArtifact) {
       targets << "roborio"
+      //debug = true
     }
   }
 }
@@ -21,6 +22,8 @@ dependencies {
   compile ctre() // Talon SRX
   compile pathfinder()
   compile openrio.powerup.matchData()
+
+  //compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.9.0'
 }
 
 
