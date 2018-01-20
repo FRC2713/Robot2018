@@ -33,7 +33,7 @@ public class Trajectories {
       Trajectory.Segment segment = t.segments[i]; // The Pathfinder version
       
       tp.zeroPos = (i==0); // Clear the encoder values before we start to use things
-      tp.isLastPoint = (i == t.segments.length-1);
+      tp.isLastPoint = (i == t.segments.length+1);
       tp.profileSlotSelect0 = 0; // TODO ???
       tp.profileSlotSelect1 = 0; // This probably doesn't do anything
       tp.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_50ms; // TODO get this from Pathfinder (dt variable?)

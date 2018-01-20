@@ -23,6 +23,7 @@ public class RobotMap {
   public static final String ARCADE_NAME = "Mayflash Arcade Stick";
 	
 	// Sensors
+  public static final ADIS16448_IMU imu = new ADIS16448_IMU();
   
   // SmartDash Settings
   public static SendableChooser<Integer> autonomousMode = new SendableChooser<>();
