@@ -18,14 +18,17 @@ deploy {
 }
 
 dependencies {
-  compile wpilib()
+  compile wpilib() // ALl WPILib required bits
   compile ctre() // Talon SRX
-  compile pathfinder()
-  compile openrio.powerup.matchData()
-
-  //compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.9.0'
+  compile pathfinder() // Motion Profiling Calculation
+  compile openrio.powerup.matchData() // PowerUp match data parser
+  //compile 'com.github.calcmogul:ADIS16448-RoboRIO-Driver:update-java-SNAPSHOT' // IMU Driver
+  //compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.9.0' // CSV Parser (for saved MP trajectories)
 }
 
+telemetry {
+  reportTelemetry = false
+}
 
 jar {
   from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
