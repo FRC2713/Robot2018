@@ -22,7 +22,7 @@ dependencies {
   compile ctre() // Talon SRX
   compile pathfinder() // Motion Profiling Calculation
   compile openrio.powerup.matchData() // PowerUp match data parser
-  //compile 'com.github.calcmogul:ADIS16448-RoboRIO-Driver:update-java-SNAPSHOT' // IMU Driver
+  compile 'com.github.HeroCC:ADIS16448-RoboRIO-Driver:9bb1e346a2' // IMU Driver
   //compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.9.0' // CSV Parser (for saved MP trajectories)
 }
 
