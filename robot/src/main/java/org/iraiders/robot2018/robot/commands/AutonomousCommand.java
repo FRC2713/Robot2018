@@ -11,6 +11,9 @@ import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 
 public class AutonomousCommand extends Command {
   DriveSubsystem driveSubsystem;
+  
+  private long autoStart = 0;
+  
   public AutonomousCommand(DriveSubsystem driveSubsystem) {
     requires(driveSubsystem);
     this.driveSubsystem = driveSubsystem;
@@ -21,7 +24,10 @@ public class AutonomousCommand extends Command {
   protected void initialize() {
     RobotMap.imu.reset();
     RobotMap.imu.calibrate();
-    doAuto(3, MatchData.OwnedSide.RIGHT);
+    autoStart = System.currentTimeMillis();
+    if (!RobotMap.USE_MINIMUM_VIABLE_AUTO) {
+      doAuto(3, MatchData.OwnedSide.RIGHT);
+    }
   }
   
   public void doAuto(int robotLocation, MatchData.OwnedSide side) {

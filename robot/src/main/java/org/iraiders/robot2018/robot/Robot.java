@@ -1,5 +1,5 @@
 
-package org.iraiders.robot2018.robot;
+package org.iraiders.robotAutonomoust;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -18,6 +18,8 @@ public class Robot extends IterativeRobot {
   private static ClimbSubsystem climbSubsystem;
  
 	private AutonomousCommand autonomousCommand;
+	
+	private long autoStart = 0;
  
 	@Override
 	public void robotInit() {
@@ -68,12 +70,20 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousInit() {
-		if (autonomousCommand != null) autonomousCommand.start();
+    autoStart = System.currentTimeMillis();
+		if (!RobotMap.USE_MINIMUM_VIABLE_AUTO) {
+      if (autonomousCommand != null) autonomousCommand.start();
+    }
 	}
 
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+    
+    if (RobotMap.USE_MINIMUM_VIABLE_AUTO) {
+      double speed = 1.0, timeout = 10;
+      if ((System.currentTimeMillis() - autoStart) < (timeout * 1000)) driveSubsystem.setDriveSpeed(speed);
+    }
 	}
 
 	@Override
