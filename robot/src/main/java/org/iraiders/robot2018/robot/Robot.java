@@ -5,8 +5,10 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lombok.Getter;
 import org.iraiders.robot2018.robot.commands.AutonomousCommand;
+import org.iraiders.robot2018.robot.commands.OIDrive;
 import org.iraiders.robot2018.robot.subsystems.ClimbSubsystem;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 
@@ -55,7 +57,15 @@ public class Robot extends IterativeRobot {
    * A place to get and set values from SmartDash
    */
   private void initDash() {
-    RobotMap.autonomousMode.addDefault("Default", 0);
+    RobotMap.startPosition.addDefault("Default", 0);
+    RobotMap.startPosition.addObject("Right", 3);
+    RobotMap.startPosition.addObject("Middle", 2);
+    RobotMap.startPosition.addObject("Left", 1);
+    
+    for (OIDrive.OIDriveMode mode : OIDrive.OIDriveMode.values()) RobotMap.driveMode.addObject(mode.name(), mode);
+    
+    SmartDashboard.putData(RobotMap.startPosition);
+    SmartDashboard.putData(RobotMap.driveMode);
   }
   
 	@Override
@@ -71,7 +81,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
     autoStart = System.currentTimeMillis();
-		if (!RobotMap.USE_MINIMUM_VIABLE_AUTO) {
+		if (!RobotMap.USE_MINIMUM_VIABLE_AUTO && !SmartDashboard.getBoolean("DisableAutonomus", false)) {
       if (autonomousCommand != null) autonomousCommand.start();
     }
 	}
@@ -80,7 +90,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
     
-    if (RobotMap.USE_MINIMUM_VIABLE_AUTO) {
+    if (RobotMap.USE_MINIMUM_VIABLE_AUTO && !SmartDashboard.getBoolean("DisableAutonomus", false)) {
       double speed = 1.0, timeout = 10;
       if ((System.currentTimeMillis() - autoStart) < (timeout * 1000)) driveSubsystem.setDriveSpeed(speed);
     }

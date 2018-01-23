@@ -28,11 +28,11 @@ public class DriveSubsystem extends Subsystem {
   
   }
   
-  
-  
   public void startTeleop() {
     roboDrive = new DifferentialDrive(frontLeftTalon, frontRightTalon);
     new OIDrive(this).start();
+    
+    // For debugging pathfinding in auto
     JoystickButton upFast = new JoystickButton(OI.getXBoxController(), 4);
     AutonomousCommand a = new AutonomousCommand(this);
     upFast.whenPressed(a);
@@ -61,6 +61,7 @@ public class DriveSubsystem extends Subsystem {
    * @param speed The current desired speed (usually from the joystick)
    * @param deadbandTolerance The amount of deadband to remove from speed
    * @return The corrected speed
+   * @deprecated {@link edu.wpi.first.wpilibj.drive.RobotDriveBase#applyDeadband(double, double)} has this implemented already
    */
   public double getDeadband(double speed, double deadbandTolerance) {
     return Math.max(0, // If deadband is greater than abs(speed), do nothing
@@ -68,6 +69,10 @@ public class DriveSubsystem extends Subsystem {
     ) * Math.signum(speed); // Restore original sign sign of speed
   }
   
+  /**
+   * {@inheritDoc}
+   * @deprecated
+   */
   public double getDeadband(double speed) {
     return getDeadband(speed, 0.1);
   }
@@ -76,6 +81,7 @@ public class DriveSubsystem extends Subsystem {
    * Gets an adjusted speed, with the goal to have more precise movements at slower speeds
    * @param speed Input speed, between -1 and 1
    * @return Adjusted speed
+   * @deprecated {@link edu.wpi.first.wpilibj.drive.RobotDriveBase} has this implemented in tank drive & arcade drive
    */
   public double getCurvedSpeed(double speed) {
     if (speed > 1 || speed < -1) throw new NumberFormatException("Number must be between -1 and 1");

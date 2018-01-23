@@ -2,6 +2,7 @@ package org.iraiders.robot2018.robot;
 
 import com.analog.adis16448.frc.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import org.iraiders.robot2018.robot.commands.OIDrive;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -27,10 +28,11 @@ public class RobotMap {
   public static final ADIS16448_IMU imu = new ADIS16448_IMU();
   
   // SmartDash Settings
-  public static SendableChooser<Integer> autonomousMode = new SendableChooser<>();
+  public static SendableChooser<Integer> startPosition = new SendableChooser<>();
+  public static SendableChooser<OIDrive.OIDriveMode> driveMode = new SendableChooser<>();
   
   // Measurements (metric / meters, unless specified)
-  public static double WHEEL_DIAMETER = .5; // TODO Diameter of PART_NUMBER
+  public static double WHEEL_DIAMETER = 6; // TODO Diameter of PART_NUMBER
   
   // Misc
   /**

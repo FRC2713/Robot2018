@@ -4,11 +4,12 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
 import org.iraiders.robot2018.robot.OI;
+import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 
 public class OIDrive extends Command {
   DriveSubsystem drive;
-  private OIDriveMode mode = OIDriveMode.TANK; // TODO: make this a smart dashboard variable
+  private OIDriveMode mode = RobotMap.driveMode.getSelected();
   private XboxController xbox = OI.getXBoxController();
   
   public OIDrive(DriveSubsystem drive) {
@@ -17,11 +18,20 @@ public class OIDrive extends Command {
   }
   
   @Override
+  protected void initialize() {
+  
+  }
+  
+  @Override
   protected void execute() {
+    // Invert directions, on an XBox controller the forward direction is negative
     switch (mode) {
+      case BRADFORD:
+        drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft), -xbox.getX(Hand.kRight), true);
+      
       default:
       case TANK:
-        drive.roboDrive.tankDrive(drive.getDeadband(xbox.getY(Hand.kLeft)), drive.getDeadband(xbox.getY(Hand.kRight)));
+        drive.roboDrive.tankDrive(-xbox.getY(Hand.kLeft), -xbox.getY(Hand.kRight), true);
         break;
     }
   }
