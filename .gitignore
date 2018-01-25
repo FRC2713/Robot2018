@@ -4,6 +4,7 @@
 .Trash-*
 .metadata
 .gradle
+ignore/
 bin/
 tmp/
 *.tmp

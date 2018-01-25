@@ -19,11 +19,14 @@ deploy {
 }
 
 dependencies {
-  compile wpilib() // ALl WPILib required bits
+  compile wpilib() // All WPILib required bits
   compile ctre() // Talon SRX
   compile pathfinder() // Motion Profiling Calculation
   compile openrio.powerup.matchData() // PowerUp match data parser
-  compile 'com.github.HeroCC:ADIS16448-RoboRIO-Driver:9bb1e346a2' // IMU Driver
+  compile 'com.github.juchong:ADIS16448-RoboRIO-Driver:master-SNAPSHOT' // IMU Driver
+  compile ('org.jscience:jscience:4.3.1') { // Unit conversion, but it does way more than we need
+    exclude group: 'org.javolution', module: 'javolution'
+  }
   //compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.9.0' // CSV Parser (for saved MP trajectories)
 }
 

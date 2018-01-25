@@ -9,6 +9,8 @@ import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.followers.EncoderFollower;
 import org.iraiders.robot2018.robot.RobotMap;
 
+import javax.measure.unit.SI;
+
 public class MotionProfileFollowCommand extends Command {
   private final WPI_TalonSRX talon;
   private final Trajectory trajectory;
@@ -23,12 +25,12 @@ public class MotionProfileFollowCommand extends Command {
   
   @Override
   protected void initialize() {
-    encoderFollower.configureEncoder(0, 1440, RobotMap.WHEEL_DIAMETER); // TODO these fake values, tune them
+    talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+    encoderFollower.configureEncoder(talon.getSelectedSensorPosition(0), RobotMap.TICKS_PER_REVOLUTION, RobotMap.WHEEL_DIAMETER.to(SI.METER).getValue());
   }
   
   @Override
   protected void execute() {
-    talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
     double speed = encoderFollower.calculate(talon.getSelectedSensorPosition(0));
     double gyro_heading = RobotMap.imu.getAngleX(); // The RoboRIO is mounted vertically for testing, we will need to change X to something else when it is actually mounted
     double desired_heading = Pathfinder.r2d(encoderFollower.getHeading());

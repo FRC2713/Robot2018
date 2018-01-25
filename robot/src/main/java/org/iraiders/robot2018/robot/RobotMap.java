@@ -4,6 +4,10 @@ import com.analog.adis16448.frc.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import org.iraiders.robot2018.robot.commands.OIDrive;
 
+import javax.measure.Measure;
+import javax.measure.quantity.Length;
+import javax.measure.unit.NonSI;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -31,8 +35,9 @@ public class RobotMap {
   public static SendableChooser<Integer> startPosition = new SendableChooser<>();
   public static SendableChooser<OIDrive.OIDriveMode> driveMode = new SendableChooser<>();
   
-  // Measurements (metric / meters, unless specified)
-  public static double WHEEL_DIAMETER = 6; // TODO Diameter of PART_NUMBER
+  // Measurements
+  public static final Measure<Double, Length> WHEEL_DIAMETER = Measure.valueOf(6d, NonSI.INCH);
+  public static final int TICKS_PER_REVOLUTION = 0; // TODO Ticks per Revolution
   
   // Misc
   /**
