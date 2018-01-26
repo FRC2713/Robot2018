@@ -30,11 +30,11 @@ public class OIDrive extends Command {
       case BRADFORD:
         drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft), xbox.getX(Hand.kRight), true);
         break;
-        
+      
       case ARCADE:
         drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft), xbox.getX(Hand.kLeft), true);
         break;
-        
+      
       default:
       case TANK:
         drive.roboDrive.tankDrive(-xbox.getY(Hand.kLeft), -xbox.getY(Hand.kRight), true);

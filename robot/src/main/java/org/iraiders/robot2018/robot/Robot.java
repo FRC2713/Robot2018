@@ -16,26 +16,26 @@ public class Robot extends IterativeRobot {
   @Getter private static OI oi;
   
   private static DriveSubsystem driveSubsystem;
- 
-	private AutonomousCommand autonomousCommand;
-	
-	private long autoStart = 0;
- 
-	@Override
-	public void robotInit() {
-	  DriverStation.reportWarning("System coming alive, captain!", false);
-	  robotInstance = this;
-		oi = new OI();
-		
-		//initCamera();
-		initSubsystems();
+  
+  private AutonomousCommand autonomousCommand;
+  
+  private long autoStart = 0;
+  
+  @Override
+  public void robotInit() {
+    DriverStation.reportWarning("System coming alive, captain!", false);
+    robotInstance = this;
+    oi = new OI();
+    
+    //initCamera();
+    initSubsystems();
     initDash();
-	}
-	
-	/**
+  }
+  
+  /**
    * Initialize all subsystems here, in order of importance
-	 */
-	private void initSubsystems() {
+   */
+  private void initSubsystems() {
     driveSubsystem = new DriveSubsystem();
     
     autonomousCommand = new AutonomousCommand(driveSubsystem);
@@ -67,48 +67,48 @@ public class Robot extends IterativeRobot {
     SmartDashboard.putData(RobotMap.driveMode);
   }
   
-	@Override
-	public void disabledInit() {
+  @Override
+  public void disabledInit() {
     Scheduler.getInstance().removeAll();
-	}
-
-	@Override
-	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
-	}
-
-	@Override
-	public void autonomousInit() {
+  }
+  
+  @Override
+  public void disabledPeriodic() {
+    Scheduler.getInstance().run();
+  }
+  
+  @Override
+  public void autonomousInit() {
     autoStart = System.currentTimeMillis();
-		if (!RobotMap.USE_MINIMUM_VIABLE_AUTO && !SmartDashboard.getBoolean("DisableAutonomus", false)) {
+    if (!RobotMap.USE_MINIMUM_VIABLE_AUTO && !SmartDashboard.getBoolean("DisableAutonomus", false)) {
       if (autonomousCommand != null) autonomousCommand.start();
     }
-	}
-
-	@Override
-	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
+  }
+  
+  @Override
+  public void autonomousPeriodic() {
+    Scheduler.getInstance().run();
     
     if (RobotMap.USE_MINIMUM_VIABLE_AUTO && !SmartDashboard.getBoolean("DisableAutonomus", false)) {
       double speed = 1.0, timeout = 10;
       if ((System.currentTimeMillis() - autoStart) < (timeout * 1000)) driveSubsystem.setDriveSpeed(speed);
     }
-	}
-
-	@Override
-	public void teleopInit() {
-		if (autonomousCommand != null) autonomousCommand.cancel();
-		
-		driveSubsystem.startTeleop();
-	}
- 
-	@Override
-	public void teleopPeriodic() {
-		Scheduler.getInstance().run();
-	}
- 
-	@Override
-	public void testPeriodic() {
-	
-	}
+  }
+  
+  @Override
+  public void teleopInit() {
+    if (autonomousCommand != null) autonomousCommand.cancel();
+    
+    driveSubsystem.startTeleop();
+  }
+  
+  @Override
+  public void teleopPeriodic() {
+    Scheduler.getInstance().run();
+  }
+  
+  @Override
+  public void testPeriodic() {
+  
+  }
 }

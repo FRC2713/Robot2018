@@ -9,8 +9,8 @@ public class OI {
   @Getter private static XboxController xBoxController;
   @Getter private static Joystick arcadeController;
   
-	public OI() {
-	  initControllers();
+  public OI() {
+    initControllers();
   }
   
   /**

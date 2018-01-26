@@ -41,7 +41,7 @@ public class AutonomousCommand extends Command {
           // Scale on other side
         }
         break;
-    
+      
       case 2:
         // Middle Starting Point
         if (side == MatchData.OwnedSide.LEFT) {
@@ -50,7 +50,7 @@ public class AutonomousCommand extends Command {
           // Scale on other side
         }
         break;
-    
+      
       case 3:
         // Right Starting Point
         if (side == MatchData.OwnedSide.RIGHT) {
