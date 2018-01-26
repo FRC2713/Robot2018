@@ -27,9 +27,9 @@ public class Robot extends IterativeRobot {
 	  robotInstance = this;
 		oi = new OI();
 		
-		initDash();
-		initCamera();
+		//initCamera();
 		initSubsystems();
+    initDash();
 	}
 	
 	/**
@@ -59,7 +59,9 @@ public class Robot extends IterativeRobot {
     RobotMap.startPosition.addObject("Middle", 2);
     RobotMap.startPosition.addObject("Left", 1);
     
-    for (OIDrive.OIDriveMode mode : OIDrive.OIDriveMode.values()) RobotMap.driveMode.addObject(mode.name(), mode);
+    RobotMap.driveMode.addDefault("Tank", OIDrive.OIDriveMode.TANK);
+    RobotMap.driveMode.addObject("Arcade", OIDrive.OIDriveMode.ARCADE);
+    RobotMap.driveMode.addObject("Bradford", OIDrive.OIDriveMode.BRADFORD);
     
     SmartDashboard.putData(RobotMap.startPosition);
     SmartDashboard.putData(RobotMap.driveMode);
