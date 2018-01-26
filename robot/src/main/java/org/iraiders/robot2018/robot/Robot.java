@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lombok.Getter;
 import org.iraiders.robot2018.robot.commands.AutonomousCommand;
 import org.iraiders.robot2018.robot.commands.OIDrive;
+import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 
 public class Robot extends IterativeRobot {
@@ -16,7 +17,8 @@ public class Robot extends IterativeRobot {
   @Getter private static OI oi;
   
   private static DriveSubsystem driveSubsystem;
- 
+  private static ArmSubsystem armSubsystem;
+  
 	private AutonomousCommand autonomousCommand;
 	
 	private long autoStart = 0;
@@ -37,6 +39,7 @@ public class Robot extends IterativeRobot {
 	 */
 	private void initSubsystems() {
     driveSubsystem = new DriveSubsystem();
+    armSubsystem = new ArmSubsystem();
     
     autonomousCommand = new AutonomousCommand(driveSubsystem);
   }
@@ -98,6 +101,7 @@ public class Robot extends IterativeRobot {
 		if (autonomousCommand != null) autonomousCommand.cancel();
 		
 		driveSubsystem.startTeleop();
+		armSubsystem.startTeleop();
 	}
  
 	@Override
