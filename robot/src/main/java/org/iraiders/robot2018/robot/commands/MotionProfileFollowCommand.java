@@ -15,7 +15,6 @@ public class MotionProfileFollowCommand extends Command {
   private final WPI_TalonSRX talon;
   private final Trajectory trajectory;
   private final EncoderFollower encoderFollower;
-  private int testEncoderStartValue = 1000;
   
   public MotionProfileFollowCommand(WPI_TalonSRX talon, Trajectory trajectory) {
     this.talon = talon;

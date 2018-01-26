@@ -23,7 +23,7 @@ dependencies {
   compile ctre() // Talon SRX
   compile pathfinder() // Motion Profiling Calculation
   compile openrio.powerup.matchData() // PowerUp match data parser
-  compile 'com.github.juchong:ADIS16448-RoboRIO-Driver:master-SNAPSHOT' // IMU Driver
+  compile 'com.github.juchong:ADIS16448-RoboRIO-Driver:5e46734' // IMU Driver
   compile ('org.jscience:jscience:4.3.1') { // Unit conversion, but it does way more than we need
     exclude group: 'org.javolution', module: 'javolution'
   }
