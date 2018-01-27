@@ -39,8 +39,8 @@ public class OI {
    * @param stick Controller to rumble
    * @param ms Time in Milliseconds
    */
-  public static void rumbleController(Joystick stick, int ms) {
-    rumbleController(stick, ms, GenericHID.RumbleType.kLeftRumble);
+  public static void rumbleController(GenericHID stick, double intensity, int ms) {
+    rumbleController(stick, intensity, ms, GenericHID.RumbleType.kLeftRumble);
   }
   
   /**
@@ -50,11 +50,19 @@ public class OI {
    * @param ms Time in Milliseconds
    * @param rumbleType Type of rumble to use
    */
-  public static void rumbleController(Joystick stick, int ms, GenericHID.RumbleType rumbleType) {
-    new Thread(() -> {
-      stick.setRumble(rumbleType, 1);
-      try { Thread.sleep(ms); } catch (InterruptedException ignored) {}
-      stick.setRumble(rumbleType, 0);
-    }).start();
+  public static void rumbleController(GenericHID stick, double intensity, int ms, GenericHID.RumbleType rumbleType) {
+    if (ms > 0) {
+      new Thread(() -> {
+        _setRumble(stick, intensity, rumbleType);
+        try { Thread.sleep(ms); } catch (InterruptedException ignored) {}
+        _setRumble(stick, 0, rumbleType);
+      }).start();
+    } else {
+      _setRumble(stick, intensity, rumbleType);
+    }
+  }
+  
+  private static void _setRumble(GenericHID stick, double intensity, GenericHID.RumbleType rumbleType) {
+    stick.setRumble(rumbleType, intensity);
   }
 }

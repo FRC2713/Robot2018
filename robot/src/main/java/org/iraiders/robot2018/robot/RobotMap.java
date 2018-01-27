@@ -1,6 +1,7 @@
 package org.iraiders.robot2018.robot;
 
 import com.analog.adis16448.frc.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import org.iraiders.robot2018.robot.commands.OIDrive;
 
@@ -31,6 +32,7 @@ public class RobotMap {
   
   // Sensors
   public static final ADIS16448_IMU imu = new ADIS16448_IMU();
+  public static final Ultrasonic frontUltrasonic = new Ultrasonic(0, 1); // TODO check these ports
   
   // SmartDash Settings
   public static SendableChooser<Integer> startPosition = new SendableChooser<>();
@@ -38,7 +40,7 @@ public class RobotMap {
   
   // Measurements
   public static final Measure<Double, Length> WHEEL_DIAMETER = Measure.valueOf(6d, NonSI.INCH);
-  public static final int TICKS_PER_REVOLUTION = 0; // TODO Ticks per Revolution
+  public static final int TICKS_PER_REVOLUTION = 1440; // TODO Ticks per Revolution
   
   // Misc
   /**

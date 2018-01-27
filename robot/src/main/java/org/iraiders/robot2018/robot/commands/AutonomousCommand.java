@@ -1,7 +1,7 @@
 package org.iraiders.robot2018.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.modifiers.TankModifier;
 import openrio.powerup.MatchData;
@@ -9,7 +9,7 @@ import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.Trajectories;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 
-public class AutonomousCommand extends CommandGroup {
+public class AutonomousCommand extends Command {
   private DriveSubsystem driveSubsystem;
   
   public AutonomousCommand(DriveSubsystem driveSubsystem) {
@@ -24,6 +24,11 @@ public class AutonomousCommand extends CommandGroup {
     if (!RobotMap.USE_MINIMUM_VIABLE_AUTO) {
       doAuto(3, MatchData.OwnedSide.RIGHT);
     }
+  }
+  
+  @Override
+  protected boolean isFinished() {
+    return false;
   }
   
   public void doAuto(int robotLocation, MatchData.OwnedSide side) {
@@ -53,8 +58,8 @@ public class AutonomousCommand extends CommandGroup {
           // Scale on same side as us
           //driveSubsystem.getFrontLeftTalon().selectProfileSlot(0,0);
           TankModifier trajectory = Trajectories.getTankModifierOfPoints(Trajectories.rightStartToSwitchSameSide);
-          addParallel(new MotionProfileFollowCommand(driveSubsystem.getFrontRightTalon(), trajectory.getRightTrajectory()));
-          addParallel(new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), trajectory.getLeftTrajectory()));
+          new MotionProfileFollowCommand(driveSubsystem.getFrontRightTalon(), trajectory.getRightTrajectory()).start();
+          new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), trajectory.getLeftTrajectory()).start();
         } else {
           // Scale on other side
         }

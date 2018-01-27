@@ -30,7 +30,7 @@ public class Robot extends IterativeRobot {
 	  oi = new OI();
 	
 	  initDash();
-	  initCamera();
+	  //initCamera();
 	  initSubsystems();
   }
 	
@@ -114,5 +114,9 @@ public class Robot extends IterativeRobot {
   @Override
   public void testPeriodic() {
   
+  }
+  
+  public static double normalize(double value, int min, int max) {
+    return (value - min) / (max - min);
   }
 }
