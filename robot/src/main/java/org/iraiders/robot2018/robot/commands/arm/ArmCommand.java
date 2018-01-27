@@ -3,13 +3,13 @@ package org.iraiders.robot2018.robot.commands.arm;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 
+import static org.iraiders.robot2018.robot.subsystems.ArmSubsystem.ArmPosition;
+
 public class ArmCommand extends CommandGroup {
-  private LowerJointCommand lowerJoint;
-  private UpperJointCommand upperJoint;
-  private int position;
+  private ArmPosition position;
   private ArmSubsystem armSubsystem;
   
-  public ArmCommand(ArmSubsystem armSubsystem, int position){
+  public ArmCommand(ArmSubsystem armSubsystem, ArmPosition position){
     requires(armSubsystem);
     this.position = position;
     this.armSubsystem = armSubsystem;
@@ -20,15 +20,15 @@ public class ArmCommand extends CommandGroup {
     int upperPosition;
     int lowerPosition;
     switch (position){
-      case 1:
+      case CONDENSE:
         upperPosition = 90;
         lowerPosition = 0;
         break;
-      case 2:
+      case REACH_BLOCK:
         upperPosition = 45;
         lowerPosition = 45;
         break;
-      case 3:
+      case REACH_UP:
         upperPosition = 30;
         lowerPosition = 0;
         break;

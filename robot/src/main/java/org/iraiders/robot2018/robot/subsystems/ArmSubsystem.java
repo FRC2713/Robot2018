@@ -3,7 +3,6 @@ package org.iraiders.robot2018.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
@@ -25,13 +24,17 @@ public class ArmSubsystem extends Subsystem {
     JoystickButton reachBlock = new JoystickButton(arcade, 4);
     JoystickButton reachUp = new JoystickButton(arcade, 7);
     
-    condense.whenPressed(new ArmCommand(this, 1));
-    reachBlock.whenPressed(new ArmCommand(this, 2));
-    reachUp.whenPressed(new ArmCommand(this, 3));
+    condense.whenPressed(new ArmCommand(this, ArmPosition.CONDENSE));
+    reachBlock.whenPressed(new ArmCommand(this, ArmPosition.REACH_BLOCK));
+    reachUp.whenPressed(new ArmCommand(this, ArmPosition.REACH_UP));
   }
   
   @Override
   protected void initDefaultCommand() {
-    
+  
+  }
+  
+  public enum ArmPosition {
+    CONDENSE, REACH_BLOCK, REACH_UP
   }
 }
