@@ -20,8 +20,9 @@ public class RobotMap {
   public static final int frontRightTalonPort = 2;
   public static final int backLeftTalonPort = 3;
   public static final int backRightTalonPort = 4;
-  public static final int climbMotor = 5;
-  
+  public static final int lowerJointTalonPort = 5;
+  public static final int upperJointTalonPort = 6;
+	
   // Controllers
   public static final int BACKUP_XBOX_PORT = 0;
   public static final int BACKUP_ARCADE_PORT = 1;
