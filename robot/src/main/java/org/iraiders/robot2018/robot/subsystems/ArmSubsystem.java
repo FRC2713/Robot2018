@@ -30,18 +30,6 @@ public class ArmSubsystem extends Subsystem {
     reachUp.whenPressed(new ArmCommand(this, 3));
   }
   
-  public PIDController createPIDController(double tolerance, Potentiometer pot, WPI_TalonSRX joint){
-    PIDController pid;
-    
-    pid = new PIDController(0.025, 0, 0, pot, joint); //TODO: Tune PID
-    pid.setOutputRange(-0.25D, 0.25D);
-    pid.setAbsoluteTolerance(tolerance);
-    
-    return pid;
-  }
-  
-  
-  
   @Override
   protected void initDefaultCommand() {
     
