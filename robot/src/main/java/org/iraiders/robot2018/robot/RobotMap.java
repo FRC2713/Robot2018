@@ -15,7 +15,7 @@ import javax.measure.unit.NonSI;
  * floating around.
  */
 public class RobotMap {
-	// Motors
+  // Motors
   public static final int frontLeftTalonPort = 1;
   public static final int frontRightTalonPort = 2;
   public static final int backLeftTalonPort = 3;
@@ -23,7 +23,7 @@ public class RobotMap {
   public static final int lowerJointTalonPort = 5;
   public static final int upperJointTalonPort = 6;
 	
-	// Controllers
+  // Controllers
   public static final int BACKUP_XBOX_PORT = 0;
   public static final int BACKUP_ARCADE_PORT = 1;
   public static final String XBOX_NAME = "Controller (XBOX 360 For Windows)";
