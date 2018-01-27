@@ -66,7 +66,7 @@ public class Trajectories {
     File waypointsPath = new File(System.getProperty("user.home") + "/robot2018/cache/paths/");
     MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
     Trajectory trajectory = null;
-  
+    
     messageDigest.update((Arrays.toString(points) + config.toString()).getBytes()); // Hash of path and config put together
     String hashedPoints = new String(messageDigest.digest());
     
