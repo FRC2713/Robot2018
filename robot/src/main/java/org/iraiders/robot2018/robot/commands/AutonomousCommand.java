@@ -56,7 +56,7 @@ public class AutonomousCommand extends Command {
         if (side == MatchData.OwnedSide.RIGHT) {
           // Scale on same side as us
           //driveSubsystem.getFrontLeftTalon().selectProfileSlot(0,0);
-          TankModifier trajectory = Trajectories.rightStartToSwitchSameSide();
+          TankModifier trajectory = Trajectories.getTankModifierOfPoints(Trajectories.rightStartToSwitchSameSide);
           new MotionProfileFollowCommand(driveSubsystem.getFrontRightTalon(), trajectory.getRightTrajectory()).start();
           new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), trajectory.getLeftTrajectory()).start();
           
