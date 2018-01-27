@@ -16,10 +16,10 @@ import javax.measure.unit.NonSI;
  */
 public class RobotMap {
 	// Motors
-	public static final int frontLeftTalonPort = 1;
-	public static final int frontRightTalonPort = 2;
-	public static final int backLeftTalonPort = 3;
-	public static final int backRightTalonPort = 4;
+  public static final int frontLeftTalonPort = 1;
+  public static final int frontRightTalonPort = 2;
+  public static final int backLeftTalonPort = 3;
+  public static final int backRightTalonPort = 4;
   public static final int lowerJointTalonPort = 5;
   public static final int upperJointTalonPort = 6;
 	
@@ -28,8 +28,8 @@ public class RobotMap {
   public static final int BACKUP_ARCADE_PORT = 1;
   public static final String XBOX_NAME = "Controller (XBOX 360 For Windows)";
   public static final String ARCADE_NAME = "Mayflash Arcade Stick";
-	
-	// Sensors
+  
+  // Sensors
   public static final ADIS16448_IMU imu = new ADIS16448_IMU();
   
   // SmartDash Settings
