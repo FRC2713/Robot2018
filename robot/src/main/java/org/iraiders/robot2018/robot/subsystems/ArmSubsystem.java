@@ -14,15 +14,15 @@ import org.iraiders.robot2018.robot.commands.arm.ArmCommand;
 
 
 public class ArmSubsystem extends Subsystem {
-  @Getter public WPI_TalonSRX lowerJoint = new WPI_TalonSRX(RobotMap.lowerJointTalonPort);
-  @Getter public WPI_TalonSRX upperJoint = new WPI_TalonSRX(RobotMap.upperJointTalonPort);
-  @Getter public Potentiometer lowerPot = new AnalogPotentiometer(RobotMap.lowerJointTalonPort, 360, 30);
-  @Getter public Potentiometer upperPot = new AnalogPotentiometer(RobotMap.upperJointTalonPort, 360, 30);
+  @Getter private WPI_TalonSRX lowerJoint = new WPI_TalonSRX(RobotMap.lowerJointTalonPort);
+  @Getter private WPI_TalonSRX upperJoint = new WPI_TalonSRX(RobotMap.upperJointTalonPort);
+  @Getter private Potentiometer lowerPot = new AnalogPotentiometer(RobotMap.lowerJointTalonPort, 360, 30);
+  @Getter private Potentiometer upperPot = new AnalogPotentiometer(RobotMap.upperJointTalonPort, 360, 30);
   
   public void startTeleop() {
     Joystick arcade = OI.getArcadeController();
-    JoystickButton condense = new JoystickButton(arcade, 8); // Climb Up Fast
-    JoystickButton reachBlock = new JoystickButton(arcade, 4); // Climb Down Fast
+    JoystickButton condense = new JoystickButton(arcade, 8);
+    JoystickButton reachBlock = new JoystickButton(arcade, 4);
     JoystickButton reachUp = new JoystickButton(arcade, 7);
     
     condense.whenPressed(new ArmCommand(this, 1));
