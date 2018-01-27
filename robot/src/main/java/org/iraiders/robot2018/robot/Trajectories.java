@@ -6,10 +6,8 @@ import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.modifiers.TankModifier;
-import lombok.SneakyThrows;
 
 import java.io.File;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,7 +63,6 @@ public class Trajectories {
     }
   }
   
-  @SneakyThrows(NoSuchAlgorithmException.class)
   private static Trajectory loadPointsFromCache(Waypoint[] points) {
     File waypointsPath = new File(System.getProperty("user.home") + "/robot2018/cache/paths/");
     Trajectory trajectory;
