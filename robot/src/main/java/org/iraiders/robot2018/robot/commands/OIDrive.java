@@ -9,7 +9,7 @@ import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 
 public class OIDrive extends Command {
-  DriveSubsystem drive;
+  private DriveSubsystem drive;
   private OIDriveMode mode = RobotMap.driveMode.getSelected();
   private XboxController xbox = OI.getXBoxController();
   

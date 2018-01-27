@@ -13,12 +13,10 @@ import javax.measure.unit.SI;
 
 public class MotionProfileFollowCommand extends Command {
   private final WPI_TalonSRX talon;
-  private final Trajectory trajectory;
   private final EncoderFollower encoderFollower;
   
   public MotionProfileFollowCommand(WPI_TalonSRX talon, Trajectory trajectory) {
     this.talon = talon;
-    this.trajectory = trajectory;
     this.encoderFollower = new EncoderFollower(trajectory);
   }
   
