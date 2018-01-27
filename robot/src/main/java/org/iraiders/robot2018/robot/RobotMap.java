@@ -42,7 +42,7 @@ public class RobotMap {
   
   // Misc
   /**
-   * If all else fails, set this to true to enable Minimum Viable Autonomus, which literally only goes forward for a bit
+   * If all else fails, set this to true to enable Minimum Viable Autonomous, which literally only goes forward for a bit
    * For if our sensors are gone, the code is broke, or the robot is on fire
    */
   public static final boolean USE_MINIMUM_VIABLE_AUTO = false;
