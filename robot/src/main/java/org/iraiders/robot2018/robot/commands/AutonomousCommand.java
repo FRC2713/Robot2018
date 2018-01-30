@@ -58,8 +58,7 @@ public class AutonomousCommand extends Command {
           // Scale on same side as us
           //driveSubsystem.getFrontLeftTalon().selectProfileSlot(0,0);
           TankModifier trajectory = Trajectories.getTankModifierOfPoints(Trajectories.rightStartToSwitchSameSide);
-          new MotionProfileFollowCommand(driveSubsystem.getFrontRightTalon(), trajectory.getRightTrajectory()).start();
-          new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), trajectory.getLeftTrajectory()).start();
+          new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), driveSubsystem.getFrontRightTalon(), trajectory).start();
         } else {
           // Scale on other side
         }
