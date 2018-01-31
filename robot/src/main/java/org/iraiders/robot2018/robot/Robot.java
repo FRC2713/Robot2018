@@ -57,10 +57,10 @@ public class Robot extends IterativeRobot {
    * A place to get and set values from SmartDash
    */
   private void initDash() {
-    RobotMap.startPosition.addDefault("Default", 0);
-    RobotMap.startPosition.addObject("Right", 3);
-    RobotMap.startPosition.addObject("Middle", 2);
-    RobotMap.startPosition.addObject("Left", 1);
+    RobotMap.startPosition.addDefault("Guess", AutonomousCommand.MatchStartPosition.GUESS);
+    RobotMap.startPosition.addObject("Right", AutonomousCommand.MatchStartPosition.RIGHT);
+    RobotMap.startPosition.addObject("Middle", AutonomousCommand.MatchStartPosition.MIDDLE);
+    RobotMap.startPosition.addObject("Left", AutonomousCommand.MatchStartPosition.LEFT);
     
     RobotMap.driveMode.addDefault("Tank", OIDrive.OIDriveMode.TANK);
     RobotMap.driveMode.addObject("Arcade", OIDrive.OIDriveMode.ARCADE);

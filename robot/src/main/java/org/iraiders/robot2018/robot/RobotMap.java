@@ -3,6 +3,7 @@ package org.iraiders.robot2018.robot;
 import com.analog.adis16448.frc.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import org.iraiders.robot2018.robot.commands.AutonomousCommand;
 import org.iraiders.robot2018.robot.commands.OIDrive;
 
 import javax.measure.Measure;
@@ -35,7 +36,7 @@ public class RobotMap {
   public static final Ultrasonic frontUltrasonic = new Ultrasonic(0, 1); // TODO check these ports
   
   // SmartDash Settings
-  public static SendableChooser<Integer> startPosition = new SendableChooser<>();
+  public static SendableChooser<AutonomousCommand.MatchStartPosition> startPosition = new SendableChooser<>();
   public static SendableChooser<OIDrive.OIDriveMode> driveMode = new SendableChooser<>();
   
   // Measurements

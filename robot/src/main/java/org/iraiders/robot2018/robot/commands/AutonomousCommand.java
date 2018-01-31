@@ -1,40 +1,37 @@
 package org.iraiders.robot2018.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import jaci.pathfinder.modifiers.TankModifier;
 import openrio.powerup.MatchData;
 import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.Trajectories;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 
-public class AutonomousCommand extends Command {
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+
+public class AutonomousCommand extends CommandGroup {
   private DriveSubsystem driveSubsystem;
   
   public AutonomousCommand(DriveSubsystem driveSubsystem) {
     requires(driveSubsystem);
     this.driveSubsystem = driveSubsystem;
-    doAuto((int) SmartDashboard.getNumber("robotPosition", 0), MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR));
   }
   
   @Override
   protected void initialize() {
     RobotMap.imu.reset();
     if (!RobotMap.USE_MINIMUM_VIABLE_AUTO) {
-      doAuto(3, MatchData.OwnedSide.RIGHT);
+      doAuto(RobotMap.startPosition.getSelected(), MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR));
     }
   }
   
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
-  
-  public void doAuto(int robotLocation, MatchData.OwnedSide side) {
-    if (robotLocation == 0) robotLocation = DriverStation.getInstance().getLocation();
+  public void doAuto(MatchStartPosition robotLocation, MatchData.OwnedSide side) {
+    if (robotLocation == MatchStartPosition.GUESS) robotLocation = MatchStartPosition.get(DriverStation.getInstance().getLocation());
     switch (robotLocation) {
-      case 1:
+      case LEFT:
         // Left Starting Point
         if (side == MatchData.OwnedSide.LEFT) {
           // Scale on same side as us
@@ -43,7 +40,7 @@ public class AutonomousCommand extends Command {
         }
         break;
       
-      case 2:
+      case MIDDLE:
         // Middle Starting Point
         if (side == MatchData.OwnedSide.LEFT) {
           // Scale on same side as us
@@ -52,17 +49,40 @@ public class AutonomousCommand extends Command {
         }
         break;
       
-      case 3:
+      case RIGHT:
         // Right Starting Point
         if (side == MatchData.OwnedSide.RIGHT) {
           // Scale on same side as us
           //driveSubsystem.getFrontLeftTalon().selectProfileSlot(0,0);
           TankModifier trajectory = Trajectories.getTankModifierOfPoints(Trajectories.rightStartToSwitchSameSide);
-          new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), driveSubsystem.getFrontRightTalon(), trajectory).start();
+          addParallel(new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), driveSubsystem.getFrontRightTalon(), trajectory));
         } else {
           // Scale on other side
         }
         break;
+    }
+  }
+  
+  public enum MatchStartPosition {
+    // This is messy code from https://stackoverflow.com/a/11550162/1709894, improve it someday
+    GUESS(0), LEFT(1), MIDDLE(2), RIGHT(3);
+  
+    private static final Map<Integer,MatchStartPosition> lookup = new HashMap<>();
+  
+    static {
+      for(MatchStartPosition w : EnumSet.allOf(MatchStartPosition.class)) lookup.put(w.getCode(), w);
+    }
+  
+    private int code;
+  
+    MatchStartPosition(int code) {
+      this.code = code;
+    }
+  
+    public int getCode() { return code; }
+  
+    public static MatchStartPosition get(int code) {
+      return lookup.get(code);
     }
   }
 }

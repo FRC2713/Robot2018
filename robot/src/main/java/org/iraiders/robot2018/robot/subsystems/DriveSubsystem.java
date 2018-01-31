@@ -20,7 +20,7 @@ public class DriveSubsystem extends Subsystem {
   private WPI_TalonSRX backRightTalon = new WPI_TalonSRX(RobotMap.backRightTalonPort);
   
   public DriveSubsystem() {
-    setTalonFollowers();
+    setupTalons();
   }
   
   @Override
@@ -38,7 +38,7 @@ public class DriveSubsystem extends Subsystem {
     upFast.whenPressed(a);
   }
   
-  private void setTalonFollowers() {
+  private void setupTalons() {
     backLeftTalon.set(ControlMode.Follower, RobotMap.frontLeftTalonPort);
     backRightTalon.set(ControlMode.Follower, RobotMap.frontRightTalonPort);
     
