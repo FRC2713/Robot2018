@@ -9,6 +9,7 @@ import lombok.Getter;
 import org.iraiders.robot2018.robot.OI;
 import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.commands.AutonomousCommand;
+import org.iraiders.robot2018.robot.commands.EncoderReporter;
 import org.iraiders.robot2018.robot.commands.OIDrive;
 
 public class DriveSubsystem extends Subsystem {
@@ -25,7 +26,7 @@ public class DriveSubsystem extends Subsystem {
   
   @Override
   protected void initDefaultCommand() {
-  
+    setDefaultCommand(new EncoderReporter(frontLeftTalon, frontRightTalon));
   }
   
   public void startTeleop() {
