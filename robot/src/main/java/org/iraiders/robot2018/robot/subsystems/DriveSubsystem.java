@@ -22,16 +22,18 @@ public class DriveSubsystem extends Subsystem {
   
   public DriveSubsystem() {
     setupTalons();
+    new EncoderReporter(frontLeftTalon, frontRightTalon);
   }
   
   @Override
   protected void initDefaultCommand() {
-    setDefaultCommand(new EncoderReporter(frontLeftTalon, frontRightTalon));
+  
   }
   
   public void startTeleop() {
     roboDrive = new DifferentialDrive(frontLeftTalon, frontRightTalon);
     new OIDrive(this).start();
+    //new RumbleListener().start();
     
     // For debugging pathfinding in auto
     JoystickButton upFast = new JoystickButton(OI.getXBoxController(), 4);

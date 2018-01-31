@@ -13,7 +13,7 @@ public class EncoderReporter extends Command {
   private WPI_TalonSRX talons[];
   
   public EncoderReporter(WPI_TalonSRX... talons) {
-    System.arraycopy(talons, 0, this.talons, 0, talons.length);
+    this.talons = talons;
   }
   
   @Override
