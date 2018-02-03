@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import lombok.Getter;
 import org.iraiders.robot2018.robot.OI;
 import org.iraiders.robot2018.robot.RobotMap;
-import org.iraiders.robot2018.robot.commands.AutonomousCommand;
 import org.iraiders.robot2018.robot.commands.OIDrive;
-import org.iraiders.robot2018.robot.commands.RumbleListener;
+import org.iraiders.robot2018.robot.commands.auto.AutonomousCommand;
+import org.iraiders.robot2018.robot.commands.feedback.RumbleListener;
 
 public class DriveSubsystem extends Subsystem {
   public DifferentialDrive roboDrive;

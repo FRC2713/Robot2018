@@ -1,4 +1,4 @@
-package org.iraiders.robot2018.robot.commands;
+package org.iraiders.robot2018.robot.commands.feedback;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;

@@ -1,4 +1,4 @@
-package org.iraiders.robot2018.robot.commands;
+package org.iraiders.robot2018.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;

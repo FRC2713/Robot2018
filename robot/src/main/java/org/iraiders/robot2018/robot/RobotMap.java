@@ -3,8 +3,8 @@ package org.iraiders.robot2018.robot;
 import com.analog.adis16448.frc.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import org.iraiders.robot2018.robot.commands.AutonomousCommand;
 import org.iraiders.robot2018.robot.commands.OIDrive;
+import org.iraiders.robot2018.robot.commands.auto.AutonomousCommand;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Length;

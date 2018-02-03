@@ -1,4 +1,4 @@
-package org.iraiders.robot2018.robot.commands;
+package org.iraiders.robot2018.robot.commands.feedback;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
