@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lombok.Getter;
 import org.iraiders.robot2018.robot.commands.AutonomousCommand;
+import org.iraiders.robot2018.robot.commands.EncoderReporter;
 import org.iraiders.robot2018.robot.commands.OIDrive;
 import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
@@ -105,7 +106,9 @@ public class Robot extends IterativeRobot {
   @Override
   public void teleopInit() {
 	  if (autonomousCommand != null) autonomousCommand.cancel();
-	
+  
+    new EncoderReporter(driveSubsystem.getFrontLeftTalon(), driveSubsystem.getFrontRightTalon()).start(); // This is here so it doesn't get canceled above
+    
 	  driveSubsystem.startTeleop();
 	  armSubsystem.startTeleop();
   }

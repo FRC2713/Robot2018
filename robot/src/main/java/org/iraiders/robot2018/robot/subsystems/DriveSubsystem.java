@@ -9,8 +9,8 @@ import lombok.Getter;
 import org.iraiders.robot2018.robot.OI;
 import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.commands.AutonomousCommand;
-import org.iraiders.robot2018.robot.commands.EncoderReporter;
 import org.iraiders.robot2018.robot.commands.OIDrive;
+import org.iraiders.robot2018.robot.commands.RumbleListener;
 
 public class DriveSubsystem extends Subsystem {
   public DifferentialDrive roboDrive;
@@ -22,7 +22,6 @@ public class DriveSubsystem extends Subsystem {
   
   public DriveSubsystem() {
     setupTalons();
-    new EncoderReporter(frontLeftTalon, frontRightTalon);
   }
   
   @Override
@@ -33,7 +32,7 @@ public class DriveSubsystem extends Subsystem {
   public void startTeleop() {
     roboDrive = new DifferentialDrive(frontLeftTalon, frontRightTalon);
     new OIDrive(this).start();
-    //new RumbleListener().start();
+    new RumbleListener().start();
     
     // For debugging pathfinding in auto
     JoystickButton upFast = new JoystickButton(OI.getXBoxController(), 4);

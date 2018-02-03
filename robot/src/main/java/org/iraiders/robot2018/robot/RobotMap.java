@@ -24,6 +24,7 @@ public class RobotMap {
   public static final int backRightTalonPort = 4;
   public static final int lowerJointTalonPort = 5;
   public static final int upperJointTalonPort = 6;
+  public static final int winchTalonPort = 8;
 	
   // Controllers
   public static final int BACKUP_XBOX_PORT = 0;
@@ -33,7 +34,7 @@ public class RobotMap {
   
   // Sensors
   public static final ADIS16448_IMU imu = new ADIS16448_IMU();
-  public static final Ultrasonic frontUltrasonic = new Ultrasonic(0, 1); // TODO check these ports
+  public static final Ultrasonic frontUltrasonic = new Ultrasonic(9, 8);
   
   // SmartDash Settings
   public static SendableChooser<AutonomousCommand.MatchStartPosition> startPosition = new SendableChooser<>();
@@ -41,7 +42,7 @@ public class RobotMap {
   
   // Measurements
   public static final Measure<Double, Length> WHEEL_DIAMETER = Measure.valueOf(6d, NonSI.INCH);
-  public static final int TICKS_PER_REVOLUTION = 1440; // TODO Ticks per Revolution
+  public static final int TICKS_PER_REVOLUTION = 360;
   
   // Misc
   /**
