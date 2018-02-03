@@ -28,7 +28,7 @@ public class AutonomousCommand extends CommandGroup {
     }
   }
   
-  public void doAuto(MatchStartPosition robotLocation, MatchData.OwnedSide side) {
+  private void doAuto(MatchStartPosition robotLocation, MatchData.OwnedSide side) {
     if (robotLocation == MatchStartPosition.GUESS) robotLocation = MatchStartPosition.get(DriverStation.getInstance().getLocation());
     switch (robotLocation) {
       case LEFT:

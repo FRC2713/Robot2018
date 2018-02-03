@@ -14,7 +14,7 @@ import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 public class Robot extends IterativeRobot {
   @Getter private static Robot robotInstance;
   @Getter private static OI oi;
-  public static Preferences prefs;
+  public static Preferences prefs = Preferences.getInstance();
   
   private static DriveSubsystem driveSubsystem;
   private static ArmSubsystem armSubsystem;

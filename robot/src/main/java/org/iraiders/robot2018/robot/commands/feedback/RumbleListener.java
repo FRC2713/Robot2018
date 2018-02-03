@@ -27,7 +27,7 @@ public class RumbleListener extends Command {
     double ultrasonicDistance = RobotMap.frontUltrasonic.getRangeMM();
     double sonicThreshold = sonicRumbleRange.to(SI.MILLIMETER).getValue();
     SmartDashboard.putNumber("frontUltrasonicDistance", ultrasonicDistance);
-    if (ultrasonicDistance < sonicThreshold) {
+    if (ultrasonicDistance < sonicThreshold && ultrasonicDistance != 0) {
       resetToNothing = false;
       double rumbleValue = 1-(ultrasonicDistance / sonicThreshold); // https://www.desmos.com/calculator/jbbvxxk1xb
       OI.rumbleController(OI.getXBoxController(), rumbleValue, 0, rumbleType);
