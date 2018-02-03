@@ -1,12 +1,13 @@
 package org.iraiders.robot2018.robot.commands.auto;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
+import org.iraiders.robot2018.robot.Robot;
 import org.iraiders.robot2018.robot.RobotMap;
 
 import javax.measure.unit.SI;
@@ -16,6 +17,9 @@ public class MotionProfileFollowCommand extends Command {
   private final WPI_TalonSRX rightTalon;
   private final EncoderFollower left;
   private final EncoderFollower right;
+  
+  private final int maxFollowTime = Robot.prefs.getInt("motionProfileMaxFollowTime", 0);
+  private double startTime;
   
   public MotionProfileFollowCommand(WPI_TalonSRX leftTalon, WPI_TalonSRX rightTalon, TankModifier trajectory) {
     this.leftTalon = leftTalon;
@@ -28,6 +32,8 @@ public class MotionProfileFollowCommand extends Command {
   protected void initialize() {
     prepTalon(leftTalon, left);
     prepTalon(rightTalon, right);
+    
+    startTime = Timer.getFPGATimestamp();
   }
   
   @Override
@@ -51,14 +57,21 @@ public class MotionProfileFollowCommand extends Command {
     double turn = 0.8 * (-1.0/80.0) * angleDifference;
     
     if (subtract) {
-      talon.set(ControlMode.PercentOutput, speed - turn);
+      talon.set(speed - turn);
     } else {
-      talon.set(ControlMode.PercentOutput, speed + turn);
+      talon.set(speed + turn);
     }
   }
   
   @Override
+  protected void end() {
+    leftTalon.set(0);
+    rightTalon.set(0);
+  }
+  
+  @Override
   protected boolean isFinished() {
-    return left.isFinished() && right.isFinished();
+    return (left.isFinished() && right.isFinished()) ||
+      (maxFollowTime != 0 && (Timer.getFPGATimestamp() - startTime) >= maxFollowTime);
   }
 }
