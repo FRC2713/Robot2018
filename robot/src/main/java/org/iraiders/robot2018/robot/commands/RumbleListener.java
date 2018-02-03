@@ -12,7 +12,7 @@ import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 
 public class RumbleListener extends Command {
-  private static final Measure<Double, Length> sonicRumbleRange = Measure.valueOf(2d, NonSI.FOOT);
+  private static final Measure<Double, Length> sonicRumbleRange = Measure.valueOf(1.5d, NonSI.FOOT);
   private static final GenericHID.RumbleType rumbleType = GenericHID.RumbleType.kRightRumble;
   
   private boolean resetToNothing = false;

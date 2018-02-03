@@ -45,6 +45,7 @@ public class DriveSubsystem extends Subsystem {
     backRightTalon.set(ControlMode.Follower, RobotMap.frontRightTalonPort);
     
     // Depending on motor alignment, use setInverted(true) here for each following talon
+    frontLeftTalon.setSensorPhase(true);
   }
   
   public void setDriveSpeed(double value) {
