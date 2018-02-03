@@ -1,7 +1,7 @@
 plugins {
   id "jaci.openrio.gradle.GradleRIO" version "2018.01.21" apply false
   id "jaci.gradle.EmbeddedTools" version "2017.12.23" apply false
-  id 'io.franzbecker.gradle-lombok' version '1.11'
+  id 'net.ltgt.apt' version '0.10' apply false
 }
 
 allprojects {
@@ -15,10 +15,14 @@ allprojects {
 
 subprojects {
   apply plugin: 'java'
+  apply plugin: 'net.ltgt.apt'
 
   sourceCompatibility = 1.8
 
   dependencies {
+    compileOnly 'org.projectlombok:lombok:1.16.20'
+    apt 'org.projectlombok:lombok:1.16.20'
+
     testCompile 'junit:junit:4.12'
   }
 }
@@ -27,6 +31,17 @@ idea {
   module {
     downloadJavadoc = true
     downloadSources = true
+  }
+
+  project {
+    ipr.withXml { xmlFile ->
+      // enable 'Annotation Processors'
+      xmlFile.asNode().component.find{ it.@name == 'CompilerConfiguration' }['annotationProcessing'][0].replaceNode {
+        annotationProcessing {
+          profile(default: true, name: 'Default', useClasspath: 'true', enabled: true)
+        }
+      }
+    }
   }
 }
 
