@@ -61,13 +61,14 @@ public class Robot extends IterativeRobot {
    */
   private void initDash() {
     RobotMap.startPosition.addDefault("Guess", AutonomousCommand.MatchStartPosition.GUESS);
-    RobotMap.startPosition.addObject("Right", AutonomousCommand.MatchStartPosition.RIGHT);
-    RobotMap.startPosition.addObject("Middle", AutonomousCommand.MatchStartPosition.MIDDLE);
     RobotMap.startPosition.addObject("Left", AutonomousCommand.MatchStartPosition.LEFT);
-    
-    RobotMap.driveMode.addDefault("Tank", OIDrive.OIDriveMode.TANK);
+    RobotMap.startPosition.addObject("Middle", AutonomousCommand.MatchStartPosition.MIDDLE);
+    RobotMap.startPosition.addObject("Right", AutonomousCommand.MatchStartPosition.RIGHT);
+  
+    RobotMap.driveMode.setName("Drive Subsystem", "Drive Mode");
+    RobotMap.driveMode.addDefault("Bradford", OIDrive.OIDriveMode.BRADFORD);
+    RobotMap.driveMode.addObject("Tank", OIDrive.OIDriveMode.TANK);
     RobotMap.driveMode.addObject("Arcade", OIDrive.OIDriveMode.ARCADE);
-    RobotMap.driveMode.addObject("Bradford", OIDrive.OIDriveMode.BRADFORD);
     
     SmartDashboard.putData(RobotMap.startPosition);
     SmartDashboard.putData(RobotMap.driveMode);
