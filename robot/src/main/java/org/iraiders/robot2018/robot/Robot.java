@@ -10,6 +10,7 @@ import org.iraiders.robot2018.robot.commands.auto.AutonomousCommand;
 import org.iraiders.robot2018.robot.commands.feedback.EncoderReporter;
 import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
+import org.iraiders.robot2018.robot.subsystems.WinchSubsystem;
 
 public class Robot extends IterativeRobot {
   @Getter private static Robot robotInstance;
@@ -18,6 +19,7 @@ public class Robot extends IterativeRobot {
   
   private static DriveSubsystem driveSubsystem;
   private static ArmSubsystem armSubsystem;
+  private static WinchSubsystem winchSubsystem;
   
   private AutonomousCommand autonomousCommand;
 	
@@ -40,6 +42,7 @@ public class Robot extends IterativeRobot {
   private void initSubsystems() {
     driveSubsystem = new DriveSubsystem();
     armSubsystem = new ArmSubsystem();
+    winchSubsystem = new WinchSubsystem();
     
     autonomousCommand = new AutonomousCommand(driveSubsystem);
   }
@@ -109,6 +112,7 @@ public class Robot extends IterativeRobot {
     
 	  driveSubsystem.startTeleop();
 	  armSubsystem.startTeleop();
+	  //winchSubsystem.startTeleop();
   }
  
   @Override

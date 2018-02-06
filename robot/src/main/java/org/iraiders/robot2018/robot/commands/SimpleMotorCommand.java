@@ -19,7 +19,7 @@ public class SimpleMotorCommand extends Command {
   }
   
   @Override
-  protected void initialize() {
+  protected void execute() {
     motor.set(speed);
   }
   
