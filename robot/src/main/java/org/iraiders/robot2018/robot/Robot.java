@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lombok.Getter;
 import org.iraiders.robot2018.robot.commands.OIDrive;
 import org.iraiders.robot2018.robot.commands.auto.AutonomousCommand;
-import org.iraiders.robot2018.robot.commands.feedback.EncoderReporter;
 import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 import org.iraiders.robot2018.robot.subsystems.WinchSubsystem;
@@ -60,12 +59,14 @@ public class Robot extends IterativeRobot {
    * A place to get and set values from SmartDash
    */
   private void initDash() {
+    // We need to set the name for every chooser or SmartDash won't pick it up
+    RobotMap.startPosition.setName("Auto Position");
     RobotMap.startPosition.addDefault("Guess", AutonomousCommand.MatchStartPosition.GUESS);
     RobotMap.startPosition.addObject("Left", AutonomousCommand.MatchStartPosition.LEFT);
     RobotMap.startPosition.addObject("Middle", AutonomousCommand.MatchStartPosition.MIDDLE);
     RobotMap.startPosition.addObject("Right", AutonomousCommand.MatchStartPosition.RIGHT);
   
-    RobotMap.driveMode.setName("Drive Subsystem", "Drive Mode");
+    RobotMap.driveMode.setName(DriveSubsystem.class.getSimpleName(), "Drive Mode");
     RobotMap.driveMode.addDefault("Bradford", OIDrive.OIDriveMode.BRADFORD);
     RobotMap.driveMode.addObject("Tank", OIDrive.OIDriveMode.TANK);
     RobotMap.driveMode.addObject("Arcade", OIDrive.OIDriveMode.ARCADE);
@@ -108,12 +109,10 @@ public class Robot extends IterativeRobot {
   @Override
   public void teleopInit() {
 	  if (autonomousCommand != null) autonomousCommand.cancel();
-  
-    new EncoderReporter(driveSubsystem.getFrontLeftTalon(), driveSubsystem.getFrontRightTalon()).start(); // This is here so it doesn't get canceled above
-    
+   
 	  driveSubsystem.startTeleop();
 	  armSubsystem.startTeleop();
-	  //winchSubsystem.startTeleop();
+	  winchSubsystem.startTeleop();
   }
  
   @Override

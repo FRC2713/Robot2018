@@ -10,6 +10,7 @@ import org.iraiders.robot2018.robot.OI;
 import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.commands.OIDrive;
 import org.iraiders.robot2018.robot.commands.auto.AutonomousCommand;
+import org.iraiders.robot2018.robot.commands.feedback.EncoderReporter;
 import org.iraiders.robot2018.robot.commands.feedback.RumbleListener;
 
 public class DriveSubsystem extends Subsystem {
@@ -31,6 +32,7 @@ public class DriveSubsystem extends Subsystem {
   
   public void startTeleop() {
     roboDrive = new DifferentialDrive(frontLeftTalon, frontRightTalon);
+    new EncoderReporter(frontLeftTalon, frontRightTalon).start();
     new OIDrive(this).start();
     new RumbleListener().start();
     

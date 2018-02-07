@@ -15,7 +15,7 @@ public class WinchSubsystem extends Subsystem {
   private JoystickButton upNormal = new JoystickButton(arcade, 1);
   private JoystickButton downNormal = new JoystickButton(arcade, 5);
   
-  public WinchSubsystem() {
+  public void startTeleop() {
     double normalSpeed = 1;
     upNormal.whileActive(new SimpleMotorCommand(this, winchMotor, normalSpeed));
     downNormal.whileActive(new SimpleMotorCommand(this, winchMotor, -normalSpeed));
