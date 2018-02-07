@@ -1,7 +1,5 @@
 apply plugin: 'jaci.gradle.EmbeddedTools'
 
-def MAIN_CLASS = 'org.iraiders.robot2018.coprocesor.Main'
-
 deploy {
   // See https://github.com/JacisNonsense/EmbeddedTools#spec
   targets {
@@ -9,25 +7,13 @@ deploy {
       addresses << 'raspberrypi'
       user = 'pi'
       password = 'raspberry'
-      directory = '/home/pi/mycode'
+      directory = '/home/pi/vision'
       //failOnMissing = false
     }
   }
   artifacts {
-    javaArtifact('coprocessorCode') {
-      targets << "rpi"
-      jar = 'jar'
+    fileCollectionArtifact('visionCoprocessor') {
+      files = fileTree(dir: 'src')
     }
-  }
-}
-
-dependencies {
-
-}
-
-jar {
-  from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-  manifest {
-    attributes 'Main-Class': MAIN_CLASS
   }
 }

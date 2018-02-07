@@ -1,8 +1,11 @@
+apply plugin: 'java'
 apply plugin: "jaci.openrio.gradle.GradleRIO"
 
 def TEAM = 2713
 def ROBOT_CLASS = "org.iraiders.robot2018.robot.Robot"
 def DEBUG = project.hasProperty('debugBuild')
+
+sourceCompatibility = 1.8
 
 deploy {
   targets {
@@ -19,6 +22,8 @@ deploy {
 }
 
 dependencies {
+  compileOnly 'org.projectlombok:lombok:1.16.20'
+
   compile wpilib() // All WPILib required bits
   compile ctre() // Talon SRX
   compile pathfinder() // Motion Profiling Calculation
@@ -27,7 +32,8 @@ dependencies {
   compile ('org.jscience:jscience:4.3.1') { // Unit conversion, but it does way more than we need
     exclude group: 'org.javolution', module: 'javolution'
   }
-  //compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.9.0' // CSV Parser (for saved MP trajectories)
+
+  testCompile 'junit:junit:4.12'
 }
 
 telemetry {
