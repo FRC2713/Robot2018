@@ -21,27 +21,35 @@ public class OIDrive extends Command {
   
   @Override
   protected void initialize() {
-  
+    // This is dangerous, but otherwise the bot would be jerky due to (relatively) infrequently updated outputs
+    drive.roboDrive.setSafetyEnabled(false);
   }
   
   @Override
   protected void execute() {
     float maxSpeed = Robot.prefs.getFloat("OIMaxSpeed", 1);
+    drive.roboDrive.setMaxOutput(maxSpeed);
     // Invert directions, on an XBox controller the forward direction is negative
     switch (mode) {
       case BRADFORD:
-        drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft) * maxSpeed, xbox.getX(Hand.kRight), true);
+        drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft), xbox.getX(Hand.kRight), true);
         break;
       
       case ARCADE:
-        drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft) * maxSpeed, xbox.getX(Hand.kLeft), true);
+        drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft), xbox.getX(Hand.kLeft), true);
         break;
       
       default:
       case TANK:
-        drive.roboDrive.tankDrive(-xbox.getY(Hand.kLeft) * maxSpeed, -xbox.getY(Hand.kRight) * maxSpeed, true);
+        drive.roboDrive.tankDrive(-xbox.getY(Hand.kLeft), -xbox.getY(Hand.kRight), true);
         break;
     }
+  }
+  
+  @Override
+  protected void end() {
+    drive.roboDrive.setSafetyEnabled(true);
+    drive.roboDrive.arcadeDrive(0, 0, false);
   }
   
   @Override
