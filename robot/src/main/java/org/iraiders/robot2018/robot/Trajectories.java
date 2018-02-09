@@ -19,7 +19,7 @@ public class Trajectories {
     new Waypoint(3.048, 1.524, 0),
     new Waypoint(4.2672, 2.1336, Pathfinder.d2r(90))
   };
-  public static final Waypoint[] rightStartToSwitchSameSide = new Waypoint[]{
+  public static final Waypoint[] leftStartToSwitchSameSide = new Waypoint[]{
     new Waypoint(0, 6.7056, 0),
     new Waypoint(3.048, 6.7056, 0),
     new Waypoint(4.2672, 6.096, Pathfinder.d2r(270))
