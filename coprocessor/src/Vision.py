@@ -1,13 +1,15 @@
-from socketserver import ThreadingMixIn
-from threading import Thread
-from io import BytesIO
-from PIL import Image
-import numpy as np
 import cv2
 import math
-from networktables import NetworkTables
-from http.server import BaseHTTPRequestHandler, HTTPServer
+import numpy as np
+import os
 import time
+from PIL import Image
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from io import BytesIO
+from networktables import NetworkTables
+from socketserver import ThreadingMixIn
+from threading import Thread
+
 from stream import WebcamVideoStream
 
 NetworkTables.initialize(server="roboRIO-2713-frc.local")
@@ -19,7 +21,7 @@ vs = WebcamVideoStream().start()
 final = vs.read()
 
 port = 8087
-
+displayDebugWindow = (os.name == 'win') or ("DISPLAY" in os.environ)
 
 class CamHandler(BaseHTTPRequestHandler):
   def do_GET(self):
@@ -56,7 +58,7 @@ class CamHandler(BaseHTTPRequestHandler):
       self.send_header('Content-type', 'text/html')
       self.end_headers()
       self.wfile.write('<html><head></head><body>'.encode())
-      self.wfile.write(('<img src="http://127.0.0.1:' + str(port) + '/cam.mjpg"/>').encode())
+      self.wfile.write(('<img src="http:// ' + self.client_address[0] + ':' + str(port) + '/cam.mjpg"/>').encode())
       self.wfile.write('</body></html>'.encode())
       return
 
@@ -133,7 +135,7 @@ while (1):
   gray = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)
   # gray = cv2.GaussianBlur(gray, (5, 5), 3)
   edged = cv2.Canny(gray, 35, 135)
-  cv2.imshow("contours", edged)
+  if displayDebugWindow: cv2.imshow("contours", edged)
 
   _, cnts, _ = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
   rectborders = [cv2.minAreaRect(c) for c in cnts]
@@ -308,7 +310,7 @@ h |  *  |
     cv2.putText(frame, "%.2fft" % (distance),
                 (frame.shape[1] - 200, frame.shape[0] - 100), cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 0), 3)
   final = frame
-  cv2.imshow("image", frame)  # cv2.resize(image, (960, 540))
+  if displayDebugWindow: cv2.imshow("image", frame)  # cv2.resize(image, (960, 540))
   k = cv2.waitKey(1) & 0xFF
   if k == ord('q'):
     break
