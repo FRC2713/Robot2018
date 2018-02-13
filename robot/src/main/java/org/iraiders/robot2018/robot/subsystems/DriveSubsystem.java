@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import lombok.Getter;
 import org.iraiders.robot2018.robot.OI;
+import org.iraiders.robot2018.robot.Robot;
 import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.commands.OIDrive;
 import org.iraiders.robot2018.robot.commands.auto.AutonomousCommand;
@@ -38,7 +39,7 @@ public class DriveSubsystem extends Subsystem {
     
     // For debugging pathfinding in auto
     JoystickButton upFast = new JoystickButton(OI.getXBoxController(), 4);
-    AutonomousCommand a = new AutonomousCommand(this);
+    AutonomousCommand a = new AutonomousCommand(this, Robot.getArmSubsystem(), Robot.getGrabberSubsystem());
     upFast.whenPressed(a);
   }
   

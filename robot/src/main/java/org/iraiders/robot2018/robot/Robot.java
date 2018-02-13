@@ -17,10 +17,10 @@ public class Robot extends IterativeRobot {
   @Getter private static OI oi;
   public static Preferences prefs = Preferences.getInstance();
   
-  private static DriveSubsystem driveSubsystem;
-  private static ArmSubsystem armSubsystem;
-  private static WinchSubsystem winchSubsystem;
-  private static GrabberSubsystem grabberSubsystem;
+  @Getter private static DriveSubsystem driveSubsystem;
+  @Getter private static ArmSubsystem armSubsystem;
+  @Getter private static WinchSubsystem winchSubsystem;
+  @Getter private static GrabberSubsystem grabberSubsystem;
   
   private AutonomousCommand autonomousCommand;
 	
@@ -46,7 +46,7 @@ public class Robot extends IterativeRobot {
     winchSubsystem = new WinchSubsystem();
     grabberSubsystem = new GrabberSubsystem();
     
-    autonomousCommand = new AutonomousCommand(driveSubsystem);
+    autonomousCommand = new AutonomousCommand(driveSubsystem, armSubsystem, grabberSubsystem);
   }
   
   /**

@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class TwoLimitSwitchCommand extends Command {
+class TwoLimitSwitchCommand extends Command {
   private final Subsystem subsystem;
   private final WPI_TalonSRX talon;
   private final DigitalInput limitSwitch;
   private final boolean reversed;
   
-  private double maxSpeed = .8;
+  private double maxSpeed = .5;
   
   @Override
   protected void initialize() {

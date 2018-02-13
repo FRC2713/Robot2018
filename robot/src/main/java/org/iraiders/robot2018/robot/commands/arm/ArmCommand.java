@@ -13,10 +13,10 @@ public class ArmCommand extends CommandGroup {
     requires(armSubsystem);
     this.position = position;
     this.armSubsystem = armSubsystem;
+    processWantedPosition();
   }
   
-  @Override
-  protected void initialize() {
+  private void processWantedPosition() {
     int upperPosition;
     int lowerPosition;
     switch (position){
