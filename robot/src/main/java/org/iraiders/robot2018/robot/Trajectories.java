@@ -37,6 +37,13 @@ public class Trajectories {
     new Waypoint(7.62, 6.7056, 0),
     new Waypoint(8.2296, 6.096, Pathfinder.d2r(270))
   };
+
+  public static final Waypoint[] leftStartToScaleRightSide = new Waypoint[]{
+    new Waypoint(0, 6.7056, 0),
+    new Waypoint( 6.7056, 5.4864 , 0)
+    new Waypoint(6.096, 6.096 , Pathfinder.d2r(270))
+    new Waypoint(4.8768, 2.7432 , Pathfinder.d2r(180))
+  };
   // End Waypoints
 
   public static TankModifier getTankModifierOfPoints(Waypoint[] points) {
