@@ -6,18 +6,28 @@ import jaci.pathfinder.modifiers.TankModifier;
 import openrio.powerup.MatchData;
 import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.Trajectories;
+import org.iraiders.robot2018.robot.commands.arm.ArmCommand;
+import org.iraiders.robot2018.robot.commands.grabber.ControlGrabber;
+import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
+import org.iraiders.robot2018.robot.subsystems.GrabberSubsystem;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AutonomousCommand extends CommandGroup {
-  private DriveSubsystem driveSubsystem;
+  private final DriveSubsystem driveSubsystem;
+  private final ArmSubsystem armSubsystem;
+  private final GrabberSubsystem grabberSubsystem;
   
-  public AutonomousCommand(DriveSubsystem driveSubsystem) {
-    requires(driveSubsystem);
+  public AutonomousCommand(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, GrabberSubsystem grabberSubsystem){
     this.driveSubsystem = driveSubsystem;
+    this.armSubsystem = armSubsystem;
+    this.grabberSubsystem = grabberSubsystem;
+    requires(driveSubsystem);
+    requires(armSubsystem);
+    requires(grabberSubsystem);
   }
   
   @Override
@@ -28,13 +38,16 @@ public class AutonomousCommand extends CommandGroup {
     }
   }
   
-  private void doAuto(MatchStartPosition robotLocation, MatchData.OwnedSide side) {
+  private void doAuto(MatchStartPosition robotLocation, MatchData.OwnedSide ownedSwitchSide) {
     if (robotLocation == MatchStartPosition.GUESS) robotLocation = MatchStartPosition.get(DriverStation.getInstance().getLocation());
     switch (robotLocation) {
       case LEFT:
         // Left Starting Point
-        if (side == MatchData.OwnedSide.LEFT) {
-          // Scale on same side as us
+        if (ownedSwitchSide == MatchData.OwnedSide.LEFT) {
+          TankModifier tankModifier = Trajectories.getTankModifierOfPoints(Trajectories.leftStartToSwitchSameSide);
+          addParallel(new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), driveSubsystem.getFrontRightTalon(), tankModifier));
+          addParallel(new ArmCommand(armSubsystem, ArmSubsystem.ArmPosition.CONDENSE));
+          addSequential(new ControlGrabber(grabberSubsystem, GrabberSubsystem.GrabberPosition.OPEN));
         } else {
           // Scale on other side
         }
@@ -42,7 +55,7 @@ public class AutonomousCommand extends CommandGroup {
       
       case MIDDLE:
         // Middle Starting Point
-        if (side == MatchData.OwnedSide.LEFT) {
+        if (ownedSwitchSide == MatchData.OwnedSide.LEFT) {
           // Scale on same side as us
         } else {
           // Scale on other side
@@ -51,7 +64,7 @@ public class AutonomousCommand extends CommandGroup {
       
       case RIGHT:
         // Right Starting Point
-        if (side == MatchData.OwnedSide.RIGHT) {
+        if (ownedSwitchSide == MatchData.OwnedSide.RIGHT) {
           // Scale on same side as us
           //driveSubsystem.getFrontLeftTalon().selectProfileSlot(0,0);
           TankModifier trajectory = Trajectories.getTankModifierOfPoints(Trajectories.rightStartToSwitchSameSide);

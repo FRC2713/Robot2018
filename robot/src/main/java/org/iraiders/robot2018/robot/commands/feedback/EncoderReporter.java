@@ -11,16 +11,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class EncoderReporter extends Command {
   private WPI_TalonSRX talons[];
+  private final FeedbackDevice feedbackDevice;
   
   public EncoderReporter(WPI_TalonSRX... talons) {
     this.talons = talons;
+    feedbackDevice = FeedbackDevice.QuadEncoder;
+  }
+  
+  public EncoderReporter(FeedbackDevice device, WPI_TalonSRX... talons) {
+    this.talons = talons;
+    feedbackDevice = device;
   }
   
   @Override
   protected void execute() {
     // Not sure if this is an intensive / damaging operation, look into it sometime
     for (WPI_TalonSRX talon : talons) {
-      talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+      talon.configSelectedFeedbackSensor(feedbackDevice, 0, 0);
       SmartDashboard.putNumber(talon.getDescription(), talon.getSelectedSensorPosition(0));
     }
   }

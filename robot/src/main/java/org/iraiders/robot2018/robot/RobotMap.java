@@ -22,8 +22,8 @@ public class RobotMap {
   public static final int frontRightTalonPort = 2;
   public static final int backLeftTalonPort = 3;
   public static final int backRightTalonPort = 4;
-  public static final int lowerJointTalonPort = 5;
-  public static final int upperJointTalonPort = 6;
+  public static final int lowerJointTalonPort = 5; // Shoulder
+  public static final int upperJointTalonPort = 6; // Elbow
   public static final int winchTalonPort = 8;
   public static final int grabberTalonPort = 9;
 	
@@ -33,7 +33,7 @@ public class RobotMap {
   public static final String XBOX_NAME = "Controller (XBOX 360 For Windows)";
   public static final String ARCADE_NAME = "Mayflash Arcade Stick";
   
-  // Sensors
+  // Globally useful Sensors
   public static final ADIS16448_IMU imu = new ADIS16448_IMU();
   public static final Ultrasonic frontUltrasonic = new Ultrasonic(9, 8);
   

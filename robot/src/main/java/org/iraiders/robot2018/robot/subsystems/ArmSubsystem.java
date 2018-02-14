@@ -1,5 +1,6 @@
 package org.iraiders.robot2018.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Joystick;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import org.iraiders.robot2018.robot.OI;
 import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.commands.arm.ArmCommand;
+import org.iraiders.robot2018.robot.commands.feedback.EncoderReporter;
 
 
 public class ArmSubsystem extends Subsystem {
@@ -23,6 +25,8 @@ public class ArmSubsystem extends Subsystem {
     JoystickButton condense = new JoystickButton(arcade, 8);
     JoystickButton reachBlock = new JoystickButton(arcade, 4);
     JoystickButton reachUp = new JoystickButton(arcade, 7);
+    
+    new EncoderReporter(FeedbackDevice.Analog, upperJoint, lowerJoint).start();
     
     condense.whenPressed(new ArmCommand(this, ArmPosition.CONDENSE));
     reachBlock.whenPressed(new ArmCommand(this, ArmPosition.REACH_BLOCK));

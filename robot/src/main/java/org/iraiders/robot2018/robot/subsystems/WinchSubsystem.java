@@ -17,8 +17,8 @@ public class WinchSubsystem extends Subsystem {
   
   public void startTeleop() {
     double normalSpeed = 1;
-    upNormal.whileActive(new SimpleMotorCommand(this, winchMotor, normalSpeed));
-    downNormal.whileActive(new SimpleMotorCommand(this, winchMotor, -normalSpeed));
+    upNormal.whileHeld(new SimpleMotorCommand(this, winchMotor, normalSpeed));
+    downNormal.whileHeld(new SimpleMotorCommand(this, winchMotor, -normalSpeed));
   }
   
   @Override
