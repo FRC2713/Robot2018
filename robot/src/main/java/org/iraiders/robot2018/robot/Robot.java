@@ -9,6 +9,7 @@ import org.iraiders.robot2018.robot.commands.OIDrive;
 import org.iraiders.robot2018.robot.commands.auto.AutonomousCommand;
 import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
+import org.iraiders.robot2018.robot.subsystems.GrabberSubsystem;
 import org.iraiders.robot2018.robot.subsystems.WinchSubsystem;
 
 public class Robot extends IterativeRobot {
@@ -16,9 +17,10 @@ public class Robot extends IterativeRobot {
   @Getter private static OI oi;
   public static Preferences prefs = Preferences.getInstance();
   
-  private static DriveSubsystem driveSubsystem;
-  private static ArmSubsystem armSubsystem;
-  private static WinchSubsystem winchSubsystem;
+  @Getter private static DriveSubsystem driveSubsystem;
+  @Getter private static ArmSubsystem armSubsystem;
+  @Getter private static WinchSubsystem winchSubsystem;
+  @Getter private static GrabberSubsystem grabberSubsystem;
   
   private AutonomousCommand autonomousCommand;
 	
@@ -42,8 +44,9 @@ public class Robot extends IterativeRobot {
     driveSubsystem = new DriveSubsystem();
     armSubsystem = new ArmSubsystem();
     winchSubsystem = new WinchSubsystem();
+    grabberSubsystem = new GrabberSubsystem();
     
-    autonomousCommand = new AutonomousCommand(driveSubsystem);
+    autonomousCommand = new AutonomousCommand(driveSubsystem, armSubsystem, grabberSubsystem);
   }
   
   /**
@@ -66,7 +69,7 @@ public class Robot extends IterativeRobot {
     RobotMap.startPosition.addObject("Middle", AutonomousCommand.MatchStartPosition.MIDDLE);
     RobotMap.startPosition.addObject("Right", AutonomousCommand.MatchStartPosition.RIGHT);
   
-    RobotMap.driveMode.setName(DriveSubsystem.class.getSimpleName(), "Drive Mode");
+    RobotMap.driveMode.setName("Drive Subsystem", "Drive Mode");
     RobotMap.driveMode.addDefault("Bradford", OIDrive.OIDriveMode.BRADFORD);
     RobotMap.driveMode.addObject("Tank", OIDrive.OIDriveMode.TANK);
     RobotMap.driveMode.addObject("Arcade", OIDrive.OIDriveMode.ARCADE);
@@ -113,6 +116,7 @@ public class Robot extends IterativeRobot {
 	  driveSubsystem.startTeleop();
 	  armSubsystem.startTeleop();
 	  winchSubsystem.startTeleop();
+	  grabberSubsystem.startTeleop();
   }
  
   @Override

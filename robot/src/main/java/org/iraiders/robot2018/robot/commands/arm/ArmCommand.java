@@ -13,10 +13,10 @@ public class ArmCommand extends CommandGroup {
     requires(armSubsystem);
     this.position = position;
     this.armSubsystem = armSubsystem;
+    processWantedPosition();
   }
   
-  @Override
-  protected void initialize() {
+  private void processWantedPosition() {
     int upperPosition;
     int lowerPosition;
     switch (position){
@@ -37,7 +37,7 @@ public class ArmCommand extends CommandGroup {
         lowerPosition = 0;
         break;
     }
-    addParallel(new UpperJointCommand(armSubsystem, upperPosition));
-    addParallel(new LowerJointCommand(armSubsystem, lowerPosition));
+    addParallel(new JointControlCommand(armSubsystem.getUpperJoint(), upperPosition));
+    addParallel(new JointControlCommand(armSubsystem.getLowerJoint(), lowerPosition));
   }
 }
