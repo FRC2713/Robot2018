@@ -115,7 +115,6 @@ public class Robot extends IterativeRobot {
    
 	  driveSubsystem.startTeleop();
 	  armSubsystem.startTeleop();
-	  winchSubsystem.startTeleop();
 	  grabberSubsystem.startTeleop();
   }
  

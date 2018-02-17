@@ -1,7 +1,6 @@
 package org.iraiders.robot2018.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.iraiders.robot2018.robot.OI;
@@ -10,13 +9,13 @@ import org.iraiders.robot2018.robot.commands.SimpleMotorCommand;
 
 public class WinchSubsystem extends Subsystem {
   private WPI_TalonSRX winchMotor = new WPI_TalonSRX(RobotMap.winchTalonPort);
-  private Joystick arcade = OI.getArcadeController();
   
-  private JoystickButton upNormal = new JoystickButton(arcade, 1);
-  private JoystickButton downNormal = new JoystickButton(arcade, 5);
+  JoystickButton upNormal = new JoystickButton(OI.getArcadeController(), 1);
+  JoystickButton downNormal = new JoystickButton(OI.getArcadeController(), 5);
   
-  public void startTeleop() {
+  public WinchSubsystem() {
     double normalSpeed = 1;
+  
     upNormal.whileHeld(new SimpleMotorCommand(this, winchMotor, normalSpeed));
     downNormal.whileHeld(new SimpleMotorCommand(this, winchMotor, -normalSpeed));
   }

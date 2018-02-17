@@ -29,15 +29,13 @@ public class ArmCommand extends CommandGroup {
         lowerPosition = 45;
         break;
       case REACH_UP:
-        upperPosition = 30;
-        lowerPosition = 0;
-        break;
-      default:
         upperPosition = 0;
         lowerPosition = 0;
         break;
+      default:
+        return;
     }
-    addParallel(new JointControlCommand(armSubsystem.getUpperJoint(), upperPosition));
-    addParallel(new JointControlCommand(armSubsystem.getLowerJoint(), lowerPosition));
+    addParallel(new UpperJoint(armSubsystem.getUpperJoint(), upperPosition));
+    addParallel(new LowerJoint(armSubsystem.getLowerJoint(), lowerPosition));
   }
 }

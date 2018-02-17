@@ -35,12 +35,12 @@ public class DriveSubsystem extends Subsystem {
     roboDrive = new DifferentialDrive(frontLeftTalon, frontRightTalon);
     new EncoderReporter(frontLeftTalon, frontRightTalon).start();
     new OIDrive(this).start();
-    new RumbleListener().start();
+    if (Robot.prefs.getBoolean("EnableSonicRumble", true)) new RumbleListener().start();
     
     // For debugging pathfinding in auto
-    JoystickButton upFast = new JoystickButton(OI.getXBoxController(), 4);
+    JoystickButton testPathfinding = new JoystickButton(OI.getXBoxController(), 5); // LB
     AutonomousCommand a = new AutonomousCommand(this, Robot.getArmSubsystem(), Robot.getGrabberSubsystem());
-    upFast.whenPressed(a);
+    testPathfinding.whenPressed(a);
   }
   
   private void setupTalons() {

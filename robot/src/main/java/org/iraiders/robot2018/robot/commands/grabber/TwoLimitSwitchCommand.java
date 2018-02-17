@@ -13,17 +13,11 @@ class TwoLimitSwitchCommand extends Command {
   private final DigitalInput limitSwitch;
   private final boolean reversed;
   
-  private double maxSpeed = .5;
-  
-  @Override
-  protected void initialize() {
-    requires(subsystem);
-    if (reversed) maxSpeed = -maxSpeed;
-  }
+  private double maxSpeed = .8;
   
   @Override
   protected void execute() {
-    talon.set(maxSpeed);
+    talon.set(maxSpeed * (reversed ? -1 : 1));
   }
   
   @Override
@@ -33,6 +27,6 @@ class TwoLimitSwitchCommand extends Command {
   
   @Override
   protected boolean isFinished() {
-    return limitSwitch.get();
+    return false;
   }
 }

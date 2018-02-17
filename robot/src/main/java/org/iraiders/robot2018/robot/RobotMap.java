@@ -17,6 +17,8 @@ import javax.measure.unit.NonSI;
  * floating around.
  */
 public class RobotMap {
+  public static final boolean DEBUG = true;
+  
   // Motors
   public static final int frontLeftTalonPort = 1;
   public static final int frontRightTalonPort = 2;
