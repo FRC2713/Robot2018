@@ -46,7 +46,7 @@ public class AutonomousCommand extends CommandGroup {
         if (ownedSwitchSide == MatchData.OwnedSide.LEFT) {
           TankModifier tankModifier = Trajectories.getTankModifierOfPoints(Trajectories.leftStartToSwitchSameSide);
           addParallel(new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), driveSubsystem.getFrontRightTalon(), tankModifier));
-          addParallel(new ArmCommand(armSubsystem, ArmSubsystem.ArmPosition.CONDENSE));
+          addParallel(new ArmCommand(armSubsystem, ArmSubsystem.ArmPosition.SWITCH_DELIVER));
           addSequential(new ControlGrabber(grabberSubsystem, GrabberSubsystem.GrabberPosition.OPEN));
         } else {
           // Scale on other side

@@ -12,9 +12,9 @@ abstract class JointControlCommand extends PIDCommand {
   private final float maxSpeed = Robot.prefs.getFloat("JointMaxSpeed", 0.1f);
   
   JointControlCommand(WPI_TalonSRX jointMotor, int desiredDegrees){
-    super(0.025, 0, 0); //TODO: Tune PID
+    super(.25, 0, 0); //TODO: Tune PID
     this.motor = jointMotor;
-    this.setDeg = this.degreesToPotUnits(desiredDegrees);
+    this.setDeg = desiredDegrees;
   }
   
   @Override
@@ -63,13 +63,13 @@ class UpperJoint extends JointControlCommand {
     degrees = (sensorUnits - 60)/(2+(2/3))
     sensorUnits = degrees * (2 + (2/3)) - 60
      */
-    double sensorUnits = degrees * (2d + (2/3)) - 60;
+    double sensorUnits = degrees * (2d + (2/3)) - (-17);
     return (int) sensorUnits;
   }
   
   @Override
   public int potUnitsToDegrees(int potUnits) {
-    double degrees = (potUnits - 60) * (2d + (2/3));
+    double degrees = (potUnits - (-17)) * (2d + (2/3));
     return (int) degrees;
   }
 }
@@ -89,5 +89,4 @@ class LowerJoint extends JointControlCommand {
   public int potUnitsToDegrees(int potUnits) {
     return 0; // TODO tune this
   }
-  
 }
