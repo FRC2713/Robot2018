@@ -20,6 +20,7 @@ public class ArmSubsystem extends Subsystem {
   
   public ArmSubsystem() {
     upperJoint.setInverted(true); // Positive speed is up, negative is down
+    upperJoint.setSensorPhase(true);
     initControls();
   }
   
@@ -28,12 +29,8 @@ public class ArmSubsystem extends Subsystem {
     GenericHID xbox = OI.getXBoxController();
     
     JoystickButton condense = new JoystickButton(arcade, 8);
-    JoystickButton reachBlock = new JoystickButton(arcade, 4);
-    JoystickButton reachUp = new JoystickButton(arcade, 7);
   
-    condense.whenPressed(new ArmCommand(this, ArmPosition.CONDENSE));
-    reachBlock.whenPressed(new ArmCommand(this, ArmPosition.REACH_BLOCK));
-    reachUp.whenPressed(new ArmCommand(this, ArmPosition.REACH_UP));
+    condense.whenPressed(new ArmCommand(this, ArmPosition.SCALE_DELIVER_LOW));
   
     if (RobotMap.DEBUG) {
       double maxSpeed = .8;
@@ -62,6 +59,9 @@ public class ArmSubsystem extends Subsystem {
   }
   
   public enum ArmPosition {
-    CONDENSE, REACH_BLOCK, REACH_UP
+    STARTING_CONFIG,
+    BOX_PICKUP, BOX_PROTECT,
+    SWITCH_DELIVER, SCALE_DELIVER_HIGH, SCALE_DELIVER_MID, SCALE_DELIVER_LOW,
+    CLIMB_ATTACH, CLIMB_DETACH
   }
 }

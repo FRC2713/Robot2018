@@ -17,25 +17,48 @@ public class ArmCommand extends CommandGroup {
   }
   
   private void processWantedPosition() {
-    int upperPosition;
-    int lowerPosition;
+    int shoulderPosition;
+    int elbowPosition;
     switch (position){
-      case CONDENSE:
-        upperPosition = 90;
-        lowerPosition = 0;
+      case STARTING_CONFIG:
+        shoulderPosition = 427;
+        elbowPosition = 155;
         break;
-      case REACH_BLOCK:
-        upperPosition = 45;
-        lowerPosition = 45;
+        
+      case BOX_PICKUP:
+        shoulderPosition = 785;
+        elbowPosition = 70;
         break;
-      case REACH_UP:
-        upperPosition = 0;
-        lowerPosition = 0;
+        
+      case BOX_PROTECT:
+        shoulderPosition = 423;
+        elbowPosition = 110;
         break;
+        
+      case SWITCH_DELIVER:
+        shoulderPosition = 590;
+        elbowPosition = 45;
+        break;
+        
+      case SCALE_DELIVER_LOW:
+        shoulderPosition = 505;
+        elbowPosition = -45;
+        break;
+        
+      case SCALE_DELIVER_MID:
+        shoulderPosition = 550;
+        elbowPosition = -123;
+        break;
+        
+      case SCALE_DELIVER_HIGH:
+        shoulderPosition = 659;
+        elbowPosition = -236;
+        break;
+        
       default:
         return;
     }
-    addParallel(new UpperJoint(armSubsystem.getUpperJoint(), upperPosition));
-    addParallel(new LowerJoint(armSubsystem.getLowerJoint(), lowerPosition));
+    addParallel(new UpperJoint(armSubsystem.getUpperJoint(), shoulderPosition));
+    addParallel(new LowerJoint(armSubsystem.getLowerJoint(), elbowPosition));
   }
 }
