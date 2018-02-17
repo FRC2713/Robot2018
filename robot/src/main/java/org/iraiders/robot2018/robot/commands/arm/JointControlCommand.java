@@ -14,14 +14,16 @@ abstract class JointControlCommand extends PIDCommand {
   JointControlCommand(WPI_TalonSRX jointMotor, int desiredDegrees){
     super(0.025, 0, 0); //TODO: Tune PID
     this.motor = jointMotor;
-    this.setDeg = this.degreesToPotUnits(desiredDegrees);
+    this.setDeg = desiredDegrees;
+    
+    this.setSetpoint(setDeg);
+    this.getPIDController().setContinuous(false);
+    this.getPIDController().setPercentTolerance(5); // TODO tune
   }
   
   @Override
   protected void initialize() {
     motor.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 0);
-    this.setSetpoint(setDeg);
-    this.getPIDController().setPercentTolerance(5); // TODO tune
   }
   
   @Override
@@ -75,7 +77,10 @@ class UpperJoint extends JointControlCommand {
 }
 
 class LowerJoint extends JointControlCommand {
-  
+  private final double L1 = 5.0;
+  private final double L2 = 19.0;
+  private final double L3 = 17.5;
+  private final double d = 15.0;
   LowerJoint(WPI_TalonSRX jointMotor, int angle) {
     super(jointMotor, angle);
   }
@@ -87,7 +92,12 @@ class LowerJoint extends JointControlCommand {
   
   @Override
   public int potUnitsToDegrees(int potUnits) {
-    return 0; // TODO tune this
+    double theta2 = Math.PI*(potUnits - 279)/(2.81111 * 180);
+    double c = Math.sqrt(Math.pow(L1,2) + Math.pow(d,2) + 2*L1*d*Math.cos(theta2));
+    double theta3 = Math.acos((Math.pow(L2,2) - Math.pow(L3,2))/(-2*L3*c));
+    double theta4 = Math.asin(L1*Math.sin(theta2)/c);
+    int degrees = (int)(180 * (theta3 + theta4) / Math.PI);
+    return degrees;
   }
   
 }

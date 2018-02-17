@@ -5,17 +5,11 @@ from PIL import Image
 import numpy as np
 import cv2
 import math
-import numpy as np
-import os
-import time
-from PIL import Image
-from http.server import BaseHTTPRequestHandler, HTTPServer
-from io import BytesIO
 from networktables import NetworkTables
-from socketserver import ThreadingMixIn
-from threading import Thread
-
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import time
 from stream import WebcamVideoStream
+import os
 
 NetworkTables.initialize(server="roboRIO-2713-frc.local")
 vt = NetworkTables.getTable("VisionProcessing")
@@ -24,9 +18,10 @@ vt.putNumber("distance", 1)
 
 vs = WebcamVideoStream().start()
 final = vs.read()
-
+print(os.name)
+displayDebugWindow = (os.name == 'nt') or ("DISPLAY" in os.environ)
 port = 8087
-displayDebugWindow = (os.name == 'win') or ("DISPLAY" in os.environ)
+
 
 class CamHandler(BaseHTTPRequestHandler):
   def do_GET(self):
@@ -63,7 +58,8 @@ class CamHandler(BaseHTTPRequestHandler):
       self.send_header('Content-type', 'text/html')
       self.end_headers()
       self.wfile.write('<html><head></head><body>'.encode())
-      self.wfile.write(('<img src="http:// ' + self.client_address[0] + ':' + str(port) + '/cam.mjpg"/>').encode())
+      self.wfile.write(
+        ('<img src="http:// ' + self.client_address[0] + ':' + str(port) + '/cam.mjpg"/>').encode())
       self.wfile.write('</body></html>'.encode())
       return
 
@@ -84,10 +80,20 @@ print("mjpeg server started on port " + str(port))
 
 r = 0
 g = 0
+b = 231
+
+rh = 234
+gh = 139
+bh = 255
+
+"""
+r = 0
+g = 0
 b = 241
 rh = 203
-gh = 51
+gh = 60
 bh = 255
+"""
 
 lower_c = np.array([r, g, b])
 upper_c = np.array([rh, gh, bh])
@@ -103,13 +109,13 @@ def haveSameCoordinates(rect1, rect2):
 def isCorrectRatio(rect):
   if (rect[1][0] > 6 and rect[1][1] > 6):
     correct_ratio = 15.3 / 2.0
-    err = 1.5
+    err = 5
     width = rect[1][0]
     height = rect[1][1]
     ratio = round(height / width, 2)
     if ratio < 1:
       ratio = 1 / ratio
-    if (ratio > (correct_ratio - err) and ratio < (correct_ratio + err / 2)):
+    if (ratio > (correct_ratio - 1) and ratio < (correct_ratio + err)):
       return True
 
   return False
@@ -131,9 +137,16 @@ def distance_to_camera(pixHeight):
   global KNOWN_HEIGHT, focalHeight
   return (KNOWN_HEIGHT * focalHeight) / pixHeight
 
+def drawBox(frame, rect, color=(0,0,255)):
+  box = cv2.boxPoints(rect)
+  box = np.array(box).reshape((-1, 1, 2)).astype(np.int32)
+  cv2.drawContours(frame, [box], -1, color, 1)
+
+start_t = time.time()
 
 if __name__ == '__main__':
   while (1):
+
     frame = vs.read()
     # ---- FILTER OUT THINGS WE DON'T WANT ----
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -142,7 +155,8 @@ if __name__ == '__main__':
     gray = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)
     # gray = cv2.GaussianBlur(gray, (5, 5), 3)
     edged = cv2.Canny(gray, 35, 135)
-    if displayDebugWindow: cv2.imshow("contours", edged)
+    if displayDebugWindow:
+      cv2.imshow("contours", edged)
 
     _, cnts, _ = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     rectborders = [cv2.minAreaRect(c) for c in cnts]
@@ -156,7 +170,8 @@ if __name__ == '__main__':
       rnd_rect = ((round(rect[0][0], n), round(rect[0][1], n)), (round(rect[1][0], n), round(rect[1][1], n)),
                   round(rect[2], n))
       if (isCorrectRatio(rect)):
-        print(rnd_rect)
+        drawBox(frame, rect)
+
       for r2 in rounded:
         if rnd_rect == r2:
           rectborders.remove(rect)
@@ -166,9 +181,9 @@ if __name__ == '__main__':
     # ---- GET PAIRS OF SIMILAR CONTOURS THAT MAY BE TARGET ----
     for r in rectborders:
       # sim_* resembles range of difference between rectangles that is deemed "acceptable" for them to be a pair
-      sim_ratio = 0.5
-      sim_angle = 2
-      sim_area = 0.2
+      sim_ratio = 3
+      sim_angle = 4
+      sim_area = 1
       if isCorrectRatio(r):
         ratio_r = round(r[1][1] / r[1][0], 2)
         width = r[1][0]
@@ -190,13 +205,12 @@ if __name__ == '__main__':
             x_r2 = r2[0][0]
             y_r2 = r2[0][1]
             distance = math.sqrt((y_r2 - y_r) ** 2 + (x_r2 - x_r) ** 2)
-            print(distance)
 
-            if distance > 2 * width:
-              if (ratio_r2 < ratio_r + sim_ratio and ratio_r2 > ratio_r - sim_ratio):
-                if (angle_r2 < angle_r + sim_angle and angle_r2 > angle_r - sim_angle):
-                  if (abs(area_r / area_r2 - 1) < sim_area):
-                    pairs.append([r, r2])
+            if distance > 2 * width and distance < 5 * width:
+              #if (ratio_r2 < ratio_r + sim_ratio and ratio_r2 > ratio_r - 1):
+              if (angle_r2 < angle_r + sim_angle and angle_r2 > angle_r - sim_angle):
+                if (abs(area_r / area_r2 - 1) < sim_area):
+                  pairs.append([r, r2])
 
     # print(pairs)
 
@@ -227,6 +241,7 @@ if __name__ == '__main__':
     min_y = 1080
     max_y = 0
     distances = []
+    lmost = -1
     if len(pairs) > 0:
       pair = pairs[0]
       for rect in pair:
@@ -249,6 +264,7 @@ if __name__ == '__main__':
 
         if x - width / 2 < min_x:
           min_x = int(x - width / 2)
+          lmost += 1
         if x + width / 2 > max_x:
           max_x = int(x + width / 2)
         if y - height / 2 < min_y:
@@ -270,12 +286,11 @@ if __name__ == '__main__':
         distances.append(inches)
 
         cv2.circle(frame, (int(round(x, 0)), int(round(y, 0))), 2, (0, 0, 0), 1)
-        box = cv2.boxPoints(rect)
-        box = np.array(box).reshape((-1, 1, 2)).astype(np.int32)
-
-        cv2.drawContours(frame, [box], -1, color, 1)
+        drawBox(frame, rect, color)
 
       track_window = (min_x, min_y, max_x - min_x, max_y - min_y)
+      target_window = ((min_x, min_y),(max_x - min_x, max_y - min_y), 0.0)
+      drawBox(frame, target_window, (255,100,0))
       # Tracking stuff
       """
       print(track_window)
@@ -316,24 +331,32 @@ if __name__ == '__main__':
       """
 
       # ---- FINDS AVERAGE DISTANCE OF TARGET AND PERSPECTIVE ANGLE ----
+
       if len(distances) == 2:
         diff = distances[0] - distances[1]  # this gives us the opposite for the triangle
-        if min_x == pair[0][0][0]:
+        if lmost == 0:
           diff *= -1
-
         distance = round((distances[0] + distances[1]) / 24, 1)
+        cv2.putText(frame, "%.2fft" % (distance), (frame.shape[1] - 200, frame.shape[0] - 100),
+                    cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 0), 3)
+
         if abs(diff) < 6:  # 6 is the length in inches of the target, this gives u the hypotenuse
           perspective_angle = round(math.degrees(math.asin(diff / 6)), 3)
 
           vt.putNumber("angle", perspective_angle)
           vt.putNumber("distance", distance)
 
-          cv2.putText(frame, str(perspective_angle),
-                      (frame.shape[1] - 200, frame.shape[0]), cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 0), 3)
-        cv2.putText(frame, "%.2fft" % (distance),
-                    (frame.shape[1] - 200, frame.shape[0] - 100), cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 0), 3)
+          cv2.putText(frame, str(perspective_angle), (frame.shape[1] - 200, frame.shape[0]),
+                      cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 0), 3)
+
     final = frame
-    if displayDebugWindow: cv2.imshow("image", frame)  # cv2.resize(image, (960, 540))
+
+    cv2.putText(frame, str(int(1 / (time.time() - start_t))) + " FPS", (frame.shape[1] - 130, 40),
+                cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
+    if displayDebugWindow:
+      cv2.imshow("image", frame)  # cv2.resize(image, (960, 540))
+    start_t = time.time()
+
     k = cv2.waitKey(1) & 0xFF
     if k == ord('q'):
       break
