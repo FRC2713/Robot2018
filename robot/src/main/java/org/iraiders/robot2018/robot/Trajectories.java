@@ -36,17 +36,19 @@ public class Trajectories {
     File waypointsPath = new File(System.getProperty("user.home") + "/robot2018/cache/paths/");
     Trajectory trajectory;
 
-    String hashedPoints = Arrays.hashCode(points) + "_" + Objects.hash(config); // Hash of path and config put together
+    String hashedPoints = Arrays.toString(points).hashCode() + "_" + Objects.hash(config); // Hash of path and config put together
 
     waypointsPath.mkdirs();
 
     File f = new File(waypointsPath.getPath() + "/" + hashedPoints + ".csv");
     if (f.isFile()) {
+      DriverStation.reportWarning("Using points from " + f.getName(), false);
       trajectory = Pathfinder.readFromCSV(f);
     } else {
       DriverStation.reportWarning("Generating new trajectory: " + f.getName(), false);
       trajectory = Pathfinder.generate(points, config);
       Pathfinder.writeToCSV(f, trajectory);
+      DriverStation.reportWarning("Generation finished", false);
     }
     return trajectory;
   }
