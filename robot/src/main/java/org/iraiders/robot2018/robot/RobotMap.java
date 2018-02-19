@@ -3,7 +3,6 @@ package org.iraiders.robot2018.robot;
 import com.analog.adis16448.frc.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import org.iraiders.robot2018.robot.commands.OIDrive;
 import org.iraiders.robot2018.robot.commands.auto.AutonomousCommand;
 
 import javax.measure.Measure;
@@ -41,11 +40,10 @@ public class RobotMap {
   
   // SmartDash Settings
   public static SendableChooser<AutonomousCommand.MatchStartPosition> startPosition = new SendableChooser<>();
-  public static SendableChooser<OIDrive.OIDriveMode> driveMode = new SendableChooser<>();
   
   // Measurements
   public static final Measure<Double, Length> WHEEL_DIAMETER = Measure.valueOf(6d, NonSI.INCH);
-  public static final int TICKS_PER_REVOLUTION = 360;
+  public static final int TICKS_PER_REVOLUTION = 1440;
   
   // Misc
   /**
