@@ -8,12 +8,14 @@ import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.commands.SimpleMotorCommand;
 
 public class WinchSubsystem extends Subsystem {
-  private WPI_TalonSRX winchMotor = new WPI_TalonSRX(RobotMap.winchTalonPort);
+  private final WPI_TalonSRX winchMotor = new WPI_TalonSRX(RobotMap.winchTalonPort);
   
   JoystickButton upNormal = new JoystickButton(OI.getArcadeController(), 1);
   JoystickButton downNormal = new JoystickButton(OI.getArcadeController(), 5);
   
   public WinchSubsystem() {
+    winchMotor.setName(this.getName(), "Winch Motor");
+    
     double normalSpeed = 1;
   
     upNormal.whileHeld(new SimpleMotorCommand(this, winchMotor, normalSpeed));

@@ -28,6 +28,7 @@ abstract class JointControlCommand extends PIDCommand {
   
   @Override
   protected void execute() {
+    super.execute();
     SmartDashboard.putNumber(getClass().getSimpleName(), potUnitsToDegrees(motor.getSelectedSensorPosition(0)));
   }
   
@@ -56,6 +57,7 @@ class UpperJoint extends JointControlCommand {
   
   UpperJoint(WPI_TalonSRX jointMotor, int angle) {
     super(jointMotor, angle);
+    this.setInputRange(990, 1450);
   }
   
   @Override
@@ -81,8 +83,10 @@ class LowerJoint extends JointControlCommand {
   private final double L2 = 19.0;
   private final double L3 = 17.5;
   private final double d = 15.0;
+  
   LowerJoint(WPI_TalonSRX jointMotor, int angle) {
     super(jointMotor, angle);
+    this.setInputRange(420, 770);
   }
   
   @Override

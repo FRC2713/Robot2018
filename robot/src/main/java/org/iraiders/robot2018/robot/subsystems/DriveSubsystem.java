@@ -5,6 +5,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lombok.Getter;
 import org.iraiders.robot2018.robot.OI;
 import org.iraiders.robot2018.robot.Robot;
@@ -16,6 +18,8 @@ import org.iraiders.robot2018.robot.commands.feedback.RumbleListener;
 
 public class DriveSubsystem extends Subsystem {
   public DifferentialDrive roboDrive;
+  public static SendableChooser<OIDrive.OIDriveMode> driveMode = new SendableChooser<>();
+  AutonomousCommand a;
   
   @Getter private WPI_TalonSRX frontLeftTalon = new WPI_TalonSRX(RobotMap.frontLeftTalonPort);
   @Getter private WPI_TalonSRX frontRightTalon = new WPI_TalonSRX(RobotMap.frontRightTalonPort);
@@ -24,6 +28,15 @@ public class DriveSubsystem extends Subsystem {
   
   public DriveSubsystem() {
     setupTalons();
+    initSmartDash();
+  
+    if (RobotMap.DEBUG) {
+      // For debugging pathfinding in auto
+      if (a == null) a = new AutonomousCommand(this, Robot.getArmSubsystem(), Robot.getGrabberSubsystem());
+      a.cancel();
+      JoystickButton testPathfinding = new JoystickButton(OI.getXBoxController(), 5); // LB
+      testPathfinding.whenPressed(a);
+    }
   }
   
   @Override
@@ -31,19 +44,27 @@ public class DriveSubsystem extends Subsystem {
   
   }
   
+  private void initSmartDash() {
+    driveMode.setName(this.getName(), "Drive Mode");
+    driveMode.addDefault("Bradford", OIDrive.OIDriveMode.BRADFORD);
+    driveMode.addObject("Tank", OIDrive.OIDriveMode.TANK);
+    driveMode.addObject("Arcade", OIDrive.OIDriveMode.ARCADE);
+    
+    SmartDashboard.putData(driveMode);
+  }
+  
   public void startTeleop() {
     roboDrive = new DifferentialDrive(frontLeftTalon, frontRightTalon);
     new EncoderReporter(frontLeftTalon, frontRightTalon).start();
     new OIDrive(this).start();
     if (Robot.prefs.getBoolean("EnableSonicRumble", true)) new RumbleListener().start();
-    
-    // For debugging pathfinding in auto
-    JoystickButton testPathfinding = new JoystickButton(OI.getXBoxController(), 5); // LB
-    AutonomousCommand a = new AutonomousCommand(this, Robot.getArmSubsystem(), Robot.getGrabberSubsystem());
-    testPathfinding.whenPressed(a);
   }
   
   private void setupTalons() {
+    // Add to SmartDash
+    frontLeftTalon.setName(this.getName(), "Front Left #" + frontLeftTalon.getDeviceID());
+    frontRightTalon.setName(this.getName(), "Front Right #" + frontRightTalon.getDeviceID());
+    
     backLeftTalon.set(ControlMode.Follower, RobotMap.frontLeftTalonPort);
     backRightTalon.set(ControlMode.Follower, RobotMap.frontRightTalonPort);
     
@@ -57,7 +78,7 @@ public class DriveSubsystem extends Subsystem {
   
   public void setDriveSpeed(double leftSpeed, double rightSpeed) {
     frontLeftTalon.set(leftSpeed);
-    frontRightTalon.set(rightSpeed);
+    frontRightTalon.set(-rightSpeed);
   }
   
   /**

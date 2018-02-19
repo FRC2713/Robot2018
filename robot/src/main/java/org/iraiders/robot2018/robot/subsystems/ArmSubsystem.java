@@ -22,6 +22,9 @@ public class ArmSubsystem extends Subsystem {
     upperJoint.setInverted(true); // Positive speed is up, negative is down
     upperJoint.setSensorPhase(true);
     initControls();
+  
+    upperJoint.setName(this.getName(), "Elbow");
+    lowerJoint.setName(this.getName(), "Shoulder");
   }
   
   private void initControls() {

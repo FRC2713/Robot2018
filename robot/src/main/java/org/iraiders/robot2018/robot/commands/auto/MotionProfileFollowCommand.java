@@ -45,7 +45,7 @@ public class MotionProfileFollowCommand extends Command {
   private void prepTalon(WPI_TalonSRX talon, EncoderFollower follower) {
     talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
     talon.setSelectedSensorPosition(0, 0, 0);
-    //follower.configurePIDVA(); // TODO tune PID
+    follower.configurePIDVA(1.0, 0.0, 0.0, 1 / 1.7, 0); // TODO tune PID
     follower.configureEncoder(talon.getSelectedSensorPosition(0), RobotMap.TICKS_PER_REVOLUTION, RobotMap.WHEEL_DIAMETER.to(SI.METER).getValue());
   }
   

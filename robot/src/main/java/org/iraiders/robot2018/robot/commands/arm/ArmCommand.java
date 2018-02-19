@@ -20,45 +20,37 @@ public class ArmCommand extends CommandGroup {
     int shoulderPosition;
     int elbowPosition;
     switch (position){
+      case BOX_PROTECT:
       case STARTING_CONFIG:
-        shoulderPosition = 427;
-        elbowPosition = 155;
+        shoulderPosition = 450;
+        elbowPosition = 1405;
         break;
         
       case BOX_PICKUP:
-        shoulderPosition = 785;
-        elbowPosition = 70;
-        break;
-        
-      case BOX_PROTECT:
-        shoulderPosition = 423;
-        elbowPosition = 110;
+        shoulderPosition = 740;
+        elbowPosition = 1380;
         break;
         
       case SWITCH_DELIVER:
-        shoulderPosition = 590;
-        elbowPosition = 45;
+        shoulderPosition = 553;
+        elbowPosition = 1315;
         break;
         
       case SCALE_DELIVER_LOW:
-        shoulderPosition = 505;
-        elbowPosition = -45;
-        break;
-        
       case SCALE_DELIVER_MID:
-        shoulderPosition = 550;
-        elbowPosition = -123;
+        shoulderPosition = 494;
+        elbowPosition = 1162;
         break;
         
       case SCALE_DELIVER_HIGH:
-        shoulderPosition = 659;
-        elbowPosition = -236;
+        shoulderPosition = 545;
+        elbowPosition = 1067;
         break;
         
       default:
         return;
     }
-    addParallel(new UpperJoint(armSubsystem.getUpperJoint(), shoulderPosition));
-    addParallel(new LowerJoint(armSubsystem.getLowerJoint(), elbowPosition));
+    addParallel(new UpperJoint(armSubsystem.getUpperJoint(), elbowPosition));
+    addParallel(new LowerJoint(armSubsystem.getLowerJoint(), shoulderPosition));
   }
 }

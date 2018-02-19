@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lombok.Getter;
-import org.iraiders.robot2018.robot.commands.OIDrive;
 import org.iraiders.robot2018.robot.commands.auto.AutonomousCommand;
 import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
@@ -45,8 +44,6 @@ public class Robot extends IterativeRobot {
     armSubsystem = new ArmSubsystem();
     winchSubsystem = new WinchSubsystem();
     grabberSubsystem = new GrabberSubsystem();
-    
-    autonomousCommand = new AutonomousCommand(driveSubsystem, armSubsystem, grabberSubsystem);
   }
   
   /**
@@ -68,14 +65,8 @@ public class Robot extends IterativeRobot {
     RobotMap.startPosition.addObject("Left", AutonomousCommand.MatchStartPosition.LEFT);
     RobotMap.startPosition.addObject("Middle", AutonomousCommand.MatchStartPosition.MIDDLE);
     RobotMap.startPosition.addObject("Right", AutonomousCommand.MatchStartPosition.RIGHT);
-  
-    RobotMap.driveMode.setName("Drive Subsystem", "Drive Mode");
-    RobotMap.driveMode.addDefault("Bradford", OIDrive.OIDriveMode.BRADFORD);
-    RobotMap.driveMode.addObject("Tank", OIDrive.OIDriveMode.TANK);
-    RobotMap.driveMode.addObject("Arcade", OIDrive.OIDriveMode.ARCADE);
     
     SmartDashboard.putData(RobotMap.startPosition);
-    SmartDashboard.putData(RobotMap.driveMode);
   }
   
   @Override
@@ -95,7 +86,8 @@ public class Robot extends IterativeRobot {
   public void autonomousInit() {
     autoStart = System.currentTimeMillis();
     if (!RobotMap.USE_MINIMUM_VIABLE_AUTO && !prefs.getBoolean("DisableAutonomus", false)) {
-      if (autonomousCommand != null) autonomousCommand.start();
+      autonomousCommand = new AutonomousCommand(driveSubsystem, armSubsystem, grabberSubsystem);
+      autonomousCommand.start();
     }
   }
   
@@ -104,7 +96,7 @@ public class Robot extends IterativeRobot {
     Scheduler.getInstance().run();
     
     if (RobotMap.USE_MINIMUM_VIABLE_AUTO && !prefs.getBoolean("DisableAutonomus", false)) {
-      double speed = 1.0, timeout = 10;
+      double speed = .6, timeout = 5;
       if ((System.currentTimeMillis() - autoStart) < (timeout * 1000)) driveSubsystem.setDriveSpeed(speed);
     }
   }

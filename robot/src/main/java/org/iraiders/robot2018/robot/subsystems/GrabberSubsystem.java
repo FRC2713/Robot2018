@@ -10,7 +10,7 @@ import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.commands.grabber.ControlGrabber;
 
 public class GrabberSubsystem extends Subsystem {
-  public final WPI_TalonSRX winchMotor = new WPI_TalonSRX(RobotMap.grabberTalonPort);
+  public final WPI_TalonSRX grabberMotor = new WPI_TalonSRX(RobotMap.grabberTalonPort);
   public final DigitalInput startTrigger = new DigitalInput(3);
   public final DigitalInput endTrigger = new DigitalInput(4);
   private Joystick arcade = OI.getArcadeController();
@@ -21,6 +21,8 @@ public class GrabberSubsystem extends Subsystem {
   public void startTeleop() {
     open.whileHeld(new ControlGrabber(this, GrabberPosition.OPEN));
     close.whileHeld(new ControlGrabber(this, GrabberPosition.CLOSE));
+    
+    grabberMotor.setName(this.getName(), "Grabber Motor");
   }
   
   @Override
