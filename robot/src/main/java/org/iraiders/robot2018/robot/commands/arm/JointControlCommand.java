@@ -12,7 +12,7 @@ abstract class JointControlCommand extends PIDCommand {
   private final float maxSpeed = Robot.prefs.getFloat("JointMaxSpeed", 0.1f);
   
   JointControlCommand(WPI_TalonSRX jointMotor, int desiredDegrees){
-    super(.25, 0, 0); //TODO: Tune PID
+    super(.5, 0, 0); //TODO: Tune PID
     this.motor = jointMotor;
     this.setDeg = desiredDegrees;
     
@@ -44,7 +44,7 @@ abstract class JointControlCommand extends PIDCommand {
   
   @Override
   protected void usePIDOutput(double output) {
-    motor.set(output * maxSpeed);
+    motor.set(-output * maxSpeed);
   }
   
   @Override
@@ -86,7 +86,7 @@ class LowerJoint extends JointControlCommand {
   
   LowerJoint(WPI_TalonSRX jointMotor, int angle) {
     super(jointMotor, angle);
-    this.setInputRange(420, 770);
+    this.setInputRange(170, 580);
   }
   
   @Override

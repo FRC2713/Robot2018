@@ -31,9 +31,15 @@ public class ArmSubsystem extends Subsystem {
     Joystick arcade = OI.getArcadeController();
     GenericHID xbox = OI.getXBoxController();
     
-    JoystickButton condense = new JoystickButton(arcade, 8);
-  
-    condense.whenPressed(new ArmCommand(this, ArmPosition.SCALE_DELIVER_LOW));
+    JoystickButton scaleDeliverHigh = new JoystickButton(arcade, 8);
+    JoystickButton switchDeliver = new JoystickButton(arcade, 7);
+    JoystickButton scaleDeliverMid = new JoystickButton(arcade, 4);
+    JoystickButton boxPickup = new JoystickButton(arcade, 3);
+    
+    scaleDeliverHigh.whileHeld(new ArmCommand(this, ArmPosition.SCALE_DELIVER_HIGH));
+    scaleDeliverMid.whileHeld(new ArmCommand(this, ArmPosition.SCALE_DELIVER_MID));
+    boxPickup.whileHeld(new ArmCommand(this, ArmPosition.BOX_PICKUP));
+    switchDeliver.whileHeld(new ArmCommand(this, ArmPosition.SWITCH_DELIVER));
   
     if (RobotMap.DEBUG) {
       double maxSpeed = .8;
@@ -62,7 +68,7 @@ public class ArmSubsystem extends Subsystem {
   }
   
   public enum ArmPosition {
-    STARTING_CONFIG,
+    STARTING_CONFIG, TEST_DEFAULT,
     BOX_PICKUP, BOX_PROTECT,
     SWITCH_DELIVER, SCALE_DELIVER_HIGH, SCALE_DELIVER_MID, SCALE_DELIVER_LOW,
     CLIMB_ATTACH, CLIMB_DETACH

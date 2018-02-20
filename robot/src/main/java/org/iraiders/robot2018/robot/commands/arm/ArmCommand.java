@@ -1,5 +1,6 @@
 package org.iraiders.robot2018.robot.commands.arm;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 
@@ -22,32 +23,38 @@ public class ArmCommand extends CommandGroup {
     switch (position){
       case BOX_PROTECT:
       case STARTING_CONFIG:
-        shoulderPosition = 450;
-        elbowPosition = 1405;
+        shoulderPosition = 430;
+        elbowPosition = 180;
         break;
         
       case BOX_PICKUP:
-        shoulderPosition = 740;
-        elbowPosition = 1380;
+        shoulderPosition = 766;
+        elbowPosition = 252;
         break;
         
       case SWITCH_DELIVER:
-        shoulderPosition = 553;
-        elbowPosition = 1315;
+        shoulderPosition = 510;
+        elbowPosition = 325;
         break;
         
       case SCALE_DELIVER_LOW:
       case SCALE_DELIVER_MID:
-        shoulderPosition = 494;
-        elbowPosition = 1162;
+        shoulderPosition = 532;
+        elbowPosition = 500;
         break;
         
       case SCALE_DELIVER_HIGH:
-        shoulderPosition = 545;
-        elbowPosition = 1067;
+        shoulderPosition = 536;
+        elbowPosition = 570;
+        break;
+        
+      case TEST_DEFAULT:
+        shoulderPosition = 425;
+        elbowPosition = 387;
         break;
         
       default:
+        DriverStation.reportWarning("Arm attempted to travel to an unknown / undefined point " + position, false);
         return;
     }
     addParallel(new UpperJoint(armSubsystem.getUpperJoint(), elbowPosition));
