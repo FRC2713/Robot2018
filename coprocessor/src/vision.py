@@ -13,11 +13,16 @@ import os
 
 NetworkTables.initialize(server="roboRIO-2713-frc.local")
 vt = NetworkTables.getTable("VisionProcessing")
-vt.putNumber("angle", 0)
-vt.putNumber("distance", 1)
+vt.putNumber("angle", -1)
+vt.putNumber("distance", -1)
+vt.putNumber("heartbeat", 0)
+vt.putNumber("x", -1)
+vt.putNumber("y", -1)
+vt.putNumber("ipp", -1)
 
 vs = WebcamVideoStream().start()
 final = vs.read()
+vt.putNumber("screen_width", int(cv2.get(cv2.CV_CAP_PROP_FRAME_WIDTH)))
 print(os.name)
 displayDebugWindow = (os.name == 'nt') or ("DISPLAY" in os.environ)
 port = 8087
@@ -137,6 +142,8 @@ def distance_to_camera(pixHeight):
   global KNOWN_HEIGHT, focalHeight
   return (KNOWN_HEIGHT * focalHeight) / pixHeight
 
+def width_to_pixel_width(width):
+  return 8/width
 def drawBox(frame, rect, color=(0,0,255)):
   box = cv2.boxPoints(rect)
   box = np.array(box).reshape((-1, 1, 2)).astype(np.int32)
@@ -288,11 +295,13 @@ if __name__ == '__main__':
         cv2.circle(frame, (int(round(x, 0)), int(round(y, 0))), 2, (0, 0, 0), 1)
         drawBox(frame, rect, color)
 
+
+      # Tracking stuff
+      """
+      
       track_window = (min_x, min_y, max_x - min_x, max_y - min_y)
       target_window = ((min_x, min_y),(max_x - min_x, max_y - min_y), 0.0)
       drawBox(frame, target_window, (255,100,0))
-      # Tracking stuff
-      """
       print(track_window)
       roi = frame[min_y:max_y, min_x:max_x]
       #print(roi)
@@ -339,16 +348,24 @@ if __name__ == '__main__':
         distance = round((distances[0] + distances[1]) / 24, 1)
         cv2.putText(frame, "%.2fft" % (distance), (frame.shape[1] - 200, frame.shape[0] - 100),
                     cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 0), 3)
-
+        center = ((pairs[0][0][0] + pairs[1][0][0])/2, (pairs[0][0][1] + pairs[1][0][1])/2)
         if abs(diff) < 6:  # 6 is the length in inches of the target, this gives u the hypotenuse
           perspective_angle = round(math.degrees(math.asin(diff / 6)), 3)
 
           vt.putNumber("angle", perspective_angle)
           vt.putNumber("distance", distance)
-
+          vt.putNumber("x", center[0])
+          vt.putNumber("y", center[1])
+          vt.putNumber("ipp", width_to_pixel_width(pairs[0][1][0]*2 + pairs[1][1][0]*2))
           cv2.putText(frame, str(perspective_angle), (frame.shape[1] - 200, frame.shape[0]),
                       cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 0), 3)
-
+      else:
+        vt.putNumber("angle", -1)
+        vt.putNumber("distance", -1)
+        vt.putNumber("x", -1)
+        vt.putNumber("y", -1)
+        vt.putNumber("ipp", -1)
+    vt.putNumber("heartbeat", vt.getNumber("heartbeat") + 1)
     final = frame
 
     cv2.putText(frame, str(int(1 / (time.time() - start_t))) + " FPS", (frame.shape[1] - 130, 40),
