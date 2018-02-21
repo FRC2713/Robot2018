@@ -4,7 +4,7 @@ deploy {
   // See https://github.com/JacisNonsense/EmbeddedTools#spec
   targets {
     target('rpi') {
-      addresses << 'team2713-coproc.local'
+      addresses << 'team2713-coproc.local' << '10.27.13.57'
       user = 'pi'
       password = 'team2713'
       directory = '/home/pi/vision'
