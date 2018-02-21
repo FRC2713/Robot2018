@@ -19,8 +19,6 @@ public class ArmSubsystem extends Subsystem {
   @Getter private final WPI_TalonSRX upperJoint = new WPI_TalonSRX(RobotMap.upperJointTalonPort);
   
   public ArmSubsystem() {
-    upperJoint.setInverted(true); // Positive speed is up, negative is down
-    upperJoint.setSensorPhase(true);
     initControls();
   
     upperJoint.setName(this.getName(), "Elbow");
@@ -44,10 +42,10 @@ public class ArmSubsystem extends Subsystem {
     if (RobotMap.DEBUG) {
       double maxSpeed = .8;
       JoystickButton goUp = new JoystickButton(xbox, 4);
-      goUp.whileHeld(new SimpleMotorCommand(this, upperJoint, maxSpeed));
+      goUp.whileHeld(new SimpleMotorCommand(this, upperJoint, -maxSpeed));
     
       JoystickButton goDown = new JoystickButton(xbox, 1);
-      goDown.whileHeld(new SimpleMotorCommand(this, upperJoint, -maxSpeed));
+      goDown.whileHeld(new SimpleMotorCommand(this, upperJoint, maxSpeed));
     
     
       JoystickButton goUpShoulder = new JoystickButton(xbox, 2);

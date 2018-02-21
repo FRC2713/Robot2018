@@ -20,11 +20,11 @@ public class OIDrive extends Command {
   protected void initialize() {
     // This is dangerous, but otherwise the bot would be jerky due to (relatively) infrequently updated outputs
     drive.roboDrive.setMaxOutput(Robot.prefs.getFloat("OIMaxSpeed", 1));
-    drive.roboDrive.setSafetyEnabled(false);
   }
   
   @Override
   protected void execute() {
+    drive.roboDrive.setSafetyEnabled(false);
     // Invert directions, on an XBox controller the forward direction is negative
     switch (DriveSubsystem.driveMode.getSelected()) {
       default:

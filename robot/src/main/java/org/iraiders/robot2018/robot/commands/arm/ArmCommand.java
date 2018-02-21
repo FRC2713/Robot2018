@@ -1,6 +1,7 @@
 package org.iraiders.robot2018.robot.commands.arm;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 
@@ -12,6 +13,7 @@ public class ArmCommand extends CommandGroup {
   
   public ArmCommand(ArmSubsystem armSubsystem, ArmPosition position){
     requires(armSubsystem);
+    this.setName(armSubsystem.getName(), "ArmCommand");
     this.position = position;
     this.armSubsystem = armSubsystem;
     processWantedPosition();
@@ -57,7 +59,12 @@ public class ArmCommand extends CommandGroup {
         DriverStation.reportWarning("Arm attempted to travel to an unknown / undefined point " + position, false);
         return;
     }
-    addParallel(new UpperJoint(armSubsystem.getUpperJoint(), elbowPosition));
-    addParallel(new LowerJoint(armSubsystem.getLowerJoint(), shoulderPosition));
+    
+    Command upperJoint = new UpperJoint(armSubsystem, armSubsystem.getUpperJoint(), elbowPosition);
+    Command lowerJoint = new LowerJoint(armSubsystem, armSubsystem.getLowerJoint(), shoulderPosition);
+    addParallel(upperJoint);
+    addParallel(lowerJoint);
+    this.addChild(upperJoint);
+    this.addChild(lowerJoint);
   }
 }
