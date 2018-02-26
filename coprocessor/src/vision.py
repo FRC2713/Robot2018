@@ -1,15 +1,16 @@
-from socketserver import ThreadingMixIn
-from threading import Thread
-from io import BytesIO
-from PIL import Image
-import numpy as np
 import cv2
 import math
-from networktables import NetworkTables
-from http.server import BaseHTTPRequestHandler, HTTPServer
-import time
-from stream import WebcamVideoStream
+import numpy as np
 import os
+import time
+from PIL import Image
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from io import BytesIO
+from networktables import NetworkTables
+from socketserver import ThreadingMixIn
+from threading import Thread
+
+from stream import WebcamVideoStream
 
 NetworkTables.initialize(server="roboRIO-2713-frc.local")
 vt = NetworkTables.getTable("VisionProcessing")
@@ -22,7 +23,7 @@ vt.putNumber("ipp", -1)
 
 vs = WebcamVideoStream().start()
 final = vs.read()
-vt.putNumber("screen_width", int(cv2.get(cv2.CV_CAP_PROP_FRAME_WIDTH)))
+vt.putNumber("screen_width", 1920)
 print(os.name)
 displayDebugWindow = (os.name == 'nt') or ("DISPLAY" in os.environ)
 port = 8087
@@ -83,12 +84,12 @@ server_thread.start()
 
 print("mjpeg server started on port " + str(port))
 
-r = 0
+r = 32
 g = 0
-b = 231
+b = 202
 
-rh = 234
-gh = 139
+rh = 119
+gh = 255
 bh = 255
 
 """
@@ -348,7 +349,7 @@ if __name__ == '__main__':
         distance = round((distances[0] + distances[1]) / 24, 1)
         cv2.putText(frame, "%.2fft" % (distance), (frame.shape[1] - 200, frame.shape[0] - 100),
                     cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 0), 3)
-        center = ((pairs[0][0][0] + pairs[1][0][0])/2, (pairs[0][0][1] + pairs[1][0][1])/2)
+        center = ((pair[0][0][0] + pair[1][0][0])/2, (pair[0][0][1] + pair[1][0][1])/2)
         if abs(diff) < 6:  # 6 is the length in inches of the target, this gives u the hypotenuse
           perspective_angle = round(math.degrees(math.asin(diff / 6)), 3)
 
@@ -356,7 +357,7 @@ if __name__ == '__main__':
           vt.putNumber("distance", distance)
           vt.putNumber("x", center[0])
           vt.putNumber("y", center[1])
-          vt.putNumber("ipp", width_to_pixel_width(pairs[0][1][0]*2 + pairs[1][1][0]*2))
+          vt.putNumber("ipp", width_to_pixel_width(pair[0][1][0]*2 + pair[1][1][0]*2))
           cv2.putText(frame, str(perspective_angle), (frame.shape[1] - 200, frame.shape[0]),
                       cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 0), 3)
       else:
@@ -365,7 +366,7 @@ if __name__ == '__main__':
         vt.putNumber("x", -1)
         vt.putNumber("y", -1)
         vt.putNumber("ipp", -1)
-    vt.putNumber("heartbeat", vt.getNumber("heartbeat") + 1)
+    vt.putNumber("heartbeat", vt.getNumber("heartbeat", -2) + 1)
     final = frame
 
     cv2.putText(frame, str(int(1 / (time.time() - start_t))) + " FPS", (frame.shape[1] - 130, 40),

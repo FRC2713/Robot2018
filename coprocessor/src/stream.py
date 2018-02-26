@@ -1,14 +1,16 @@
-from threading import Thread
 import cv2
+from threading import Thread
+
 
 class WebcamVideoStream:
   def __init__(self):
     # initialize the video camera stream and read the first frame
     # from the stream
     self.stream = cv2.VideoCapture(0)
-    #self.stream.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0.25)
-    #self.stream.set(cv2.CAP_PROP_EXPOSURE, 7.0)
-    self.stream.set(cv2.CAP_PROP_SATURATION, 100.0)
+    #self.stream.set(cv2.CAP_PROP_AUTO_EXPOSURE, 1.0)
+    #self.stream.set(cv2.CAP_PROP_EXPOSURE, 1.0)
+    #self.stream.set(cv2.CAP_PROP_CONTRAST, 1.0)
+    #self.stream.set(cv2.CAP_PROP_SATURATION, 1.0)
     #cv2.CAP_PROP_EXPOSURE
     (self.grabbed, self.frame) = self.stream.read()
 

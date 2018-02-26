@@ -13,6 +13,7 @@ import org.iraiders.robot2018.robot.Robot;
 import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.commands.OIDrive;
 import org.iraiders.robot2018.robot.commands.auto.AutonomousCommand;
+import org.iraiders.robot2018.robot.commands.auto.VisionAuto;
 import org.iraiders.robot2018.robot.commands.feedback.EncoderReporter;
 import org.iraiders.robot2018.robot.commands.feedback.RumbleListener;
 
@@ -36,6 +37,9 @@ public class DriveSubsystem extends Subsystem {
       a.cancel();
       JoystickButton testPathfinding = new JoystickButton(OI.getXBoxController(), 5); // LB
       testPathfinding.whenPressed(a);
+      
+      JoystickButton testSebbys = new JoystickButton(OI.getXBoxController(), 6); // RB
+      testSebbys.whenPressed(new VisionAuto(this, Robot.getArmSubsystem()));
     }
   }
   
