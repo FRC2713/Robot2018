@@ -18,7 +18,7 @@ import org.iraiders.robot2018.robot.commands.feedback.RumbleListener;
 
 public class DriveSubsystem extends Subsystem {
   public DifferentialDrive roboDrive;
-  public static SendableChooser<OIDrive.OIDriveMode> driveMode = new SendableChooser<>();
+  public SendableChooser<OIDrive.OIDriveMode> driveMode = new SendableChooser<>();
   AutonomousCommand a;
   
   @Getter private WPI_TalonSRX frontLeftTalon = new WPI_TalonSRX(RobotMap.frontLeftTalonPort);

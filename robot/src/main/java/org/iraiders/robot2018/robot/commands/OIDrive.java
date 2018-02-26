@@ -26,7 +26,7 @@ public class OIDrive extends Command {
   protected void execute() {
     drive.roboDrive.setSafetyEnabled(false);
     // Invert directions, on an XBox controller the forward direction is negative
-    switch (DriveSubsystem.driveMode.getSelected()) {
+    switch (drive.driveMode.getSelected()) {
       default:
       case BRADFORD:
         drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft), xbox.getX(Hand.kRight), true);

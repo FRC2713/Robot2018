@@ -30,8 +30,8 @@ public class ArmCommand extends CommandGroup {
         break;
         
       case BOX_PICKUP:
-        shoulderPosition = 766;
-        elbowPosition = 252;
+        shoulderPosition = 800;
+        elbowPosition = 245;
         break;
         
       case SWITCH_DELIVER:

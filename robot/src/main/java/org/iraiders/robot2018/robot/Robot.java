@@ -37,13 +37,13 @@ public class Robot extends IterativeRobot {
   }
 	
 	/**
-   * Initialize all subsystems here, in order of importance
+   * Initialize all subsystems here
    */
   private void initSubsystems() {
-    driveSubsystem = new DriveSubsystem();
     armSubsystem = new ArmSubsystem();
     winchSubsystem = new WinchSubsystem();
     grabberSubsystem = new GrabberSubsystem();
+    driveSubsystem = new DriveSubsystem();
   }
   
   /**

@@ -29,15 +29,15 @@ public class ArmSubsystem extends Subsystem {
     Joystick arcade = OI.getArcadeController();
     GenericHID xbox = OI.getXBoxController();
     
-    JoystickButton scaleDeliverHigh = new JoystickButton(arcade, 8);
-    JoystickButton switchDeliver = new JoystickButton(arcade, 7);
-    JoystickButton scaleDeliverMid = new JoystickButton(arcade, 4);
-    JoystickButton boxPickup = new JoystickButton(arcade, 3);
+    JoystickButton btn8 = new JoystickButton(arcade, 8);
+    JoystickButton btn7 = new JoystickButton(arcade, 7);
+    JoystickButton btn4 = new JoystickButton(arcade, 4);
+    JoystickButton btn3 = new JoystickButton(arcade, 3);
     
-    scaleDeliverHigh.whileHeld(new ArmCommand(this, ArmPosition.SCALE_DELIVER_HIGH));
-    scaleDeliverMid.whileHeld(new ArmCommand(this, ArmPosition.SCALE_DELIVER_MID));
-    boxPickup.whileHeld(new ArmCommand(this, ArmPosition.BOX_PICKUP));
-    switchDeliver.whileHeld(new ArmCommand(this, ArmPosition.SWITCH_DELIVER));
+    btn8.whileHeld(new ArmCommand(this, ArmPosition.SCALE_DELIVER_HIGH));
+    btn7.whileHeld(new ArmCommand(this, ArmPosition.BOX_PROTECT));
+    btn3.whileHeld(new ArmCommand(this, ArmPosition.BOX_PICKUP));
+    btn4.whileHeld(new ArmCommand(this, ArmPosition.SWITCH_DELIVER));
   
     if (RobotMap.DEBUG) {
       double maxSpeed = .8;
