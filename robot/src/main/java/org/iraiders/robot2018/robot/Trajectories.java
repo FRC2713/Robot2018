@@ -25,7 +25,7 @@ public class Trajectories {
     new Waypoint(3.048, 6.7056, 0),
     new Waypoint(4.2672, 6.096, Pathfinder.d2r(270))
   };
-  // All waypoints should be static & final for cache / hash
+
   public static final Waypoint[] rightStartToScaleSameSide = new Waypoint[]{
     new Waypoint(0, 1.524, 0),
     new Waypoint(7.62, 1.524, 0),
@@ -44,12 +44,7 @@ public class Trajectories {
     new Waypoint(6.096, 6.096 , Pathfinder.d2r(270)),
     new Waypoint(4.8768, 2.7432 , Pathfinder.d2r(180))
   };
-  public static final Waypoint[] leftStartToScaleRightSide = new Waypoint[]{
-    new Waypoint(0, 6.7056, 0),
-    new Waypoint(6.7056, 5.4864 , 0)
-    new Waypoint(6.096, 6.096 , Pathfinder.d2r(270))
-    new Waypoint(4.8768, 2.7432 , Pathfinder.d2r(180))
-  };
+
   public static final Waypoint[] rightStartToSwitchLeftSide = new Waypoint[]{
     new Waypoint(0, 1.524, 0),
     new Waypoint(5.4864, 1.524, 0),
@@ -57,6 +52,7 @@ public class Trajectories {
     new Waypoint(6.096, 4.8768, Pathfinder.d2r(90)),
     new Waypoint(4.8768, 5.4864, Pathfinder.d2r(180))
   };
+
   public static final Waypoint[] middleStartToSwitchRightSide = new Waypoint[]{
     new Waypoint(0, 3.9624, 0),
     new Waypoint(0.6096, 3.9624, 0),
@@ -64,6 +60,7 @@ public class Trajectories {
     new Waypoint(1.8288, 2.7432, Pathfinder.d2r(180)),
     new Waypoint(3.6576, 2.7432, Pathfinder.d2r(180))
   };
+
   public static final Waypoint[] middleStartToSwitchLeftSide = new Waypoint[]{
     new Waypoint(0, 3.9624, 0),
     new Waypoint(1.2192, 3.9624, 0),
@@ -72,6 +69,7 @@ public class Trajectories {
     new Waypoint(2.1336, 5.4864, Pathfinder.d2r(180)),
     new Waypoint(3.6576, 5.4864, Pathfinder.d2r(180))
   };
+
   public static final Waypoint[] middleStartToScaleRightSide = new Waypoint[]{
     new Waypoint(0, 3.9624, 0),
     new Waypoint(0.6096, 3.9624, 0),
@@ -81,6 +79,7 @@ public class Trajectories {
     new Waypoint(7.62, 1.2192, Pathfinder.d2r(180)),
     new Waypoint(8.2296, 1.8288, Pathfinder.d2r(90))
   };
+
   public static final Waypoint[] middleStartToScaleLeftSide = new Waypoint[]{
     new Waypoint(0, 3.9624, 0),
     new Waypoint(1.2192, 3.9624, 0),
@@ -90,6 +89,7 @@ public class Trajectories {
     new Waypoint(7.3152, 7.0104, Pathfinder.d2r(180)),
     new Waypoint(8.2296, 6.4008, Pathfinder.d2r(270))
   };
+
   public static final Waypoint[] middleStartToPcZoneLeftSide = new Waypoint[]{
     new Waypoint(0, 3.9624, 0),
     new Waypoint(1.2192, 3.9624, 0),
@@ -98,6 +98,7 @@ public class Trajectories {
     new Waypoint(2.1336, 7.0104, Pathfinder.d2r(180)),
     new Waypoint(4.2672, 7.0104, Pathfinder.d2r(180))
   };
+
   public static final Waypoint[] middleStartToPcZoneRightSide = new Waypoint[]{
     new Waypoint(0, 3.9624, 0),
     new Waypoint(0.6096, 3.9624, 0),
@@ -106,15 +107,16 @@ public class Trajectories {
     new Waypoint(1.8288, 1.2192, Pathfinder.d2r(180)),
     new Waypoint(4.2672, 1.2192, Pathfinder.d2r(180))
   };
-  public static final Waypoint[] RightStartToPcZoneSameSide = new Waypoint[]{
+
+  public static final Waypoint[] rightStartToPcZoneSameSide = new Waypoint[]{
     new Waypoint(0, 1.524, 0),
     new Waypoint(0.6096, 1.524, 0),
     new Waypoint(0.9144, 0.9144, Pathfinder.d2r(270)),
     new Waypoint(1.524, 0.6096, Pathfinder.d2r(180)),
     new Waypoint(4.2672, 0.6096, Pathfinder.d2r(180))
-
   };
-  public static final Waypoint[] LeftStartToPcZoneSameSide = new Waypoint[]{
+
+  public static final Waypoint[] leftStartToPcZoneSameSide = new Waypoint[]{
     new Waypoint(0, 6.7056, 0),
     new Waypoint(0.6096, 6.7056, 0),
     new Waypoint(1.2192, 7.3152, Pathfinder.d2r(90)),
