@@ -31,8 +31,11 @@ public class RobotMap {
   // Controllers
   public static final int BACKUP_XBOX_PORT = 0;
   public static final int BACKUP_ARCADE_PORT = 1;
+  public static final int ATTACK_LEFT_PORT = 2;
+  public static final int ATTACK_RIGHT_PORT = 3;
   public static final String XBOX_NAME = "Controller (XBOX 360 For Windows)";
   public static final String ARCADE_NAME = "Mayflash Arcade Stick";
+  public static final String ATTACK_NAME = "Logitech Attack 3";
   
   // Globally useful Sensors
   public static final ADIS16448_IMU imu = new ADIS16448_IMU();

@@ -8,6 +8,8 @@ import lombok.Getter;
 public class OI {
   @Getter private static XboxController xBoxController;
   @Getter private static Joystick arcadeController;
+  @Getter private static Joystick leftAttack;
+  @Getter private static Joystick rightAttack;
   
   public OI() {
     initControllers();
@@ -32,6 +34,8 @@ public class OI {
     if (arcadeController == null) {
       arcadeController = new Joystick(RobotMap.BACKUP_ARCADE_PORT);
     }
+    leftAttack = new Joystick(RobotMap.ATTACK_LEFT_PORT);
+    rightAttack = new Joystick(RobotMap.ATTACK_RIGHT_PORT);
   }
   
   /**

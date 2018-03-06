@@ -49,10 +49,11 @@ public class DriveSubsystem extends Subsystem {
   }
   
   private void initSmartDash() {
-    driveMode.setName(this.getName(), "Drive Mode");
+    //driveMode.setName(this.getName(), "Drive Mode");
     driveMode.addDefault("Bradford", OIDrive.OIDriveMode.BRADFORD);
     driveMode.addObject("Tank", OIDrive.OIDriveMode.TANK);
     driveMode.addObject("Arcade", OIDrive.OIDriveMode.ARCADE);
+    driveMode.addObject("Dual Attacks", OIDrive.OIDriveMode.DUALATTACK);
     
     SmartDashboard.putData(driveMode);
   }

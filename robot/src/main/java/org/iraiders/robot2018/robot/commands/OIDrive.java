@@ -1,6 +1,7 @@
 package org.iraiders.robot2018.robot.commands;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Command;
 import org.iraiders.robot2018.robot.OI;
@@ -10,6 +11,8 @@ import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 public class OIDrive extends Command {
   private DriveSubsystem drive;
   private XboxController xbox = OI.getXBoxController();
+  private Joystick leftAttack = OI.getLeftAttack();
+  private Joystick rightAttack = OI.getRightAttack();
   
   public OIDrive(DriveSubsystem drive) {
     this.drive = drive;
@@ -39,6 +42,10 @@ public class OIDrive extends Command {
       case TANK:
         drive.roboDrive.tankDrive(-xbox.getY(Hand.kLeft), -xbox.getY(Hand.kRight), true);
         break;
+        
+      case DUALATTACK:
+        drive.roboDrive.tankDrive(-leftAttack.getY(), -rightAttack.getY(), true);
+        break;
     }
   }
   
@@ -54,6 +61,6 @@ public class OIDrive extends Command {
   }
   
   public enum OIDriveMode {
-    TANK, BRADFORD, ARCADE
+    TANK, BRADFORD, ARCADE, DUALATTACK
   }
 }
