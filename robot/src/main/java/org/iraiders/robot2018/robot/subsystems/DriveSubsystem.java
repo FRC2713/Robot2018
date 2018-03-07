@@ -30,7 +30,7 @@ public class DriveSubsystem extends Subsystem {
   public DriveSubsystem() {
     setupTalons();
     initSmartDash();
-  
+    
     if (RobotMap.DEBUG) {
       // For debugging pathfinding in auto
       if (a == null) a = new AutonomousCommand(this, Robot.getArmSubsystem(), Robot.getGrabberSubsystem());
@@ -88,7 +88,8 @@ public class DriveSubsystem extends Subsystem {
    * Returns the speed, corrected for the deadband. This is used usually when getting
    * speed inputs from a Joystick, as joysticks usually report values slightly
    * different then what is intended
-   * @param speed The current desired speed (usually from the joystick)
+   *
+   * @param speed             The current desired speed (usually from the joystick)
    * @param deadbandTolerance The amount of deadband to remove from speed
    * @return The corrected speed
    * @deprecated {@link edu.wpi.first.wpilibj.drive.RobotDriveBase#applyDeadband(double, double)} has this implemented already
@@ -101,6 +102,7 @@ public class DriveSubsystem extends Subsystem {
   
   /**
    * {@inheritDoc}
+   *
    * @deprecated
    */
   public double getDeadband(double speed) {
@@ -109,6 +111,7 @@ public class DriveSubsystem extends Subsystem {
   
   /**
    * Gets an adjusted speed, with the goal to have more precise movements at slower speeds
+   *
    * @param speed Input speed, between -1 and 1
    * @return Adjusted speed
    * @deprecated {@link edu.wpi.first.wpilibj.drive.RobotDriveBase} has this implemented in tank drive & arcade drive
@@ -116,5 +119,22 @@ public class DriveSubsystem extends Subsystem {
   public double getCurvedSpeed(double speed) {
     if (speed > 1 || speed < -1) throw new NumberFormatException("Number must be between -1 and 1");
     return Math.copySign(Math.pow(speed, 2), speed);
+  }
+  
+  /**
+   * Given a target number, current number, and increment, adjust current number by increment until we reach target
+   * This is useful particularly in {@link OIDrive} where we need to ramp up to user input to avoid jerkiness
+   *
+   * @param target The number you eventually want to get to (ie. joystick speed)
+   * @param current The current number you are at (so we know what to start at for the increment)
+   * @param increment How much to increase current by until current = target
+   * @see <a href="https://en.wikipedia.org/wiki/Slew_rate">Wikipedia article on Slew rates</a>
+   * @return Adjusted target
+   */
+  public static double slewLimit(double target, double current, double increment) {
+    double change = target - current;
+    if (change > increment) { change = increment; }
+    else if (change < -increment) { change = -increment; }
+    return current + change;
   }
 }
