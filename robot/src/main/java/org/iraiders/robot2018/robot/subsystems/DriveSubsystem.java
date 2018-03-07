@@ -30,6 +30,7 @@ public class DriveSubsystem extends Subsystem {
   public DriveSubsystem() {
     setupTalons();
     initSmartDash();
+    roboDrive = new DifferentialDrive(frontLeftTalon, frontRightTalon);
     
     if (RobotMap.DEBUG) {
       // For debugging pathfinding in auto
@@ -57,7 +58,6 @@ public class DriveSubsystem extends Subsystem {
   }
   
   public void startTeleop() {
-    roboDrive = new DifferentialDrive(frontLeftTalon, frontRightTalon);
     new EncoderReporter(frontLeftTalon, frontRightTalon).start();
     new OIDrive(this).start();
     if (Robot.prefs.getBoolean("EnableSonicRumble", true)) new RumbleListener().start();
@@ -94,7 +94,7 @@ public class DriveSubsystem extends Subsystem {
    * @return The corrected speed
    * @deprecated {@link edu.wpi.first.wpilibj.drive.RobotDriveBase#applyDeadband(double, double)} has this implemented already
    */
-  public double getDeadband(double speed, double deadbandTolerance) {
+  public static double getDeadband(double speed, double deadbandTolerance) {
     return Math.max(0, // If deadband is greater than abs(speed), do nothing
       Math.abs(speed) - Math.max(deadbandTolerance, 0) // Subtract abs(speed) from larger of deadbandTolerance and 0
     ) * Math.signum(speed); // Restore original sign sign of speed
@@ -105,7 +105,7 @@ public class DriveSubsystem extends Subsystem {
    *
    * @deprecated
    */
-  public double getDeadband(double speed) {
+  public static double getDeadband(double speed) {
     return getDeadband(speed, 0.1);
   }
   
@@ -116,7 +116,7 @@ public class DriveSubsystem extends Subsystem {
    * @return Adjusted speed
    * @deprecated {@link edu.wpi.first.wpilibj.drive.RobotDriveBase} has this implemented in tank drive & arcade drive
    */
-  public double getCurvedSpeed(double speed) {
+  public static double getCurvedSpeed(double speed) {
     if (speed > 1 || speed < -1) throw new NumberFormatException("Number must be between -1 and 1");
     return Math.copySign(Math.pow(speed, 2), speed);
   }
@@ -133,6 +133,7 @@ public class DriveSubsystem extends Subsystem {
    */
   public static double slewLimit(double target, double current, double increment) {
     double change = target - current;
+    if (Math.abs(current) > Math.abs(target)) return target; // Always slow down immediately for safety concerns
     if (change > increment) { change = increment; }
     else if (change < -increment) { change = -increment; }
     return current + change;
