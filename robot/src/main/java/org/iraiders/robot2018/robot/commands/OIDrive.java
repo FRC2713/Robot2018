@@ -34,7 +34,10 @@ public class OIDrive extends Command {
     switch (drive.driveMode.getSelected()) {
       default:
       case XBOX:
-        if (xbox.getRawButtonPressed(3)) useTankInsteadOfBradford = !useTankInsteadOfBradford; // X
+        if (xbox.getRawButtonPressed(3)) { // X
+          useTankInsteadOfBradford = !useTankInsteadOfBradford;
+          OI.rumbleController(xbox, .5, 500);
+        }
         
         if (useTankInsteadOfBradford) {
           drive.roboDrive.tankDrive(-xbox.getY(Hand.kLeft), -xbox.getY(Hand.kRight), true);
@@ -44,7 +47,10 @@ public class OIDrive extends Command {
         break;
         
       case DUALATTACK:
-        if (rightAttack.getRawButtonPressed(11)) useTankInsteadOfBradford = !useTankInsteadOfBradford;
+        if (rightAttack.getRawButtonPressed(11)) {
+          useTankInsteadOfBradford = !useTankInsteadOfBradford;
+          OI.rumbleController(rightAttack, .5, 500);
+        }
         
         if (useTankInsteadOfBradford) {
           drive.roboDrive.tankDrive(-leftAttack.getY(), -rightAttack.getY(), true);
