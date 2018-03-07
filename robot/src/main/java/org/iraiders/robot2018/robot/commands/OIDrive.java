@@ -20,6 +20,7 @@ public class OIDrive extends Command {
   protected void initialize() {
     // This is dangerous, but otherwise the bot would be jerky due to (relatively) infrequently updated outputs
     drive.roboDrive.setMaxOutput(Robot.prefs.getFloat("OIMaxSpeed", 1));
+    
   }
   
   @Override
@@ -29,16 +30,19 @@ public class OIDrive extends Command {
     switch (drive.driveMode.getSelected()) {
       default:
       case BRADFORD:
-        drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft), xbox.getX(Hand.kRight), true);
+        drive.roboDrive.arcadeDrive(drive.limitJoystick(-xbox.getY(Hand.kLeft)), drive.limitJoystick(xbox.getX(Hand.kRight)), true);
         break;
       
       case ARCADE:
-        drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft), xbox.getX(Hand.kLeft), true);
+        drive.roboDrive.arcadeDrive(drive.limitJoystick(-xbox.getY(Hand.kLeft)),drive.limitJoystick(xbox.getX(Hand.kLeft)), true);
         break;
         
       case TANK:
-        drive.roboDrive.tankDrive(-xbox.getY(Hand.kLeft), -xbox.getY(Hand.kRight), true);
+        drive.roboDrive.tankDrive(drive.limitJoystick(-xbox.getY(Hand.kLeft)), drive.limitJoystick(-xbox.getY(Hand.kRight)), true);
         break;
+        
+        
+        
     }
   }
   
