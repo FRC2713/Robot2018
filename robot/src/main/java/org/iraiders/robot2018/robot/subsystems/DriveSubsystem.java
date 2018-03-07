@@ -22,9 +22,6 @@ public class DriveSubsystem extends Subsystem {
   public SendableChooser<OIDrive.OIDriveMode> driveMode = new SendableChooser<>();
   AutonomousCommand a;
   
-  private double joystickChangeLimit = Robot.prefs.getDouble("JoystickChangeLimit", 0.25);
-  private double finalSpeed = 0;
-  
   @Getter private WPI_TalonSRX frontLeftTalon = new WPI_TalonSRX(RobotMap.frontLeftTalonPort);
   @Getter private WPI_TalonSRX frontRightTalon = new WPI_TalonSRX(RobotMap.frontRightTalonPort);
   private WPI_TalonSRX backLeftTalon = new WPI_TalonSRX(RobotMap.backLeftTalonPort);
@@ -125,16 +122,20 @@ public class DriveSubsystem extends Subsystem {
     return Math.copySign(Math.pow(speed, 2), speed);
   }
   
-  
-  public double limitJoystick(double initialSpeed) {
-    double change = 0;
-    change = initialSpeed - finalSpeed;
-    if (change > joystickChangeLimit) {
-      change = joystickChangeLimit;
-    } else if (change < -joystickChangeLimit) {
-      change = -joystickChangeLimit;
-      finalSpeed += change;
-    }
-    return finalSpeed;
+  /**
+   * Given a target number, current number, and increment, adjust current number by increment until we reach target
+   * This is useful particularly in {@link OIDrive} where we need to ramp up to user input to avoid jerkiness
+   *
+   * @param target The number you eventually want to get to (ie. joystick speed)
+   * @param current The current number you are at (so we know what to start at for the increment)
+   * @param increment How much to increase current by until current = target
+   * @see <a href="https://en.wikipedia.org/wiki/Slew_rate">Wikipedia article on Slew rates</a>
+   * @return Adjusted target
+   */
+  public static double slewLimit(double target, double current, double increment) {
+    double change = target - current;
+    if (change > increment) { change = increment; }
+    else if (change < -increment) { change = -increment; }
+    return current + change;
   }
 }

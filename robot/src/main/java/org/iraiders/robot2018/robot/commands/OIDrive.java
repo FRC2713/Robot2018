@@ -30,19 +30,16 @@ public class OIDrive extends Command {
     switch (drive.driveMode.getSelected()) {
       default:
       case BRADFORD:
-        drive.roboDrive.arcadeDrive(drive.limitJoystick(-xbox.getY(Hand.kLeft)), drive.limitJoystick(xbox.getX(Hand.kRight)), true);
+        drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft), xbox.getX(Hand.kRight), true);
         break;
       
       case ARCADE:
-        drive.roboDrive.arcadeDrive(drive.limitJoystick(-xbox.getY(Hand.kLeft)),drive.limitJoystick(xbox.getX(Hand.kLeft)), true);
+        drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft), xbox.getX(Hand.kLeft), true);
         break;
         
       case TANK:
-        drive.roboDrive.tankDrive(drive.limitJoystick(-xbox.getY(Hand.kLeft)), drive.limitJoystick(-xbox.getY(Hand.kRight)), true);
+        drive.roboDrive.tankDrive(-xbox.getY(Hand.kLeft), -xbox.getY(Hand.kRight), true);
         break;
-        
-        
-        
     }
   }
   
