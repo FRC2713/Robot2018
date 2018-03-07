@@ -13,6 +13,7 @@ public class OIDrive extends Command {
   private XboxController xbox = OI.getXBoxController();
   private Joystick leftAttack = OI.getLeftAttack();
   private Joystick rightAttack = OI.getRightAttack();
+  private boolean useTankInsteadOfBradford = false;
   
   public OIDrive(DriveSubsystem drive) {
     this.drive = drive;
@@ -28,23 +29,28 @@ public class OIDrive extends Command {
   @Override
   protected void execute() {
     drive.roboDrive.setSafetyEnabled(false);
-    // Invert directions, on an XBox controller the forward direction is negative
+    
+    // Invert directions, on a joystick controller the forward direction is negative
     switch (drive.driveMode.getSelected()) {
       default:
-      case BRADFORD:
-        drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft), xbox.getX(Hand.kRight), true);
-        break;
-      
-      case ARCADE:
-        drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft), xbox.getX(Hand.kLeft), true);
-        break;
+      case XBOX:
+        if (xbox.getRawButtonPressed(3)) useTankInsteadOfBradford = !useTankInsteadOfBradford; // X
         
-      case TANK:
-        drive.roboDrive.tankDrive(-xbox.getY(Hand.kLeft), -xbox.getY(Hand.kRight), true);
+        if (useTankInsteadOfBradford) {
+          drive.roboDrive.tankDrive(-xbox.getY(Hand.kLeft), -xbox.getY(Hand.kRight), true);
+        } else {
+          drive.roboDrive.arcadeDrive(-xbox.getY(Hand.kLeft), xbox.getX(Hand.kRight), true);
+        }
         break;
         
       case DUALATTACK:
-        drive.roboDrive.tankDrive(-leftAttack.getY(), -rightAttack.getY(), true);
+        if (rightAttack.getRawButtonPressed(11)) useTankInsteadOfBradford = !useTankInsteadOfBradford;
+        
+        if (useTankInsteadOfBradford) {
+          drive.roboDrive.tankDrive(-leftAttack.getY(), -rightAttack.getY(), true);
+        } else {
+          drive.roboDrive.arcadeDrive(-leftAttack.getY(), rightAttack.getX(), true);
+        }
         break;
     }
   }
@@ -61,6 +67,6 @@ public class OIDrive extends Command {
   }
   
   public enum OIDriveMode {
-    TANK, BRADFORD, ARCADE, DUALATTACK
+    XBOX, DUALATTACK
   }
 }
