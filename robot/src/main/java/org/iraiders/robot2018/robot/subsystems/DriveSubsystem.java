@@ -132,7 +132,7 @@ public class DriveSubsystem extends Subsystem {
    * @return Adjusted target
    */
   public static double slewLimit(double target, double current, double increment) {
-    double change = target - current;
+    double change = Math.abs(target) - Math.abs(current);
     if (Math.abs(current) > Math.abs(target)) return target; // Always slow down immediately for safety concerns
     if (change > increment) { change = increment; }
     else if (change < -increment) { change = -increment; }
