@@ -20,7 +20,6 @@ public class DriveTests {
   }
   
   @Test public void slewUsesNegativesCorrectly() {
-    System.out.println(DriveSubsystem.slewLimit(-.8, -.7, .1));
-    assert DriveSubsystem.slewLimit(-.8, -.7, .1) == -.8;
+    assert DriveSubsystem.slewLimit(-.6, -.4, .2) == -.6;
   }
 }
