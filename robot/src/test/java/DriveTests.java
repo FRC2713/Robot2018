@@ -7,7 +7,7 @@ public class DriveTests {
   @Test public void slewSlowImmedietly() {
     double currentSpeed = .9;
     double targetSpeed = -.1;
-    assert DriveSubsystem.slewLimit(targetSpeed, currentSpeed, .2) == -.1;
+    assert DriveSubsystem.slewLimit(targetSpeed, currentSpeed, .01) == -.1;
   }
   
   @Test public void slewWillNotSurpassTarget() {
@@ -20,6 +20,8 @@ public class DriveTests {
   }
   
   @Test public void slewUsesNegativesCorrectly() {
-    assert DriveSubsystem.slewLimit(-.6, -.4, .2) == -.6;
+    assert DriveSubsystem.slewLimit(-.6, -.4, .2) == -.6; // Negatives
+    assert DriveSubsystem.slewLimit(-.2, -.4, .2) == -.2; // Negatives becoming more positive
+    assert DriveSubsystem.slewLimit(0, -.4, .01) == 0; // Negatives slowing
   }
 }

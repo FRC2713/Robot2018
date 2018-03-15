@@ -5,7 +5,8 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lombok.Getter;
-import org.iraiders.robot2018.robot.commands.auto.AutonomousCommand;
+import org.iraiders.robot2018.robot.commands.auto.PathfindingAuto;
+import org.iraiders.robot2018.robot.commands.auto.VisionAuto;
 import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 import org.iraiders.robot2018.robot.subsystems.GrabberSubsystem;
@@ -21,7 +22,7 @@ public class Robot extends IterativeRobot {
   @Getter private static WinchSubsystem winchSubsystem;
   @Getter private static GrabberSubsystem grabberSubsystem;
   
-  private AutonomousCommand autonomousCommand;
+  private PathfindingAuto pathfindingAuto;
 	
   private long autoStart = 0;
  
@@ -40,9 +41,9 @@ public class Robot extends IterativeRobot {
    * Initialize all subsystems here
    */
   private void initSubsystems() {
-    armSubsystem = new ArmSubsystem();
     winchSubsystem = new WinchSubsystem();
     grabberSubsystem = new GrabberSubsystem();
+    armSubsystem = new ArmSubsystem();
     driveSubsystem = new DriveSubsystem();
   }
   
@@ -61,12 +62,18 @@ public class Robot extends IterativeRobot {
   private void initDash() {
     // We need to set the name for every chooser or SmartDash won't pick it up
     RobotMap.startPosition.setName("Auto Position");
-    RobotMap.startPosition.addDefault("Guess", AutonomousCommand.MatchStartPosition.GUESS);
-    RobotMap.startPosition.addObject("Left", AutonomousCommand.MatchStartPosition.LEFT);
-    RobotMap.startPosition.addObject("Middle", AutonomousCommand.MatchStartPosition.MIDDLE);
-    RobotMap.startPosition.addObject("Right", AutonomousCommand.MatchStartPosition.RIGHT);
-    
+    RobotMap.startPosition.addDefault("Guess", PathfindingAuto.MatchStartPosition.GUESS);
+    RobotMap.startPosition.addObject("Left", PathfindingAuto.MatchStartPosition.LEFT);
+    RobotMap.startPosition.addObject("Middle", PathfindingAuto.MatchStartPosition.MIDDLE);
+    RobotMap.startPosition.addObject("Right", PathfindingAuto.MatchStartPosition.RIGHT);
     SmartDashboard.putData(RobotMap.startPosition);
+    
+    RobotMap.whichAuto.setName("Which Auto");
+    RobotMap.whichAuto.addDefault("Pathfinding", "PATHFINDING");
+    RobotMap.whichAuto.addObject("Vision", "VISION");
+    RobotMap.whichAuto.addObject("Emergency", "MVA");
+    RobotMap.whichAuto.addObject("None", "NONE");
+    SmartDashboard.putData(RobotMap.whichAuto);
   }
   
   @Override
@@ -85,9 +92,23 @@ public class Robot extends IterativeRobot {
   @Override
   public void autonomousInit() {
     autoStart = System.currentTimeMillis();
-    if (!RobotMap.USE_MINIMUM_VIABLE_AUTO && !prefs.getBoolean("DisableAutonomus", false)) {
-      autonomousCommand = new AutonomousCommand(driveSubsystem, armSubsystem, grabberSubsystem);
-      autonomousCommand.start();
+    
+    switch(RobotMap.whichAuto.getSelected()) {
+      case "PATHFINDING":
+        pathfindingAuto = new PathfindingAuto(driveSubsystem, armSubsystem, grabberSubsystem);
+        pathfindingAuto.start();
+        break;
+        
+      case "VISION":
+        new VisionAuto(driveSubsystem, armSubsystem).start();
+        break;
+        
+      case "MVA":
+        RobotMap.USE_MINIMUM_VIABLE_AUTO = true;
+        break;
+        
+      case "NONE":
+        break;
     }
   }
   
@@ -95,7 +116,7 @@ public class Robot extends IterativeRobot {
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
     
-    if (RobotMap.USE_MINIMUM_VIABLE_AUTO && !prefs.getBoolean("DisableAutonomus", false)) {
+    if (RobotMap.USE_MINIMUM_VIABLE_AUTO) {
       double speed = .6, timeout = 5;
       if ((System.currentTimeMillis() - autoStart) < (timeout * 1000)) driveSubsystem.setDriveSpeed(speed);
     }
@@ -103,7 +124,7 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void teleopInit() {
-	  if (autonomousCommand != null) autonomousCommand.cancel();
+	  if (pathfindingAuto != null) pathfindingAuto.cancel();
    
 	  driveSubsystem.startTeleop();
 	  armSubsystem.startTeleop();

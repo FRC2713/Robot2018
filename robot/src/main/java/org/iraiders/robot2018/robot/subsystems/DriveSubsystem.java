@@ -12,7 +12,7 @@ import org.iraiders.robot2018.robot.OI;
 import org.iraiders.robot2018.robot.Robot;
 import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.commands.OIDrive;
-import org.iraiders.robot2018.robot.commands.auto.AutonomousCommand;
+import org.iraiders.robot2018.robot.commands.auto.PathfindingAuto;
 import org.iraiders.robot2018.robot.commands.auto.VisionAuto;
 import org.iraiders.robot2018.robot.commands.feedback.EncoderReporter;
 import org.iraiders.robot2018.robot.commands.feedback.RumbleListener;
@@ -20,7 +20,7 @@ import org.iraiders.robot2018.robot.commands.feedback.RumbleListener;
 public class DriveSubsystem extends Subsystem {
   public DifferentialDrive roboDrive;
   public SendableChooser<OIDrive.OIDriveMode> driveMode = new SendableChooser<>();
-  AutonomousCommand a;
+  PathfindingAuto a;
   
   @Getter private WPI_TalonSRX frontLeftTalon = new WPI_TalonSRX(RobotMap.frontLeftTalonPort);
   @Getter private WPI_TalonSRX frontRightTalon = new WPI_TalonSRX(RobotMap.frontRightTalonPort);
@@ -34,7 +34,7 @@ public class DriveSubsystem extends Subsystem {
     
     if (RobotMap.DEBUG) {
       // For debugging pathfinding in auto
-      if (a == null) a = new AutonomousCommand(this, Robot.getArmSubsystem(), Robot.getGrabberSubsystem());
+      if (a == null) a = new PathfindingAuto(this, Robot.getArmSubsystem(), Robot.getGrabberSubsystem());
       a.cancel();
       JoystickButton testPathfinding = new JoystickButton(OI.getXBoxController(), 5); // LB
       testPathfinding.whenPressed(a);
@@ -132,6 +132,7 @@ public class DriveSubsystem extends Subsystem {
    * @return Adjusted target
    */
   public static double slewLimit(double target, double current, double increment) {
+    increment = Math.abs(increment); // Professionally validating user input right here 👌
     double change = target - current;
     if (Math.abs(current) > Math.abs(target)) return target; // Always slow down immediately for safety concerns
     if (change > increment) { change = increment; }

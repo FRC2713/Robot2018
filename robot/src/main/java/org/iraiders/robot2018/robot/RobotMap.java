@@ -3,7 +3,7 @@ package org.iraiders.robot2018.robot;
 import com.analog.adis16448.frc.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import org.iraiders.robot2018.robot.commands.auto.AutonomousCommand;
+import org.iraiders.robot2018.robot.commands.auto.PathfindingAuto;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Length;
@@ -42,7 +42,8 @@ public class RobotMap {
   public static final Ultrasonic frontUltrasonic = new Ultrasonic(9, 8);
   
   // SmartDash Settings
-  public static SendableChooser<AutonomousCommand.MatchStartPosition> startPosition = new SendableChooser<>();
+  public static SendableChooser<PathfindingAuto.MatchStartPosition> startPosition = new SendableChooser<>();
+  public static SendableChooser<String> whichAuto = new SendableChooser<>();
   
   // Measurements
   public static final Measure<Double, Length> WHEEL_DIAMETER = Measure.valueOf(6d, NonSI.INCH);
@@ -53,6 +54,6 @@ public class RobotMap {
    * If all else fails, set this to true to enable Minimum Viable Autonomous, which literally only goes forward for a bit
    * For if our sensors are gone, the code is broke, or the robot is on fire
    */
-  public static final boolean USE_MINIMUM_VIABLE_AUTO = false;
+  public static boolean USE_MINIMUM_VIABLE_AUTO = false;
   
 }

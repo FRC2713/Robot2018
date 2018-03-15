@@ -16,12 +16,12 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AutonomousCommand extends CommandGroup {
+public class PathfindingAuto extends CommandGroup {
   private final DriveSubsystem driveSubsystem;
   private final ArmSubsystem armSubsystem;
   private final GrabberSubsystem grabberSubsystem;
   
-  public AutonomousCommand(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, GrabberSubsystem grabberSubsystem){
+  public PathfindingAuto(DriveSubsystem driveSubsystem, ArmSubsystem armSubsystem, GrabberSubsystem grabberSubsystem){
     this.driveSubsystem = driveSubsystem;
     this.armSubsystem = armSubsystem;
     this.grabberSubsystem = grabberSubsystem;
@@ -35,9 +35,6 @@ public class AutonomousCommand extends CommandGroup {
   @Override
   protected void initialize() {
     RobotMap.imu.reset();
-    if (!RobotMap.USE_MINIMUM_VIABLE_AUTO) {
-      //doAuto(RobotMap.startPosition.getSelected(), MatchData.getOwnedSide(MatchData.GameFeature.SWITCH_NEAR));
-    }
   }
   
   private void doAuto(MatchStartPosition robotLocation, MatchData.OwnedSide ownedSwitchSide) {
