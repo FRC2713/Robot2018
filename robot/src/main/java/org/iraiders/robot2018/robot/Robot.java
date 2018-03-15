@@ -2,6 +2,7 @@
 package org.iraiders.robot2018.robot;
 
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class Robot extends IterativeRobot {
   @Getter private static WinchSubsystem winchSubsystem;
   @Getter private static GrabberSubsystem grabberSubsystem;
   
-  private PathfindingAuto pathfindingAuto;
+  private Command autoCommand;
 	
   private long autoStart = 0;
  
@@ -95,12 +96,13 @@ public class Robot extends IterativeRobot {
     
     switch(RobotMap.whichAuto.getSelected()) {
       case "PATHFINDING":
-        pathfindingAuto = new PathfindingAuto(driveSubsystem, armSubsystem, grabberSubsystem);
-        pathfindingAuto.start();
+        autoCommand = new PathfindingAuto(driveSubsystem, armSubsystem, grabberSubsystem);
+        autoCommand.start();
         break;
         
       case "VISION":
-        new VisionAuto(driveSubsystem, armSubsystem).start();
+        autoCommand = new VisionAuto(driveSubsystem, armSubsystem);
+        autoCommand.start();
         break;
         
       case "MVA":
@@ -124,7 +126,7 @@ public class Robot extends IterativeRobot {
 
   @Override
   public void teleopInit() {
-	  if (pathfindingAuto != null) pathfindingAuto.cancel();
+	  if (autoCommand != null) autoCommand.cancel();
    
 	  driveSubsystem.startTeleop();
 	  armSubsystem.startTeleop();
