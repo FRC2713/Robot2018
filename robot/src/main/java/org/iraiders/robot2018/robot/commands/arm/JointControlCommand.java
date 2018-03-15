@@ -51,7 +51,7 @@ abstract class JointControlCommand extends PIDCommand {
   
   @Override
   protected boolean isFinished() {
-    return getPIDController().onTarget();
+    return false;
   }
 }
 
