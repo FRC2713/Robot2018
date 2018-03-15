@@ -3,7 +3,10 @@ package org.iraiders.robot2018.robot.commands.arm;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.iraiders.robot2018.robot.Robot;
+import org.iraiders.robot2018.robot.commands.grabber.ControlGrabber;
 import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
+import org.iraiders.robot2018.robot.subsystems.GrabberSubsystem;
 
 import static org.iraiders.robot2018.robot.subsystems.ArmSubsystem.ArmPosition;
 
@@ -30,8 +33,9 @@ public class ArmCommand extends CommandGroup {
         break;
         
       case BOX_PICKUP:
+        addParallel(new ControlGrabber(Robot.getGrabberSubsystem(), GrabberSubsystem.GrabberPosition.OPEN));
         shoulderPosition = 800;
-        elbowPosition = 245;
+        elbowPosition = 225;
         break;
         
       case SWITCH_DELIVER:
