@@ -34,10 +34,10 @@ public class ArmSubsystem extends Subsystem {
     JoystickButton btn4 = new JoystickButton(arcade, 4);
     JoystickButton btn3 = new JoystickButton(arcade, 3);
     
-    btn8.whenReleased(new ArmCommand(this, ArmPosition.SCALE_DELIVER_HIGH));
-    btn7.whenReleased(new ArmCommand(this, ArmPosition.BOX_PROTECT));
-    btn3.whenReleased(new ArmCommand(this, ArmPosition.BOX_PICKUP));
-    btn4.whenReleased(new ArmCommand(this, ArmPosition.SWITCH_DELIVER));
+    btn8.whileHeld(new ArmCommand(this, ArmPosition.SCALE_DELIVER_HIGH));
+    btn7.whileHeld(new ArmCommand(this, ArmPosition.BOX_PROTECT));
+    btn3.whileHeld(new ArmCommand(this, ArmPosition.BOX_PICKUP));
+    btn4.whileHeld(new ArmCommand(this, ArmPosition.SWITCH_DELIVER));
   
     if (RobotMap.DEBUG) {
       double maxSpeed = .8;
