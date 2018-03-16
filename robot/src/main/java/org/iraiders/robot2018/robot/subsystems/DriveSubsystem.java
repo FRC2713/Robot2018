@@ -2,6 +2,7 @@ package org.iraiders.robot2018.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -32,7 +33,7 @@ public class DriveSubsystem extends Subsystem {
     initSmartDash();
     roboDrive = new DifferentialDrive(frontLeftTalon, frontRightTalon);
     
-    if (RobotMap.DEBUG) {
+    if (RobotMap.DEBUG && !DriverStation.getInstance().isFMSAttached()) {
       // For debugging pathfinding in auto
       if (a == null) a = new PathfindingAuto(this, Robot.getArmSubsystem(), Robot.getGrabberSubsystem());
       a.cancel();
