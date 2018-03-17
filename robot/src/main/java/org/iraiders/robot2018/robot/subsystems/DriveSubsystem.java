@@ -51,7 +51,7 @@ public class DriveSubsystem extends Subsystem {
   }
   
   private void initSmartDash() {
-    //driveMode.setName(this.getName(), "Drive Mode");
+    driveMode.setName("Control Mode");
     driveMode.addDefault("XBox", OIDrive.OIDriveMode.XBOX);
     driveMode.addObject("Dual Attacks", OIDrive.OIDriveMode.DUALATTACK);
     

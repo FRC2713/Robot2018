@@ -18,7 +18,8 @@ public class MotionProfileFollowCommand extends Command {
   private final EncoderFollower left;
   private final EncoderFollower right;
   
-  private final int maxFollowTime = Robot.prefs.getInt("motionProfileMaxFollowTime", 0);
+  private final int maxFollowTime = Robot.prefs.getInt("motionProfileMaxFollowTime", 6000);
+  private final int autoMaxSpeed = Robot.prefs.getInt("autoMaxSpeed", 1);
   private double startTime;
   
   public MotionProfileFollowCommand(WPI_TalonSRX leftTalon, WPI_TalonSRX rightTalon, TankModifier trajectory) {
@@ -58,9 +59,9 @@ public class MotionProfileFollowCommand extends Command {
     double turn = 0.8 * (-1.0/80.0) * angleDifference;
     
     if (subtract) {
-      talon.set(speed - turn);
+      talon.set((speed + turn) * autoMaxSpeed);
     } else {
-      talon.set(speed + turn);
+      talon.set((speed + turn) * autoMaxSpeed);
     }
   }
   

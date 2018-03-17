@@ -29,7 +29,7 @@ public class OIDrive extends Command {
     drive.roboDrive.setMaxOutput(Robot.prefs.getFloat("OIMaxSpeed", 1));
     drive.roboDrive.setSafetyEnabled(false);
     
-    double joystickChangeLimit = Robot.prefs.getDouble("JoystickChangeLimit", 0.25);
+    double joystickChangeLimit = Robot.prefs.getDouble("JoystickChangeLimit", 0.05);
     
     double measuredLeft;
     double measuredRight;
