@@ -34,7 +34,7 @@ public class ArmCommand extends CommandGroup {
         
       case BOX_PICKUP:
         addParallel(new ControlGrabber(Robot.getGrabberSubsystem(), GrabberSubsystem.GrabberPosition.OPEN));
-        shoulderPosition = 800;
+        shoulderPosition = 830;
         elbowPosition = 225;
         break;
         
