@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lombok.Getter;
 import org.iraiders.robot2018.robot.commands.auto.PathfindingAuto;
+import org.iraiders.robot2018.robot.commands.auto.TimebasedAuto;
 import org.iraiders.robot2018.robot.commands.auto.VisionAuto;
 import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
@@ -70,10 +71,11 @@ public class Robot extends IterativeRobot {
     SmartDashboard.putData(RobotMap.startPosition);
     
     RobotMap.whichAuto.setName("Which Auto");
-    RobotMap.whichAuto.addDefault("Pathfinding", "PATHFINDING");
-    RobotMap.whichAuto.addObject("Vision", "VISION");
-    RobotMap.whichAuto.addObject("Emergency", "MVA");
-    RobotMap.whichAuto.addObject("None", "NONE");
+    RobotMap.whichAuto.addObject("Pathfinding", AutoModes.PATHFINDING);
+    RobotMap.whichAuto.addObject("Vision", AutoModes.VISION);
+    RobotMap.whichAuto.addObject("Timed Scale", AutoModes.TIME);
+    RobotMap.whichAuto.addDefault("Minimum", AutoModes.MINIMUM);
+    RobotMap.whichAuto.addObject("None", AutoModes.NONE);
     SmartDashboard.putData(RobotMap.whichAuto);
   }
   
@@ -95,21 +97,27 @@ public class Robot extends IterativeRobot {
     autoStart = System.currentTimeMillis();
     
     switch(RobotMap.whichAuto.getSelected()) {
-      case "PATHFINDING":
+      case PATHFINDING:
         autoCommand = new PathfindingAuto(driveSubsystem, armSubsystem, grabberSubsystem);
         autoCommand.start();
         break;
         
-      case "VISION":
+      case VISION:
         autoCommand = new VisionAuto(driveSubsystem, armSubsystem);
         autoCommand.start();
         break;
         
-      case "MVA":
+      case TIME:
+        autoCommand = new TimebasedAuto(driveSubsystem, armSubsystem, grabberSubsystem);
+        autoCommand.start();
+        break;
+        
+      case MINIMUM:
         RobotMap.USE_MINIMUM_VIABLE_AUTO = true;
         break;
         
-      case "NONE":
+      case NONE:
+      default:
         break;
     }
   }
@@ -145,5 +153,9 @@ public class Robot extends IterativeRobot {
   
   public static double normalize(double value, int min, int max) {
     return (value - min) / (max - min);
+  }
+  
+  public enum AutoModes {
+    PATHFINDING, VISION, TIME, MINIMUM, NONE
   }
 }

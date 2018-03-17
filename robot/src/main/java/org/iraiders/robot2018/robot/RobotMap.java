@@ -43,7 +43,7 @@ public class RobotMap {
   
   // SmartDash Settings
   public static SendableChooser<PathfindingAuto.MatchStartPosition> startPosition = new SendableChooser<>();
-  public static SendableChooser<String> whichAuto = new SendableChooser<>();
+  public static SendableChooser<Robot.AutoModes> whichAuto = new SendableChooser<>();
   
   // Measurements
   public static final Measure<Double, Length> WHEEL_DIAMETER = Measure.valueOf(6d, NonSI.INCH);

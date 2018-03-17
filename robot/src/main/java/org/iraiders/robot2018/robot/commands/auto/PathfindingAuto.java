@@ -48,18 +48,27 @@ public class PathfindingAuto extends CommandGroup {
           TankModifier tankModifier = Trajectories.getTankModifierOfPoints(Trajectories.leftStartToSwitchSameSide);
           addParallel(new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), driveSubsystem.getFrontRightTalon(), tankModifier));
           addParallel(new ArmCommand(armSubsystem, ArmSubsystem.ArmPosition.SWITCH_DELIVER));
-          addSequential(new ControlGrabber(grabberSubsystem, GrabberSubsystem.GrabberPosition.OPEN), 2000);
+          addSequential(new ControlGrabber(grabberSubsystem, GrabberSubsystem.GrabberPosition.OPEN), 3000);
         } else {
-          // Scale on other side
+          TankModifier tankModifier = Trajectories.getTankModifierOfPoints(Trajectories.leftStartToScaleSameSide);
+          addParallel(new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), driveSubsystem.getFrontRightTalon(), tankModifier));
+          addParallel(new ArmCommand(armSubsystem, ArmSubsystem.ArmPosition.SCALE_DELIVER_HIGH));
+          addSequential(new ControlGrabber(grabberSubsystem, GrabberSubsystem.GrabberPosition.OPEN), 3000);
         }
         break;
       
       case MIDDLE:
         // Middle Starting Point
         if (ownedSwitchSide == MatchData.OwnedSide.LEFT) {
-          // Scale on same side as us
+          TankModifier tankModifier = Trajectories.getTankModifierOfPoints(Trajectories.middleStartToSwitchLeftSide);
+          addParallel(new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), driveSubsystem.getFrontRightTalon(), tankModifier));
+          addParallel(new ArmCommand(armSubsystem, ArmSubsystem.ArmPosition.SWITCH_DELIVER));
+          addSequential(new ControlGrabber(grabberSubsystem, GrabberSubsystem.GrabberPosition.OPEN), 3000);
         } else {
-          // Scale on other side
+          TankModifier tankModifier = Trajectories.getTankModifierOfPoints(Trajectories.middleStartToSwitchRightSide);
+          addParallel(new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), driveSubsystem.getFrontRightTalon(), tankModifier));
+          addParallel(new ArmCommand(armSubsystem, ArmSubsystem.ArmPosition.SWITCH_DELIVER));
+          addSequential(new ControlGrabber(grabberSubsystem, GrabberSubsystem.GrabberPosition.OPEN), 3000);
         }
         break;
       
@@ -67,11 +76,15 @@ public class PathfindingAuto extends CommandGroup {
         // Right Starting Point
         if (ownedSwitchSide == MatchData.OwnedSide.RIGHT) {
           // Scale on same side as us
-          //driveSubsystem.getFrontLeftTalon().selectProfileSlot(0,0);
           TankModifier trajectory = Trajectories.getTankModifierOfPoints(Trajectories.rightStartToSwitchSameSide);
           addParallel(new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), driveSubsystem.getFrontRightTalon(), trajectory));
+          addParallel(new ArmCommand(armSubsystem, ArmSubsystem.ArmPosition.SWITCH_DELIVER));
+          addSequential(new ControlGrabber(grabberSubsystem, GrabberSubsystem.GrabberPosition.OPEN), 3000);
         } else {
-          // Scale on other side
+          TankModifier tankModifier = Trajectories.getTankModifierOfPoints(Trajectories.rightStartToScaleSameSide);
+          addParallel(new MotionProfileFollowCommand(driveSubsystem.getFrontLeftTalon(), driveSubsystem.getFrontRightTalon(), tankModifier));
+          addParallel(new ArmCommand(armSubsystem, ArmSubsystem.ArmPosition.SWITCH_DELIVER));
+          addSequential(new ControlGrabber(grabberSubsystem, GrabberSubsystem.GrabberPosition.OPEN), 3000);
         }
         break;
     }
