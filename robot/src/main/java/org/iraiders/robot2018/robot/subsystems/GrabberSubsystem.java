@@ -1,7 +1,6 @@
 package org.iraiders.robot2018.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -11,8 +10,6 @@ import org.iraiders.robot2018.robot.commands.grabber.ControlGrabber;
 
 public class GrabberSubsystem extends Subsystem {
   public final WPI_TalonSRX grabberMotor = new WPI_TalonSRX(RobotMap.grabberTalonPort);
-  public final DigitalInput startTrigger = new DigitalInput(3);
-  public final DigitalInput endTrigger = new DigitalInput(4);
   private Joystick arcade = OI.getArcadeController();
   
   private JoystickButton open = new JoystickButton(arcade, 6);
