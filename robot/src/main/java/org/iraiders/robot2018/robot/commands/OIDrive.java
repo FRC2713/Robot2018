@@ -38,7 +38,7 @@ public class OIDrive extends Command {
     switch (drive.driveMode.getSelected()) {
       default:
       case XBOX:
-        if (xbox.getRawButtonPressed(3)) { // X
+        if (xbox.getRawButtonPressed(8)) { // Start button
           useTankInsteadOfBradford = !useTankInsteadOfBradford;
           lastRightStickVal = 0;
           lastRightStickVal = 0;
