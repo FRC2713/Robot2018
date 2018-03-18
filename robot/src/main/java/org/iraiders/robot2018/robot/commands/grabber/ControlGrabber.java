@@ -7,9 +7,9 @@ import org.iraiders.robot2018.robot.subsystems.GrabberSubsystem;
 public class ControlGrabber extends CommandGroup {
   public ControlGrabber(GrabberSubsystem subsystem, GrabberSubsystem.GrabberPosition position) {
     if (position.equals(GrabberSubsystem.GrabberPosition.OPEN)) {
-      addParallel(new SimpleMotorCommand(subsystem, subsystem.grabberMotor, 0.8), 3000);
+      addParallel(new SimpleMotorCommand(subsystem, subsystem.grabberMotor, 1), 3);
     } else if (position.equals(GrabberSubsystem.GrabberPosition.CLOSE)) {
-      addParallel(new SimpleMotorCommand(subsystem, subsystem.grabberMotor, -0.8), 3000);
+      addParallel(new SimpleMotorCommand(subsystem, subsystem.grabberMotor, -1), 3);
     }
   }
 }
