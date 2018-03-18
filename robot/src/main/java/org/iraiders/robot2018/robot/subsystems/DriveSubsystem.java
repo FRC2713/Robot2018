@@ -32,6 +32,7 @@ public class DriveSubsystem extends Subsystem {
     setupTalons();
     initSmartDash();
     roboDrive = new DifferentialDrive(frontLeftTalon, frontRightTalon);
+    roboDrive.setSafetyEnabled(false);
     
     if (RobotMap.DEBUG && !DriverStation.getInstance().isFMSAttached()) {
       // For debugging pathfinding in auto
@@ -60,6 +61,7 @@ public class DriveSubsystem extends Subsystem {
   
   public void startTeleop() {
     new EncoderReporter(frontLeftTalon, frontRightTalon).start();
+    roboDrive.setSafetyEnabled(true);
     new OIDrive(this).start();
     if (Robot.prefs.getBoolean("EnableSonicRumble", true)) new RumbleListener().start();
   }

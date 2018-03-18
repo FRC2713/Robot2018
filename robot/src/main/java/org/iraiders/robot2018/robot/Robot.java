@@ -7,8 +7,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lombok.Getter;
 import org.iraiders.robot2018.robot.commands.auto.PathfindingAuto;
-import org.iraiders.robot2018.robot.commands.auto.TimebasedAuto;
 import org.iraiders.robot2018.robot.commands.auto.VisionAuto;
+import org.iraiders.robot2018.robot.commands.auto.deadreconing.TimedScaleAuto;
+import org.iraiders.robot2018.robot.commands.auto.deadreconing.TimedSwitchAuto;
 import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 import org.iraiders.robot2018.robot.subsystems.GrabberSubsystem;
@@ -73,7 +74,8 @@ public class Robot extends IterativeRobot {
     RobotMap.whichAuto.setName("Which Auto");
     RobotMap.whichAuto.addObject("Pathfinding", AutoModes.PATHFINDING);
     RobotMap.whichAuto.addObject("Vision", AutoModes.VISION);
-    RobotMap.whichAuto.addObject("Timed Scale", AutoModes.TIME);
+    RobotMap.whichAuto.addObject("Timed Switch", AutoModes.TIMED_SWITCH);
+    RobotMap.whichAuto.addObject("Timed Scale", AutoModes.TIMED_SCALE);
     RobotMap.whichAuto.addDefault("Minimum", AutoModes.MINIMUM);
     RobotMap.whichAuto.addObject("None", AutoModes.NONE);
     SmartDashboard.putData(RobotMap.whichAuto);
@@ -95,6 +97,8 @@ public class Robot extends IterativeRobot {
   @Override
   public void autonomousInit() {
     autoStart = System.currentTimeMillis();
+    driveSubsystem.roboDrive.setSafetyEnabled(false);
+    DriverStation.reportWarning("Using " + RobotMap.whichAuto.getSelected().toString(), false);
     
     switch(RobotMap.whichAuto.getSelected()) {
       case PATHFINDING:
@@ -107,8 +111,13 @@ public class Robot extends IterativeRobot {
         autoCommand.start();
         break;
         
-      case TIME:
-        autoCommand = new TimebasedAuto(driveSubsystem, armSubsystem, grabberSubsystem);
+      case TIMED_SWITCH:
+        autoCommand = new TimedSwitchAuto(driveSubsystem, armSubsystem, grabberSubsystem);
+        autoCommand.start();
+        break;
+        
+      case TIMED_SCALE:
+        autoCommand = new TimedScaleAuto(driveSubsystem, armSubsystem, grabberSubsystem);
         autoCommand.start();
         break;
         
@@ -127,8 +136,12 @@ public class Robot extends IterativeRobot {
     Scheduler.getInstance().run();
     
     if (RobotMap.USE_MINIMUM_VIABLE_AUTO) {
-      double speed = .6, timeout = 5;
-      if ((System.currentTimeMillis() - autoStart) < (timeout * 1000)) driveSubsystem.setDriveSpeed(speed);
+      double speed = .6, timeout = 2.6;
+      if ((System.currentTimeMillis() - autoStart) < (timeout * 1000)) {
+        driveSubsystem.setDriveSpeed(speed);
+      } else {
+        driveSubsystem.setDriveSpeed(0);
+      }
     }
   }
 
@@ -156,6 +169,6 @@ public class Robot extends IterativeRobot {
   }
   
   public enum AutoModes {
-    PATHFINDING, VISION, TIME, MINIMUM, NONE
+    PATHFINDING, VISION, TIMED_SCALE, TIMED_SWITCH, MINIMUM, NONE
   }
 }
