@@ -44,6 +44,8 @@ public class DriveSubsystem extends Subsystem {
       JoystickButton testSebbys = new JoystickButton(OI.getXBoxController(), 6); // RB
       testSebbys.whenPressed(new VisionAuto(this, Robot.getArmSubsystem()));
     }
+  
+    new EncoderReporter(frontLeftTalon, frontRightTalon).start();
   }
   
   @Override
@@ -60,7 +62,6 @@ public class DriveSubsystem extends Subsystem {
   }
   
   public void startTeleop() {
-    new EncoderReporter(frontLeftTalon, frontRightTalon).start();
     roboDrive.setSafetyEnabled(true);
     new OIDrive(this).start();
     if (Robot.prefs.getBoolean("EnableSonicRumble", true)) new RumbleListener().start();

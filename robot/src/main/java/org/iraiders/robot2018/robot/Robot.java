@@ -25,6 +25,8 @@ public class Robot extends IterativeRobot {
   @Getter private static WinchSubsystem winchSubsystem;
   @Getter private static GrabberSubsystem grabberSubsystem;
   
+  private static final Compressor compressor = new Compressor();
+  
   private Command autoCommand;
 	
   private long autoStart = 0;
@@ -44,6 +46,8 @@ public class Robot extends IterativeRobot {
    * Initialize all subsystems here
    */
   private void initSubsystems() {
+    compressor.start();
+    
     winchSubsystem = new WinchSubsystem();
     grabberSubsystem = new GrabberSubsystem();
     armSubsystem = new ArmSubsystem();
@@ -63,6 +67,9 @@ public class Robot extends IterativeRobot {
    * A place to get and set values from SmartDash
    */
   private void initDash() {
+    compressor.setName("Compressor");
+    SmartDashboard.putData(compressor);
+    
     // We need to set the name for every chooser or SmartDash won't pick it up
     RobotMap.startPosition.setName("Auto Position");
     RobotMap.startPosition.addDefault("Guess", PathfindingAuto.MatchStartPosition.GUESS);
@@ -150,8 +157,6 @@ public class Robot extends IterativeRobot {
 	  if (autoCommand != null) autoCommand.cancel();
    
 	  driveSubsystem.startTeleop();
-	  armSubsystem.startTeleop();
-	  grabberSubsystem.startTeleop();
   }
  
   @Override

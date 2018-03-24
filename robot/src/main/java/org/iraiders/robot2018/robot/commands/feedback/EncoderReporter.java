@@ -15,6 +15,7 @@ public class EncoderReporter extends Command {
   
   public EncoderReporter(WPI_TalonSRX... talons) {
     this.talons = talons;
+    this.setRunWhenDisabled(true);
     feedbackDevice = FeedbackDevice.QuadEncoder;
   }
   

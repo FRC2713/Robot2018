@@ -54,9 +54,7 @@ public class ArmSubsystem extends Subsystem {
       JoystickButton goDownShoulder = new JoystickButton(xbox, 3);
       goDownShoulder.whileHeld(new SimpleMotorCommand(this, lowerJoint, -maxSpeed));
     }
-  }
   
-  public void startTeleop() {
     new EncoderReporter(FeedbackDevice.Analog, upperJoint, lowerJoint).start();
   }
   
