@@ -11,6 +11,7 @@ import org.iraiders.robot2018.robot.commands.arm.ArmCommand;
 import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 
+@Deprecated()
 public class VisionAuto extends Command {
   private final DriveSubsystem driveSubsystem;
   private final ArmSubsystem armSubsystem;

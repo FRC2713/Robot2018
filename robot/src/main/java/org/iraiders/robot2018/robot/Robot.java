@@ -38,7 +38,7 @@ public class Robot extends IterativeRobot {
 	  oi = new OI();
 	
 	  initDash();
-	  //initCamera();
+	  initCamera();
 	  initSubsystems();
   }
 	
