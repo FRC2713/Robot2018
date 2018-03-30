@@ -1,17 +1,17 @@
 package org.iraiders.robot2018.robot.commands.grabber;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.InstantCommand;
+import lombok.RequiredArgsConstructor;
 import org.iraiders.robot2018.robot.subsystems.GrabberSubsystem;
 
-public class ControlGrabber extends CommandGroup {
-  public ControlGrabber(GrabberSubsystem subsystem, GrabberSubsystem.GrabberPosition position) {
-    if (subsystem.grabberSolenoid.isFwdSolenoidBlackListed() || subsystem.grabberSolenoid.isRevSolenoidBlackListed()) {
-      // Saftey Rules
-      DriverStation.reportError("One or more solenoids in " + subsystem.grabberSolenoid.getName() + " blacklisted, unable to comply with " + position.toString(), false);
-      return;
-    }
+@RequiredArgsConstructor
+public class ControlGrabber extends InstantCommand {
+  private final GrabberSubsystem subsystem;
+  private final GrabberSubsystem.GrabberPosition position;
+  
+  @Override
+  protected void initialize() {
     if (position.equals(GrabberSubsystem.GrabberPosition.OPEN)) {
       subsystem.grabberSolenoid.set(DoubleSolenoid.Value.kForward);
     } else if (position.equals(GrabberSubsystem.GrabberPosition.CLOSE)) {
