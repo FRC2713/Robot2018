@@ -16,8 +16,8 @@ public class GrabberSubsystem extends Subsystem {
   private JoystickButton close = new JoystickButton(arcade, 2);
   
   public GrabberSubsystem() {
-    open.whenReleased(new ControlGrabber(this, GrabberPosition.OPEN));
-    close.whenReleased(new ControlGrabber(this, GrabberPosition.CLOSE));
+    open.whenPressed(new ControlGrabber(this, GrabberPosition.OPEN));
+    close.whenPressed(new ControlGrabber(this, GrabberPosition.CLOSE));
     
     grabberSolenoid.setName(this.getName(), "Grabber Solenoid");
   }

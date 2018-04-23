@@ -14,13 +14,12 @@ public class EncoderReporter extends Command {
   private final FeedbackDevice feedbackDevice;
   
   public EncoderReporter(WPI_TalonSRX... talons) {
-    this.talons = talons;
-    this.setRunWhenDisabled(true);
-    feedbackDevice = FeedbackDevice.QuadEncoder;
+    this(FeedbackDevice.QuadEncoder, talons);
   }
   
   public EncoderReporter(FeedbackDevice device, WPI_TalonSRX... talons) {
     this.talons = talons;
+    this.setRunWhenDisabled(true);
     feedbackDevice = device;
   }
   

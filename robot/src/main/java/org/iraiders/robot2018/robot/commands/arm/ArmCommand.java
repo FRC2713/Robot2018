@@ -28,34 +28,45 @@ public class ArmCommand extends CommandGroup {
     switch (position){
       case BOX_PROTECT:
       case STARTING_CONFIG:
-        shoulderPosition = 430;
+        shoulderPosition = 343;
         elbowPosition = 180;
+        addSequential(new ArmCommand(armSubsystem, ArmPosition._MIDSTEP_BOX_PICKUP_TO_PROTECT), 4000);
+        break;
+        
+      case _MIDSTEP_BOX_PICKUP_TO_PROTECT:
+        if (ArmPosition.BOX_PICKUP.equals(armSubsystem.lastPosition)) {
+          DriverStation.reportWarning("DOING THE THING MAYBE", false);
+          shoulderPosition = 830;
+          elbowPosition = 225 + 20; // TODO tune
+        } else return;
         break;
         
       case BOX_PICKUP:
         addParallel(new ControlGrabber(Robot.getGrabberSubsystem(), GrabberSubsystem.GrabberPosition.OPEN));
-        shoulderPosition = 830;
-        elbowPosition = 225;
+        shoulderPosition = 730;
+        elbowPosition = 250;
         break;
         
       case SWITCH_DELIVER:
-        shoulderPosition = 625;
-        elbowPosition = 325;
+        shoulderPosition = 610;
+        //elbowPosition = 325;
+        elbowPosition = 375;
         break;
         
+        /*
       case SCALE_DELIVER_LOW:
       case SCALE_DELIVER_MID:
         shoulderPosition = 532;
-        elbowPosition = 500;
-        break;
+        elbowPosition = 400; //TODO tune
+        break;*/
         
       case SCALE_DELIVER_HIGH:
-        shoulderPosition = 536;
-        elbowPosition = 570;
+        shoulderPosition = 343;
+        elbowPosition = 638;
         break;
         
       case TEST_DEFAULT:
-        shoulderPosition = 425;
+        shoulderPosition = 345;
         elbowPosition = 387;
         break;
         
@@ -66,6 +77,7 @@ public class ArmCommand extends CommandGroup {
     
     Command upperJoint = new UpperJoint(armSubsystem, armSubsystem.getUpperJoint(), elbowPosition);
     Command lowerJoint = new LowerJoint(armSubsystem, armSubsystem.getLowerJoint(), shoulderPosition);
+    armSubsystem.lastPosition = position;
     addParallel(upperJoint);
     addParallel(lowerJoint);
     this.addChild(upperJoint);

@@ -28,11 +28,14 @@ public class TimedScaleAuto extends CommandGroup {
   private void doAuto(PathfindingAuto.MatchStartPosition robotLocation, MatchData.OwnedSide ownedScaleSide) {
     // Scale only for now
     if (robotLocation == PathfindingAuto.MatchStartPosition.GUESS) robotLocation = PathfindingAuto.MatchStartPosition.get(DriverStation.getInstance().getLocation());
-    double speed = .6, timeout = 2.5;
-    addSequential(new DrivetrainCommand(driveSubsystem, speed + 0.035, speed), timeout); // Add because of the weird drift
+    double speed = .6, timeout = 2.2;
     if ((robotLocation == PathfindingAuto.MatchStartPosition.LEFT && ownedScaleSide == MatchData.OwnedSide.LEFT)
       || (robotLocation == PathfindingAuto.MatchStartPosition.RIGHT && ownedScaleSide == MatchData.OwnedSide.RIGHT)) {
       addSequential(new ArmCommand(armSubsystem, ArmSubsystem.ArmPosition.SCALE_DELIVER_HIGH));
+    }
+    addSequential(new DrivetrainCommand(driveSubsystem, speed + 0.03, speed), timeout); // Add because of the weird drift
+    if ((robotLocation == PathfindingAuto.MatchStartPosition.LEFT && ownedScaleSide == MatchData.OwnedSide.LEFT)
+      || (robotLocation == PathfindingAuto.MatchStartPosition.RIGHT && ownedScaleSide == MatchData.OwnedSide.RIGHT)) {
       addSequential(new ControlGrabber(grabberSubsystem, GrabberSubsystem.GrabberPosition.OPEN), 3);
     }
   }

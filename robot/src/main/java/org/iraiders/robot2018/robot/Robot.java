@@ -1,6 +1,7 @@
 
 package org.iraiders.robot2018.robot;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -10,6 +11,7 @@ import org.iraiders.robot2018.robot.commands.auto.PathfindingAuto;
 import org.iraiders.robot2018.robot.commands.auto.VisionAuto;
 import org.iraiders.robot2018.robot.commands.auto.deadreconing.TimedScaleAuto;
 import org.iraiders.robot2018.robot.commands.auto.deadreconing.TimedSwitchAuto;
+import org.iraiders.robot2018.robot.commands.grabber.ControlGrabber;
 import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 import org.iraiders.robot2018.robot.subsystems.DriveSubsystem;
 import org.iraiders.robot2018.robot.subsystems.GrabberSubsystem;
@@ -60,7 +62,9 @@ public class Robot extends IterativeRobot {
    */
   private void initCamera() {
     CameraServer cs = CameraServer.getInstance();
-    cs.startAutomaticCapture();
+    UsbCamera u = cs.startAutomaticCapture();
+    u.setResolution(640, 480);
+    u.setFPS(10);
   }
   
   /**
@@ -106,6 +110,7 @@ public class Robot extends IterativeRobot {
     autoStart = System.currentTimeMillis();
     driveSubsystem.roboDrive.setSafetyEnabled(false);
     DriverStation.reportWarning("Using " + RobotMap.whichAuto.getSelected().toString(), false);
+    new ControlGrabber(grabberSubsystem, GrabberSubsystem.GrabberPosition.CLOSE).start(); // In case we change it manually pre-match
     
     switch(RobotMap.whichAuto.getSelected()) {
       case PATHFINDING:
@@ -143,7 +148,7 @@ public class Robot extends IterativeRobot {
     Scheduler.getInstance().run();
     
     if (RobotMap.USE_MINIMUM_VIABLE_AUTO) {
-      double speed = .6, timeout = 2.6;
+      double speed = .6, timeout = 2.2;
       if ((System.currentTimeMillis() - autoStart) < (timeout * 1000)) {
         driveSubsystem.setDriveSpeed(speed);
       } else {
