@@ -13,7 +13,7 @@ abstract class JointControlCommand extends PIDCommand {
   private final float maxSpeed = Robot.prefs.getFloat("JointMaxSpeed", 1f);
   
   JointControlCommand(ArmSubsystem armSubsystem, WPI_TalonSRX jointMotor, int desiredDegrees){
-    super(.5, 0, 0); //TODO: Tune PID
+    super(.01, 0, 0);
     this.setName(armSubsystem.getName(), "JointControlCommand");
     this.motor = jointMotor;
     this.setDeg = desiredDegrees;
@@ -88,7 +88,7 @@ class LowerJoint extends JointControlCommand {
   
   LowerJoint(ArmSubsystem armSubsystem, WPI_TalonSRX jointMotor, int angle) {
     super(armSubsystem, jointMotor, angle);
-    this.setInputRange(335, 735);
+    this.setInputRange(335, 615);
   }
   
   @Override
