@@ -26,13 +26,12 @@ public class TimedSwitchAuto extends CommandGroup {
   }
   
   private void doAuto(PathfindingAuto.MatchStartPosition robotLocation, MatchData.OwnedSide ownedScaleSide) {
-    // Scale only for now
     if (robotLocation == PathfindingAuto.MatchStartPosition.GUESS) robotLocation = PathfindingAuto.MatchStartPosition.get(DriverStation.getInstance().getLocation());
     double speed = .33, timeout = 2.2;
   
     if ((robotLocation == PathfindingAuto.MatchStartPosition.LEFT && ownedScaleSide == MatchData.OwnedSide.LEFT)
       || (robotLocation == PathfindingAuto.MatchStartPosition.RIGHT && ownedScaleSide == MatchData.OwnedSide.RIGHT)) {
-      addSequential(new ArmCommand(armSubsystem, ArmSubsystem.ArmPosition.SWITCH_DELIVER)); //TODO switch to the real preset
+      addSequential(new ArmCommand(armSubsystem, ArmSubsystem.ArmPosition.SWITCH_DELIVER), 5);
     }
     
     addSequential(new DrivetrainCommand(driveSubsystem, speed + 0.03, speed), timeout); // Add because of the weird drift
