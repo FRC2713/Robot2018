@@ -40,10 +40,10 @@ public class ArmSubsystem extends Subsystem {
     
     
       JoystickButton goUpShoulder = new JoystickButton(xbox, 2);
-      goUpShoulder.whileHeld(new SimpleMotorCommand(this, lowerJoint, maxSpeed));
+      goUpShoulder.whileHeld(new SimpleMotorCommand(this, lowerJoint, maxSpeed / 4));
     
       JoystickButton goDownShoulder = new JoystickButton(xbox, 3);
-      goDownShoulder.whileHeld(new SimpleMotorCommand(this, lowerJoint, -maxSpeed));
+      goDownShoulder.whileHeld(new SimpleMotorCommand(this, lowerJoint, -maxSpeed / 4));
     }
     
     JoystickButton btn8 = new JoystickButton(arcade, 8);

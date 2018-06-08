@@ -89,8 +89,8 @@ class LowerJoint extends JointControlCommand {
   
   LowerJoint(ArmSubsystem armSubsystem, WPI_TalonSRX jointMotor, int angle) {
     super(armSubsystem, jointMotor, angle);
-    this.getPIDController().setP(this.getPIDController().getP() / 100);
-    this.setInputRange(271, 880);
+    this.getPIDController().setP(this.getPIDController().getP() / 20);
+    this.setInputRange(1454, 1910);
   }
   
   @Override

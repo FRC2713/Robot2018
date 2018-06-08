@@ -28,7 +28,7 @@ public class ArmCommand extends CommandGroup {
     switch (position){
       case BOX_PROTECT:
       case STARTING_CONFIG:
-        shoulderPosition = 58;
+        shoulderPosition = 1490;
         elbowPosition = 177;
         //addSequential(new ArmCommand(armSubsystem, ArmPosition._MIDSTEP_BOX_PICKUP_TO_PROTECT), 4000);
         break;
@@ -43,14 +43,14 @@ public class ArmCommand extends CommandGroup {
         
       case BOX_PICKUP:
         addParallel(new ControlGrabber(Robot.getGrabberSubsystem(), GrabberSubsystem.GrabberPosition.OPEN));
-        shoulderPosition = 291;
-        elbowPosition = 256;
+        shoulderPosition = 1830;
+        elbowPosition = 245;
         break;
         
       case SWITCH_DELIVER:
         //shoulderPosition = 610;
         //elbowPosition = 375;
-        shoulderPosition = 450;
+        shoulderPosition = 1500;
         elbowPosition = 375;
         break;
         
@@ -62,7 +62,7 @@ public class ArmCommand extends CommandGroup {
         break;*/
         
       case SCALE_DELIVER_HIGH:
-        shoulderPosition = 343;
+        shoulderPosition = 1467;
         elbowPosition = 638;
         break;
         
