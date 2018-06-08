@@ -10,17 +10,17 @@ import org.iraiders.robot2018.robot.subsystems.ArmSubsystem;
 abstract class JointControlCommand extends PIDCommand {
   private final WPI_TalonSRX motor;
   private final int setDeg;
-  private final float maxSpeed = Robot.prefs.getFloat("JointMaxSpeed", 1f);
+  private float maxSpeed = 1;
   
   JointControlCommand(ArmSubsystem armSubsystem, WPI_TalonSRX jointMotor, int desiredDegrees){
-    super(.01, 0, 0);
+    super(.05, 0, 0);
     this.setName(armSubsystem.getName(), "JointControlCommand");
     this.motor = jointMotor;
     this.setDeg = desiredDegrees;
     
     this.setSetpoint(setDeg);
     this.getPIDController().setContinuous(false);
-    this.getPIDController().setPercentTolerance(5); // TODO tune
+    this.getPIDController().setPercentTolerance(5);
   }
   
   @Override
@@ -31,6 +31,7 @@ abstract class JointControlCommand extends PIDCommand {
   @Override
   protected void execute() {
     super.execute();
+    maxSpeed = Robot.prefs.getFloat("JointMaxSpeed", 1f);
     SmartDashboard.putNumber(getClass().getSimpleName(), potUnitsToDegrees(motor.getSelectedSensorPosition(0)));
   }
   
@@ -88,7 +89,8 @@ class LowerJoint extends JointControlCommand {
   
   LowerJoint(ArmSubsystem armSubsystem, WPI_TalonSRX jointMotor, int angle) {
     super(armSubsystem, jointMotor, angle);
-    this.setInputRange(335, 615);
+    this.getPIDController().setP(this.getPIDController().getP() / 100);
+    this.setInputRange(271, 880);
   }
   
   @Override
