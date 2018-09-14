@@ -3,18 +3,15 @@ package org.iraiders.robot2018.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import lombok.Getter;
-import org.iraiders.robot2018.robot.OI;
 import org.iraiders.robot2018.robot.Robot;
 import org.iraiders.robot2018.robot.RobotMap;
 import org.iraiders.robot2018.robot.commands.OIDrive;
 import org.iraiders.robot2018.robot.commands.auto.PathfindingAuto;
-import org.iraiders.robot2018.robot.commands.auto.VisionAuto;
 import org.iraiders.robot2018.robot.commands.feedback.EncoderReporter;
 import org.iraiders.robot2018.robot.commands.feedback.RumbleListener;
 
@@ -38,11 +35,11 @@ public class DriveSubsystem extends Subsystem {
       // For debugging pathfinding in auto
       if (a == null) a = new PathfindingAuto(this, Robot.getArmSubsystem(), Robot.getGrabberSubsystem());
       a.cancel();
-      JoystickButton testPathfinding = new JoystickButton(OI.getXBoxController(), 5); // LB
-      testPathfinding.whenPressed(a);
+      //JoystickButton testPathfinding = new JoystickButton(OI.getXBoxController(), 5); // LB
+      //testPathfinding.whenPressed(a);
       
-      JoystickButton testSebbys = new JoystickButton(OI.getXBoxController(), 6); // RB
-      testSebbys.whenPressed(new VisionAuto(this, Robot.getArmSubsystem()));
+      //JoystickButton testSebbys = new JoystickButton(OI.getXBoxController(), 6); // RB
+      //testSebbys.whenPressed(new VisionAuto(this, Robot.getArmSubsystem()));
     }
   
     new EncoderReporter(frontLeftTalon, frontRightTalon).start();

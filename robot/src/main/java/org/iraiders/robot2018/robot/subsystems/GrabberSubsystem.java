@@ -18,6 +18,12 @@ public class GrabberSubsystem extends Subsystem {
   public GrabberSubsystem() {
     open.whenPressed(new ControlGrabber(this, GrabberPosition.OPEN));
     close.whenPressed(new ControlGrabber(this, GrabberPosition.CLOSE));
+  
+    JoystickButton xboxClose = new JoystickButton(OI.getXBoxController(), 5); // LB
+    xboxClose.whenPressed(new ControlGrabber(this, GrabberPosition.CLOSE));
+  
+    JoystickButton xboxOpen = new JoystickButton(OI.getXBoxController(), 6); // RB
+    xboxOpen.whenPressed(new ControlGrabber(this, GrabberPosition.OPEN));
     
     grabberSolenoid.setName(this.getName(), "Grabber Solenoid");
   }
