@@ -11,22 +11,6 @@ import time
 from stream import WebcamVideoStream
 import os
 
-NetworkTables.initialize(server="roboRIO-2713-frc.local")
-vt = NetworkTables.getTable("VisionProcessing")
-vt.putNumber("angle", -1)
-vt.putNumber("distance", -1)
-vt.putNumber("heartbeat", 0)
-vt.putNumber("x", -1)
-vt.putNumber("y", -1)
-vt.putNumber("ipp", -1)
-
-vs = WebcamVideoStream().start()
-final = vs.read()
-vt.putNumber("screen_width", int(cv2.get(cv2.CV_CAP_PROP_FRAME_WIDTH)))
-print(os.name)
-displayDebugWindow = (os.name == 'nt') or ("DISPLAY" in os.environ)
-port = 8087
-
 
 class CamHandler(BaseHTTPRequestHandler):
   def do_GET(self):
@@ -72,47 +56,25 @@ class CamHandler(BaseHTTPRequestHandler):
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
   """Handle requests in a separate thread."""
 
-
 def serve():
   server = ThreadedHTTPServer(("", port), CamHandler)
   server.serve_forever()
 
-
-server_thread = Thread(target=serve, args=())
-server_thread.start()
-
-print("mjpeg server started on port " + str(port))
-
-r = 32
-g = 0
-b = 202
-
-rh = 119
-gh = 255
-bh = 255
-
-"""
-r = 0
-g = 0
-b = 241
-rh = 203
-gh = 60
-bh = 255
-"""
-
-lower_c = np.array([r, g, b])
-upper_c = np.array([rh, gh, bh])
-
+def resetTable(vt):
+  vt.putNumber("angle", -1)
+  vt.putNumber("distance", -1)
+  vt.putNumber("x", -1)
+  vt.putNumber("y", -1)
+  vt.putNumber("ipp", -1)
 
 def haveSameCoordinates(rect1, rect2):
-  if round(r[0][0], 0) == round(r2[0][0], 0) and round(r[0][1], 0) == round(r2[0][1], 0):
+  if round(rect1[0][0], 0) == round(rect2[0][0], 0) and round(rect1[0][1], 0) == round(rect2[0][1], 0):
     return True
   else:
     return False
 
-
 def isCorrectRatio(rect):
-  if (rect[1][0] > 6 and rect[1][1] > 6):
+  if rect[1][0] > 6 and rect[1][1] > 6:
     correct_ratio = 15.3 / 2.0
     err = 5
     width = rect[1][0]
@@ -120,11 +82,9 @@ def isCorrectRatio(rect):
     ratio = round(height / width, 2)
     if ratio < 1:
       ratio = 1 / ratio
-    if (ratio > (correct_ratio - 1) and ratio < (correct_ratio + err)):
+    if (correct_ratio - 1) < ratio < (correct_ratio + err):
       return True
-
   return False
-
 
 def getRegularRatio(ratio):
   r = ratio
@@ -132,27 +92,54 @@ def getRegularRatio(ratio):
     r = 1 / r
   return r
 
-
-KNOWN_DISTANCE = 77
-KNOWN_HEIGHT = 183
-focalHeight = 51.333336
-
-
 def distance_to_camera(pixHeight):
-  global KNOWN_HEIGHT, focalHeight
-  return (KNOWN_HEIGHT * focalHeight) / pixHeight
+  # KNOWN_DISTANCE = 77
+  #KNOWN_HEIGHT = 183
+  #focalHeight = 51.333336
+  #return (KNOWN_HEIGHT * focalHeight) / pixHeight
+  return 9394 / pixHeight
 
 def width_to_pixel_width(width):
-  return 8/width
-def drawBox(frame, rect, color=(0,0,255)):
+  return 8 / width
+
+def drawBox(frame, rect, color=(0, 0, 255)):
   box = cv2.boxPoints(rect)
   box = np.array(box).reshape((-1, 1, 2)).astype(np.int32)
   cv2.drawContours(frame, [box], -1, color, 1)
 
-start_t = time.time()
-
 if __name__ == '__main__':
-  while (1):
+  start_t = time.time()
+
+  NetworkTables.initialize(server="roboRIO-2713-frc.local")
+  vt = NetworkTables.getTable("VisionProcessing")
+  vt.putNumber("heartbeat", 0)
+  resetTable(vt)
+
+  vs = WebcamVideoStream().start()
+  final = vs.read()
+  # vt.putNumber("screen_width", 1920)
+  print(os.name)
+  displayDebugWindow = (os.name == 'nt') or ("DISPLAY" in os.environ)
+  port = 8087
+
+  # Range of color
+  r = 32
+  g = 0
+  b = 202
+
+  rh = 119
+  gh = 255
+  bh = 255
+
+  lower_c = np.array([r, g, b])
+  upper_c = np.array([rh, gh, bh])
+
+
+  server_thread = Thread(target=serve, args=())
+  server_thread.start()
+
+  print("mjpeg server started on port " + str(port))
+  while 1:
 
     frame = vs.read()
     # ---- FILTER OUT THINGS WE DON'T WANT ----
@@ -176,7 +163,7 @@ if __name__ == '__main__':
       n = -1
       rnd_rect = ((round(rect[0][0], n), round(rect[0][1], n)), (round(rect[1][0], n), round(rect[1][1], n)),
                   round(rect[2], n))
-      if (isCorrectRatio(rect)):
+      if isCorrectRatio(rect):
         drawBox(frame, rect)
 
       for r2 in rounded:
@@ -213,10 +200,10 @@ if __name__ == '__main__':
             y_r2 = r2[0][1]
             distance = math.sqrt((y_r2 - y_r) ** 2 + (x_r2 - x_r) ** 2)
 
-            if distance > 2 * width and distance < 5 * width:
-              #if (ratio_r2 < ratio_r + sim_ratio and ratio_r2 > ratio_r - 1):
-              if (angle_r2 < angle_r + sim_angle and angle_r2 > angle_r - sim_angle):
-                if (abs(area_r / area_r2 - 1) < sim_area):
+            if 2 * width < distance < 5 * width:
+              # if (ratio_r2 < ratio_r + sim_ratio and ratio_r2 > ratio_r - 1):
+              if angle_r + sim_angle > angle_r2 > angle_r - sim_angle:
+                if abs(area_r / area_r2 - 1) < sim_area:
                   pairs.append([r, r2])
 
     # print(pairs)
@@ -229,13 +216,13 @@ if __name__ == '__main__':
     |     |  _ and | = side of minimum area rect of contour
     |     |  
     |     |  h / w = approx 15.3 / 2.0 (dimension of single target rectangle)
-  h |  *  |
+    h  *  |
     |     |  
     |     |
     |     |
     |     |
-    |_____|
-       w
+    |__w__|
+       
     cv2.minAreaRect(contour) = ((x, y), (w, h), angle)
     
     Reason for inverting values at times is due to the fact that width and height may not correlate from one rectangle to another (width and height may be switched)
@@ -269,6 +256,7 @@ if __name__ == '__main__':
           height = width
           width = tmp
 
+        # Bounds of target in frame (Not currently used, meant for commented tracking loop)
         if x - width / 2 < min_x:
           min_x = int(x - width / 2)
           lmost += 1
@@ -278,6 +266,7 @@ if __name__ == '__main__':
           min_y = int(y - height / 2)
         if y + height / 2 > max_y:
           max_y = int(y + height / 2)
+        # ---
 
         black = (0, 0, 0)
 
@@ -295,8 +284,7 @@ if __name__ == '__main__':
         cv2.circle(frame, (int(round(x, 0)), int(round(y, 0))), 2, (0, 0, 0), 1)
         drawBox(frame, rect, color)
 
-
-      # Tracking stuff
+      # Tracking stuff: Would follow the target through mean shift
       """
       
       track_window = (min_x, min_y, max_x - min_x, max_y - min_y)
@@ -346,26 +334,20 @@ if __name__ == '__main__':
         if lmost == 0:
           diff *= -1
         distance = round((distances[0] + distances[1]) / 24, 1)
-        cv2.putText(frame, "%.2fft" % (distance), (frame.shape[1] - 200, frame.shape[0] - 100),
-                    cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 0), 3)
-        center = ((pairs[0][0][0] + pairs[1][0][0])/2, (pairs[0][0][1] + pairs[1][0][1])/2)
+        cv2.putText(frame, "%.2fft" % distance, (frame.shape[1] - 200, frame.shape[0] - 100), cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 0), 3)
+        pairs = pairs[0]
+        center = ((pairs[0][0][0] + pairs[1][0][0]) / 2, (pairs[0][0][1] + pairs[1][0][1]) / 2)
         if abs(diff) < 6:  # 6 is the length in inches of the target, this gives u the hypotenuse
           perspective_angle = round(math.degrees(math.asin(diff / 6)), 3)
-
           vt.putNumber("angle", perspective_angle)
           vt.putNumber("distance", distance)
           vt.putNumber("x", center[0])
           vt.putNumber("y", center[1])
           vt.putNumber("ipp", width_to_pixel_width(pairs[0][1][0]*2 + pairs[1][1][0]*2))
-          cv2.putText(frame, str(perspective_angle), (frame.shape[1] - 200, frame.shape[0]),
-                      cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 0), 3)
+          cv2.putText(frame, str(perspective_angle), (frame.shape[1] - 200, frame.shape[0]), cv2.FONT_HERSHEY_SIMPLEX, 2.0, (0, 0, 0), 3)
       else:
-        vt.putNumber("angle", -1)
-        vt.putNumber("distance", -1)
-        vt.putNumber("x", -1)
-        vt.putNumber("y", -1)
-        vt.putNumber("ipp", -1)
-    vt.putNumber("heartbeat", vt.getNumber("heartbeat") + 1)
+        resetTable(vt)
+    #vt.putNumber("heartbeat", vt.getNumber("heartbeat") + 1)
     final = frame
 
     cv2.putText(frame, str(int(1 / (time.time() - start_t))) + " FPS", (frame.shape[1] - 130, 40),
